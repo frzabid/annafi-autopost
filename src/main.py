@@ -164,6 +164,20 @@ def cek(now=None):
     return perlu
 
 
+def tes():
+    """Kirim pesan uji ke Telegram dan laporkan secret mana yang sudah/belum diisi."""
+    cek_isi = {k: bool(getattr(config, k)) for k in
+               ["SHEET_CSV_URL", "TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID", "META_PAGE_ID", "META_PAGE_TOKEN", "META_IG_USER_ID"]}
+    daftar = "\n".join(f"{'✅' if v else '⬜'} {k}" for k, v in cek_isi.items())
+    print(daftar)
+    if config.TELEGRAM_BOT_TOKEN and config.TELEGRAM_CHAT_ID:
+        import requests
+        r = requests.post(f"https://api.telegram.org/bot{config.TELEGRAM_BOT_TOKEN}/sendMessage", timeout=20,
+                          data={"chat_id": config.TELEGRAM_CHAT_ID, "text": f"🤖 Bot Annafi Autopost terhubung!\n\nStatus pengaturan:\n{daftar}"})
+        print("Telegram:", r.status_code, r.text[:300])
+        r.raise_for_status()
+
+
 def jalan():
     """Mode laptop (Task Scheduler): cek, lalu kerjakan kalau perlu."""
     if cek():
@@ -172,4 +186,4 @@ def jalan():
 
 
 if __name__ == "__main__":
-    {"cek": cek, "prepare": prepare, "publish": publish, "jalan": jalan}[sys.argv[1]]()
+    {"cek": cek, "prepare": prepare, "publish": publish, "jalan": jalan, "tes": tes}[sys.argv[1]]()

@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: "*/15 * * * *"   # cek tiap 15 menit (GitHub kadang telat beberapa menit)
   workflow_dispatch:          # tombol "Run workflow" untuk tes manual
+    inputs:
+      tes:
+        description: "Hanya tes koneksi Telegram & cek pengaturan"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -34,8 +39,15 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Tes koneksi
+        if: inputs.tes
+        run: |
+          pip install -q requests
+          python src/main.py tes
+
       - name: Cek ringan
         id: cek
+        if: ${{ !inputs.tes }}
         run: |
           pip install -q requests
           python src/main.py cek
