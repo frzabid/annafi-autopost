@@ -169,6 +169,14 @@ def tes():
     cek_isi = {k: bool(getattr(config, k)) for k in
                ["SHEET_CSV_URL", "TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID", "META_PAGE_ID", "META_PAGE_TOKEN", "META_IG_USER_ID"]}
     daftar = "\n".join(f"{'✅' if v else '⬜'} {k}" for k, v in cek_isi.items())
+    if config.SHEET_CSV_URL:
+        try:
+            rows, errors = sheet.load(config.SHEET_CSV_URL)
+            daftar += f"\n\n📄 Sheet terbaca: {len(rows)} jadwal valid"
+            daftar += "".join(f"\n⚠️ {e}" for e in errors[:5])
+            daftar += "".join(f"\n• {fmt(r['waktu'])} — {r['nama']}" for r in sorted(rows, key=lambda r: r['waktu'])[:5])
+        except Exception as e:
+            daftar += f"\n\n❌ Sheet gagal dibaca: {e}"
     print(daftar)
     if config.TELEGRAM_BOT_TOKEN and config.TELEGRAM_CHAT_ID:
         import requests
