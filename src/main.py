@@ -140,6 +140,13 @@ def cek(now=None):
     """Cek ringan (tanpa Chrome): apakah ada yang perlu dikerjakan? Hasil ditulis ke GITHUB_OUTPUT."""
     import os
     now = now or datetime.now(TZ)
+    if not config.SHEET_CSV_URL and not config.DRY_RUN:
+        print("Belum dikonfigurasi: isi secret SHEET_CSV_URL dulu. Tidak ada yang dikerjakan.")
+        perlu = False
+        if os.getenv("GITHUB_OUTPUT"):
+            with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+                f.write("perlu=0\n")
+        return perlu
     s = load_state()
     rows, errors = baca_sheet()
     perlu = any(e not in s["error_terkirim"] for e in errors)
