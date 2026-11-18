@@ -1,6 +1,14 @@
 """Pengaturan toko & sistem. Ubah di sini kalau ada yang berganti."""
-import os
+import os, pathlib
 from zoneinfo import ZoneInfo
+
+# Mode laptop: rahasia disimpan di file .env (di GitHub Actions pakai Secrets)
+_env = pathlib.Path(__file__).resolve().parent.parent / ".env"
+if _env.exists():
+    for _l in _env.read_text(encoding="utf-8").splitlines():
+        if "=" in _l and not _l.strip().startswith("#"):
+            _k, _v = _l.split("=", 1)
+            os.environ.setdefault(_k.strip(), _v.strip().strip('"'))
 
 TZ = ZoneInfo("Asia/Jakarta")
 
@@ -44,7 +52,7 @@ META_IG_USER_ID = os.getenv("META_IG_USER_ID", "")
 GRAPH_VERSION = os.getenv("GRAPH_VERSION", "v25.0")
 SERPER_API_KEY = os.getenv("SERPER_API_KEY", "")  # opsional, cadangan pencarian gambar
 
-# URL publik folder posters/ (repo publik GitHub), diisi otomatis oleh workflow
+# URL publik folder posters/ (mode GitHub). Kosong = mode laptop: gambar di-host lewat foto Facebook
 PUBLIC_BASE_URL = os.getenv("PUBLIC_BASE_URL", "")
 
 DRY_RUN = os.getenv("DRY_RUN", "") == "1"  # 1 = tidak benar-benar kirim/posting

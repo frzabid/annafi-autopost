@@ -109,11 +109,19 @@ def publish():
     antrian = json.loads(QUEUE.read_text()) if QUEUE.exists() else []
     for item in antrian:
         st = s["produk"][item["id"]]
-        url = f"{config.PUBLIC_BASE_URL.rstrip('/')}/posters/{item['poster']}"
         try:
-            ig = st.get("link_ig") or meta.post_instagram(url, item["caption"])
-            st["link_ig"] = ig  # simpan dulu supaya tidak dobel kalau FB gagal
-            fb = meta.post_facebook(url, item["caption"])
+            if config.PUBLIC_BASE_URL:  # mode GitHub: poster sudah punya URL publik di repo
+                url = f"{config.PUBLIC_BASE_URL.rstrip('/')}/posters/{item['poster']}"
+                ig = st.get("link_ig") or meta.post_instagram(url, item["caption"])
+                st["link_ig"] = ig  # simpan dulu supaya tidak dobel kalau FB gagal
+                fb = st.get("link_fb") or meta.post_facebook(url, item["caption"])
+            else:  # mode laptop: unggah ke Facebook dulu, URL fotonya dipakai Instagram
+                if not st.get("url_gambar_fb"):
+                    st["link_fb"], st["url_gambar_fb"] = meta.post_facebook_file(str(POSTERS / item["poster"]), item["caption"])
+                    save_state(s)
+                fb = st["link_fb"]
+                ig = meta.post_instagram(st["url_gambar_fb"], item["caption"])
+                st["link_ig"] = ig
             st.update(status="terposting", link_fb=fb, waktu_posting=datetime.now(TZ).isoformat())
             notify.pesan(f"✅ <b>{item['nama']}</b> sudah tayang.\nIG: {ig}\nFB: {fb}")
         except Exception as e:
@@ -149,5 +157,12 @@ def cek(now=None):
     return perlu
 
 
+def jalan():
+    """Mode laptop (Task Scheduler): cek, lalu kerjakan kalau perlu."""
+    if cek():
+        prepare()
+        publish()
+
+
 if __name__ == "__main__":
-    {"cek": cek, "prepare": prepare, "publish": publish}[sys.argv[1]]()
+    {"cek": cek, "prepare": prepare, "publish": publish, "jalan": jalan}[sys.argv[1]]()

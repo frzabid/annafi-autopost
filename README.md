@@ -15,6 +15,20 @@ Google Sheet ──► GitHub Actions (tiap 15 menit)
 
 ---
 
+## Mode laptop (Windows) — tanpa GitHub
+
+Jalan lewat Task Scheduler tiap 15 menit. **Laptop harus menyala, tidak sleep, dan terhubung internet**
+saat jam pratinjau & jam posting. Poster diunggah ke Facebook dulu, lalu URL fotonya dipakai Instagram
+(jadi tidak perlu repo publik).
+
+1. Pasang **Python 3.12** dari python.org (centang *Add python.exe to PATH*).
+2. Double-click **setup.bat** (sekali saja; pasang paket, Chromium, dan jadwal "Annafi Autopost").
+3. Buka file **.env** dengan Notepad, isi nilai-nilainya (langkah 1–3 di bawah). Biarkan `DRY_RUN=1` dulu.
+4. Double-click **jalan.bat** untuk tes, lalu lihat **log.txt**. Kalau aman, ubah `DRY_RUN=0`.
+5. Mau berhenti: double-click **hapus_jadwal.bat**.
+
+Tips: Pengaturan Windows → Sistem → Daya → set *Sleep* ke "Never" saat dicolok.
+
 ## Setup (sekali saja)
 
 ### 1. Google Sheet
@@ -44,7 +58,7 @@ Google Sheet ──► GitHub Actions (tiap 15 menit)
 
 App boleh tetap mode *Development* karena hanya dipakai untuk akunmu sendiri (kamu admin app).
 
-### 4. GitHub
+### 4. GitHub (hanya untuk mode GitHub)
 1. Repo ini harus **Public** (supaya Instagram bisa mengambil gambar poster & menit Actions gratis tanpa batas).
 2. **Settings → Secrets and variables → Actions → New repository secret**, isi:
    `SHEET_CSV_URL`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `META_PAGE_ID`, `META_PAGE_TOKEN`, `META_IG_USER_ID`

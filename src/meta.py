@@ -40,3 +40,16 @@ def post_facebook(image_url: str, caption: str) -> str:
     d = _cek(requests.post(f"{G}/{META_PAGE_ID}/photos", timeout=60, data={
         "url": image_url, "caption": caption, "access_token": META_PAGE_TOKEN}))
     return f"https://facebook.com/{d.get('post_id', d.get('id'))}"
+
+
+def post_facebook_file(path: str, caption: str):
+    """Mode laptop: unggah poster langsung ke Page, kembalikan (link post, URL gambar publik untuk IG)."""
+    if DRY_RUN:
+        print(f"[FB upload] {path}")
+        return "https://facebook.com/DRYRUN", "https://example.com/poster.jpg"
+    with open(path, "rb") as f:
+        d = _cek(requests.post(f"{G}/{META_PAGE_ID}/photos", timeout=120, files={"source": f},
+                               data={"caption": caption, "access_token": META_PAGE_TOKEN}))
+    img = _cek(requests.get(f"{G}/{d['id']}", timeout=30, params={"fields": "images", "access_token": META_PAGE_TOKEN}))
+    url = max(img["images"], key=lambda i: i["width"])["source"]
+    return f"https://facebook.com/{d.get('post_id', d['id'])}", url
