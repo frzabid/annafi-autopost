@@ -66,9 +66,19 @@ def parse(text: str):
     return rows, errors
 
 
+def csv_url(url: str) -> str:
+    """Terima link 'Publikasikan ke web' (CSV) ATAU link bagikan biasa
+    (docs.google.com/spreadsheets/d/<ID>/edit...), lalu ubah ke link ekspor CSV."""
+    m = re.search(r"docs\.google\.com/spreadsheets/d/([\w-]+)", url)
+    if not m or m[1] == "e" or "output=csv" in url or "format=csv" in url:
+        return url
+    gid = re.search(r"[#&?]gid=(\d+)", url)
+    return f"https://docs.google.com/spreadsheets/d/{m[1]}/export?format=csv" + (f"&gid={gid[1]}" if gid else "")
+
+
 def load(url_or_path: str):
     if url_or_path.startswith("http"):
-        resp = requests.get(url_or_path, timeout=30)
+        resp = requests.get(csv_url(url_or_path), timeout=30)
         resp.raise_for_status()
         resp.encoding = "utf-8"
         return parse(resp.text)
