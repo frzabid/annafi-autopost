@@ -12,6 +12,11 @@ if _env.exists():
 
 TZ = ZoneInfo("Asia/Jakarta")
 
+
+def _env(nama: str, default: str = "") -> str:
+    """Ambil pengaturan; spasi/Enter yang ikut tertempel di secret dibuang."""
+    return (os.getenv(nama) or default).strip()
+
 TOKO = {
     "wa": "0895-1208-5529",
     "ig": "@annafi_atk_menganti",
@@ -20,9 +25,9 @@ TOKO = {
 }
 
 # Pratinjau dikirim ke Telegram sekian jam sebelum jadwal posting
-PREVIEW_JAM = float(os.getenv("PREVIEW_JAM", "2"))
+PREVIEW_JAM = float(_env("PREVIEW_JAM", "2"))
 # Kalau jadwal sudah lewat lebih dari ini (misal GitHub sempat mati), jangan diposting, cukup diberi tahu
-BATAS_TELAT_JAM = float(os.getenv("BATAS_TELAT_JAM", "3"))
+BATAS_TELAT_JAM = float(_env("BATAS_TELAT_JAM", "3"))
 
 # Caption otomatis kalau kolom caption di sheet kosong
 HASHTAG = "#annafiatk #atkmenganti #alattulis #atkmurah #perlengkapansekolah"
@@ -43,16 +48,16 @@ def rupiah(n: int) -> str:
 
 
 # Rahasia (diisi di GitHub → Settings → Secrets and variables → Actions)
-SHEET_CSV_URL = os.getenv("SHEET_CSV_URL", "")
-TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
-TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
-META_PAGE_ID = os.getenv("META_PAGE_ID", "")
-META_PAGE_TOKEN = os.getenv("META_PAGE_TOKEN", "")
-META_IG_USER_ID = os.getenv("META_IG_USER_ID", "")
-GRAPH_VERSION = os.getenv("GRAPH_VERSION", "v25.0")
-SERPER_API_KEY = os.getenv("SERPER_API_KEY", "")  # opsional, cadangan pencarian gambar
+SHEET_CSV_URL = _env("SHEET_CSV_URL", "")
+TELEGRAM_BOT_TOKEN = _env("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_CHAT_ID = _env("TELEGRAM_CHAT_ID", "")
+META_PAGE_ID = _env("META_PAGE_ID", "")
+META_PAGE_TOKEN = _env("META_PAGE_TOKEN", "")
+META_IG_USER_ID = _env("META_IG_USER_ID", "")
+GRAPH_VERSION = _env("GRAPH_VERSION", "v25.0")
+SERPER_API_KEY = _env("SERPER_API_KEY", "")  # opsional, cadangan pencarian gambar
 
 # URL publik folder posters/ (mode GitHub). Kosong = mode laptop: gambar di-host lewat foto Facebook
-PUBLIC_BASE_URL = os.getenv("PUBLIC_BASE_URL", "")
+PUBLIC_BASE_URL = _env("PUBLIC_BASE_URL", "")
 
-DRY_RUN = os.getenv("DRY_RUN", "") == "1"  # 1 = tidak benar-benar kirim/posting
+DRY_RUN = _env("DRY_RUN", "") == "1"  # 1 = tidak benar-benar kirim/posting
