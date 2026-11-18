@@ -9,6 +9,7 @@ Google Sheet ──► GitHub Actions (tiap 15 menit)
 ```
 
 - Gambar: link di kolom `gambar`, atau dicari otomatis (DuckDuckGo, cadangan Serper) lalu latarnya dihapus.
+- Pratinjau = poster + caption persis seperti yang akan tayang, siap diteruskan ke Saluran/Status WhatsApp.
 - Kalau pratinjau salah: ubah baris di sheet (misal tempel link gambar lain) → poster dibuat ulang.
 - Kalau tidak sempat cek: tetap diposting. Isi kolom `tunda` = `YA` untuk menahan.
 - Jadwal yang terlewat lebih dari 3 jam tidak diposting (diberi tahu di Telegram).

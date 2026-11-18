@@ -6,7 +6,7 @@
 Workflow GitHub Actions menjalankan keduanya tiap 15 menit (commit poster di antaranya
 supaya poster punya URL publik yang bisa diambil Instagram).
 """
-import json, pathlib, sys, traceback
+import html, json, pathlib, sys, traceback
 from datetime import datetime, timedelta
 import config, meta, notify, sheet
 from config import TZ
@@ -90,10 +90,17 @@ def prepare(now=None):
             st.pop("error", None)
             judul = "🔄 Pratinjau diperbarui" if st["status"] == "pratinjau" else "👀 Pratinjau"
             sumber = "link dari sheet" if p["gambar"] else f'<a href="{st["sumber_gambar"]}">cari otomatis</a>'
-            notify.foto(str(poster),
-                        f"{judul}: <b>{p['nama']}</b>\nTayang: {fmt(p['waktu'])} (baris {p['baris']})\n"
-                        f"Gambar: {sumber}\n\nSalah? Ubah di sheet (isi kolom <i>gambar</i> dengan link lain), "
-                        f"atau isi kolom <i>tunda</i> dengan YA.")
+            caption = p["caption"] or config.caption_otomatis(p)
+            # 1) poster + caption persis seperti yang akan tayang -> siap diteruskan ke Saluran/Status WA
+            notify.foto(str(poster), html.escape(caption))
+            # 2) info pratinjau
+            notify.pesan(f"{judul}: <b>{html.escape(p['nama'])}</b>\n"
+                         f"Tayang di IG & FB: {fmt(p['waktu'])} (baris {p['baris']})\n"
+                         f"Gambar: {sumber}\n\n"
+                         f"✏️ Salah? Ubah di sheet (isi kolom <i>gambar</i> dengan link lain) atau isi kolom <i>tunda</i> = YA. "
+                         f"Pratinjau baru dikirim otomatis.\n"
+                         f"📲 Untuk Saluran/Status WA: tekan lama poster di atas → Teruskan/Bagikan → WhatsApp "
+                         f"(caption bisa disalin dari foto).")
             st["status"] = "pratinjau"
         if now >= p["waktu"]:
             caption = p["caption"] or config.caption_otomatis(p)
