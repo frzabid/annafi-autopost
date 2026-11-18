@@ -107,8 +107,16 @@ def prepare(now=None):
 def publish():
     s = load_state()
     antrian = json.loads(QUEUE.read_text()) if QUEUE.exists() else []
+    meta_siap = all([config.META_PAGE_ID, config.META_PAGE_TOKEN, config.META_IG_USER_ID]) or config.DRY_RUN
     for item in antrian:
         st = s["produk"][item["id"]]
+        if not meta_siap:  # belum diatur: jangan hitung sebagai gagal, cukup beri tahu sekali
+            if not st.get("info_meta"):
+                notify.pesan(f"ℹ️ <b>{item['nama']}</b> sudah waktunya tayang, tapi akun Instagram/Facebook "
+                             f"belum dihubungkan (secret META_* kosong). Belum diposting.")
+                st["info_meta"] = True
+                save_state(s)
+            continue
         try:
             if config.PUBLIC_BASE_URL:  # mode GitHub: poster sudah punya URL publik di repo
                 url = f"{config.PUBLIC_BASE_URL.rstrip('/')}/posters/{item['poster']}"
