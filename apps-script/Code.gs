@@ -17,6 +17,7 @@ const CONFIG = {
   TELEGRAM_BOT_TOKEN: 'ISI_TOKEN_BOT_TELEGRAM',
   TELEGRAM_CHAT_ID: 'ISI_CHAT_ID_TELEGRAM',
   GEMINI_API_KEY: 'ISI_API_KEY_GEMINI',
+  WEB_APP_URL: '',   // opsional: alamat Web app berakhiran /exec (Deploy → Manage deployments → salin URL)
 
   GEMINI_MODEL: 'gemini-flash-latest',            // ganti kalau Google mengubah nama model
   GEMINI_MODEL_CADANGAN: 'gemini-flash-lite-latest',
@@ -56,8 +57,10 @@ function setup() {
   ScriptApp.newTrigger('rencanaOtomatis').timeBased().onWeekDay(ScriptApp.WeekDay.SUNDAY)
     .atHour(CONFIG.JAM_RENCANA).inTimezone(CONFIG.ZONA).create();
 
-  const url = ScriptApp.getService().getUrl();
+  const url = CONFIG.WEB_APP_URL || ScriptApp.getService().getUrl();
   if (!url) throw new Error('Deploy dulu sebagai Web app (Deploy → New deployment → Web app), lalu jalankan setup lagi.');
+  // alamat /dev hanya bisa dibuka pemilik → Telegram ditolak 401. Wajib alamat /exec.
+  if (!/\/exec$/.test(url)) throw new Error('Alamat Web app harus berakhiran /exec. Salin dari Deploy → Manage deployments, isi di CONFIG.WEB_APP_URL, lalu jalankan setup lagi.');
   const r = tg_('setWebhook', { url: url, allowed_updates: JSON.stringify(['message', 'callback_query']) });
   kirim_('🤖 <b>Manajer AI Annafi aktif!</b>\n\n' + BANTUAN + '\n\nWebhook: ' + (r.ok ? '✅' : '❌ ' + r.description));
 }
@@ -506,4 +509,16 @@ function seninBerikut_(d) {
 function dalamMinggu_(tgl, senin) {
   const d = keDate_(tgl);
   return d && d >= tambahHari_(senin, -0.6) && d < tambahHari_(senin, 7);
+}
+
+/** Diagnosa: kirim status webhook Telegram (alamat & error terakhir) ke chat. Jalankan dari editor. */
+function cekWebhook() {
+  const r = tg_('getWebhookInfo', {}).result || {};
+  const err = r.last_error_message
+    ? r.last_error_message + ' (' + Utilities.formatDate(new Date(r.last_error_date * 1000), CONFIG.ZONA, 'dd/MM HH:mm') + ')'
+    : 'tidak ada';
+  kirim_('🔎 <b>Cek webhook</b>\nURL: ' + esc_(r.url || '(kosong)') +
+    '\nPesan tertahan: ' + (r.pending_update_count || 0) +
+    '\nError terakhir: ' + esc_(err) +
+    '\nURL Web app: ' + esc_(ScriptApp.getService().getUrl() || '-'));
 }

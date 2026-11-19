@@ -10,6 +10,7 @@ Jenis konten (kolom `jenis` di sheet):
   python src/main.py prepare   -> proses tombol Telegram, kirim pratinjau, siapkan antrian tayang
   python src/main.py publish   -> posting antrian ke Instagram / Facebook
   python src/main.py tes       -> tes koneksi Telegram & sheet
+  python src/main.py contoh    -> kirim contoh poster (1 story + 1 feed terdekat) ke Telegram, tanpa posting
 """
 import html, json, os, pathlib, sys, traceback
 from datetime import datetime, timedelta
@@ -319,6 +320,36 @@ def tes():
         r.raise_for_status()
 
 
+def contoh():
+    """Kirim contoh poster ke Telegram: story katalog & feed terdekat. Tidak mengubah status, tidak memposting."""
+    import images, render
+    rows, _ = baca_sheet()
+    now = datetime.now(TZ)
+    nanti = sorted([r for r in rows if r["waktu"] >= now and not r["tunda"]], key=lambda r: r["waktu"])
+    pilih = []
+    for f in ("story", "konten"):
+        r = next((r for r in nanti if r["format"] == f), None)
+        if r: pilih.append(r)
+    if not pilih:
+        notify.pesan("🧪 Belum ada jadwal mendatang untuk dibuatkan contoh poster."); return
+    WORK.mkdir(exist_ok=True)
+    for p in pilih:
+        try:
+            img = None
+            if p["format"] == "story" or p["gambar"]:
+                img = WORK / f"contoh-{p['id']}.png"
+                images.siapkan(p, None, str(img))
+            out = WORK / f"contoh-{p['id']}.jpg"
+            render.render(p, str(img) if img else None, str(out))
+            caption = p["caption"] or config.caption_otomatis(p)
+            notify.foto(str(out), html.escape(caption))
+            notify.pesan(f"🧪 <b>CONTOH</b> (tidak diposting): {html.escape(p['nama'])}\n"
+                         f"Rencana tayang di {tempat(p)}: {fmt(p['waktu'])} (baris {p['baris']})")
+        except Exception as e:
+            traceback.print_exc()
+            notify.pesan(f"⚠️ Contoh poster <b>{html.escape(p['nama'])}</b> gagal dibuat: {html.escape(str(e))[:300]}")
+
+
 def jalan():
     """Mode laptop (Task Scheduler): cek, lalu kerjakan kalau perlu."""
     if cek():
@@ -327,4 +358,4 @@ def jalan():
 
 
 if __name__ == "__main__":
-    {"cek": cek, "prepare": prepare, "publish": publish, "jalan": jalan, "tes": tes}[sys.argv[1]]()
+    {"cek": cek, "prepare": prepare, "publish": publish, "jalan": jalan, "tes": tes, "contoh": contoh}[sys.argv[1]]()

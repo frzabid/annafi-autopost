@@ -9,6 +9,10 @@ on:
         description: "Hanya tes koneksi Telegram & cek pengaturan"
         type: boolean
         default: false
+      contoh:
+        description: "Kirim contoh poster (1 story + 1 feed terdekat) ke Telegram, tanpa posting"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -47,9 +51,16 @@ jobs:
           pip install -q requests
           python src/main.py tes
 
+      - name: Contoh poster
+        if: inputs.contoh
+        run: |
+          pip install -q -r requirements.txt
+          python -m playwright install --with-deps chromium
+          python src/main.py contoh
+
       - name: Cek ringan
         id: cek
-        if: ${{ !inputs.tes }}
+        if: ${{ !inputs.tes && !inputs.contoh }}
         run: |
           pip install -q requests
           python src/main.py cek
