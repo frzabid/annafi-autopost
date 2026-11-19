@@ -119,3 +119,25 @@ def load(url_or_path: str):
         return parse(resp.text)
     with open(url_or_path, encoding="utf-8") as f:
         return parse(f.read())
+
+
+def load_persetujuan(url: str):
+    """Baca tab 'Persetujuan' (diisi Manajer AI di Apps Script saat tombol ✅/❌ ditekan).
+    Kembalikan daftar (id, hash, aksi) urut waktu. Kosong kalau tab belum ada."""
+    m = re.search(r"docs\.google\.com/spreadsheets/d/([\w-]+)", url or "")
+    if not m or m[1] == "e":
+        return []
+    try:
+        r = requests.get(f"https://docs.google.com/spreadsheets/d/{m[1]}/gviz/tq",
+                         params={"tqx": "out:csv", "sheet": "Persetujuan"}, timeout=30)
+        r.raise_for_status()
+        r.encoding = "utf-8"
+    except Exception as e:
+        print(f"  tab Persetujuan tidak terbaca: {e}")
+        return []
+    hasil = []
+    for row in csv.DictReader(io.StringIO(r.text)):
+        row = {(k or "").strip().lower(): (v or "").strip() for k, v in row.items()}
+        if row.get("id") and row.get("hash") and row.get("aksi") in ("setuju", "batal"):
+            hasil.append((row["id"], row["hash"], row["aksi"]))
+    return hasil

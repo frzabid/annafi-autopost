@@ -67,7 +67,22 @@ def aktif(p, st):
 
 
 # ---------------------------------------------------------------- tombol Telegram
+def terapkan_persetujuan(s, daftar):
+    """Terapkan keputusan dari tab Persetujuan (Manajer AI). Kembalikan jumlah perubahan."""
+    berubah = 0
+    for pid, h, aksi in daftar:
+        st = s["produk"].get(pid)
+        if not st or st.get("hash") != h or st.get("status") in SELESAI:
+            continue  # pratinjau lama (isi sudah berubah) atau sudah selesai
+        if aksi == "setuju" and st.get("setuju_hash") != h:
+            st.update(setuju_hash=h, status="disetujui"); berubah += 1
+        elif aksi == "batal" and st.get("status") != "dibatalkan":
+            st.update(status="dibatalkan"); st.pop("setuju_hash", None); berubah += 1
+    return berubah
+
+
 def proses_tombol(s):
+    terapkan_persetujuan(s, sheet.load_persetujuan(config.SHEET_CSV_URL))
     hasil, s["tg_offset"] = notify.ambil_tombol(s.get("tg_offset", 0))
     for data, cq in hasil:
         try:
@@ -254,6 +269,8 @@ def cek(now=None):
     perlu = any(e not in s["error_terkirim"] for e in errors)
     tombol, _ = notify.ambil_tombol(s.get("tg_offset", 0))  # hanya mengintip, belum dikonfirmasi
     perlu = perlu or bool(tombol)
+    salinan = json.loads(json.dumps(s))
+    perlu = perlu or terapkan_persetujuan(salinan, sheet.load_persetujuan(config.SHEET_CSV_URL)) > 0
     for p in rows:
         st = s["produk"].get(p["id"], {})
         if not aktif(p, st) or now < mulai_pratinjau(p):

@@ -22,6 +22,33 @@ Google Sheet ──► GitHub Actions (tiap 15 menit)
 
 ---
 
+## Manajer AI & perencana mingguan (Google Apps Script + Gemini)
+
+File: `apps-script/Code.gs`. Berjalan di dalam Google Sheet, gratis, merespons Telegram dalam hitungan detik.
+
+- **Chat bebas ke bot** → Gemini mengubah jadi aksi di tab Jadwal/Produk (tambah, ubah, tunda — tidak pernah menghapus).
+- **Tiap Minggu 17.00** → rencana konten minggu depan (story katalog dari tab Produk + 3 feed) ditulis ke tab Jadwal,
+  ringkasannya dikirim ke Telegram. Ketik `/rencana` untuk membuat kapan saja.
+- **Tombol ✅/❌** dicatat ke tab `Persetujuan`; sistem GitHub membacanya di pengecekan berikutnya.
+- Pengaman: harga hanya dari tab Produk atau angka yang kamu ketik sendiri; orang lain yang chat ke bot diabaikan.
+
+### Pemasangan (sekali, ±10 menit, paling nyaman dari laptop)
+1. **API key Gemini**: buka aistudio.google.com → *Get API key* → *Create API key* → salin.
+2. Buka Google Sheet jadwal → **Ekstensi → Apps Script**. Hapus isi editor, tempel seluruh `Code.gs`.
+3. Isi 3 baris paling atas: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`, `GEMINI_API_KEY` → simpan (Ctrl+S).
+4. **Deploy → New deployment** → ikon ⚙️ *Select type* → **Web app**.
+   *Execute as*: **Me**, *Who has access*: **Anyone** → **Deploy** → izinkan akses
+   (pilih akunmu → *Advanced* → *Go to … (unsafe)* → *Allow*; ini script milikmu sendiri).
+5. Di editor pilih fungsi **`setup`** → **Run**. Script membuat tab Produk, Kalender, Persetujuan,
+   menambah kolom `jenis`/`poin` ke Jadwal, memasang jadwal Minggu 17.00, dan menghubungkan bot.
+   Bot akan mengirim "🤖 Manajer AI Annafi aktif!".
+6. Isi tab **Produk** (nama, kategori, harga) dan cek tab **Kalender** (isi tanggal Ramadan/Idul Fitri sendiri).
+
+Tab **Jadwal harus tetap paling kiri** (sistem GitHub membaca tab pertama).
+Kalau kode diubah: **Deploy → Manage deployments → ✏️ → Version: New version → Deploy**.
+
+---
+
 ## Mode laptop (Windows) — tanpa GitHub
 
 Jalan lewat Task Scheduler tiap 15 menit. **Laptop harus menyala, tidak sleep, dan terhubung internet**

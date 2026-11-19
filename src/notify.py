@@ -37,6 +37,8 @@ def ambil_tombol(offset: int):
         return [], offset
     r = requests.get(f"{API}/getUpdates", timeout=30,
                      params={"offset": offset, "timeout": 0, "allowed_updates": '["callback_query"]'})
+    if r.status_code == 409:  # webhook Manajer AI aktif -> persetujuan dibaca dari tab Persetujuan
+        return [], offset
     r.raise_for_status()
     hasil, baru = [], offset
     for u in r.json().get("result", []):
