@@ -395,14 +395,18 @@ function ringkasJadwal_(nHari) {
 // ============================== GEMINI ==============================
 function gemini_(prompt) {
   const model = [CONFIG.GEMINI_MODEL, CONFIG.GEMINI_MODEL_CADANGAN];
+  const body = JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }],
+    generationConfig: { responseMimeType: 'application/json', temperature: 0.7 } });
   let terakhir = '';
   for (let i = 0; i < model.length; i++) {
-    const r = UrlFetchApp.fetch('https://generativelanguage.googleapis.com/v1beta/models/' + model[i] + ':generateContent', {
-      method: 'post', contentType: 'application/json', muteHttpExceptions: true,
-      headers: { 'x-goog-api-key': CONFIG.GEMINI_API_KEY },
-      payload: JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }],
-        generationConfig: { responseMimeType: 'application/json', temperature: 0.7 } }),
-    });
+    const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model[i] + ':generateContent';
+    // Key format baru "AQ." maupun lama "AIza": kirim lewat header; kalau ditolak (401/403) coba lewat parameter ?key=
+    let r = UrlFetchApp.fetch(url, { method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+      headers: { 'x-goog-api-key': CONFIG.GEMINI_API_KEY }, payload: body });
+    if (r.getResponseCode() === 401 || r.getResponseCode() === 403) {
+      r = UrlFetchApp.fetch(url + '?key=' + encodeURIComponent(CONFIG.GEMINI_API_KEY),
+        { method: 'post', contentType: 'application/json', muteHttpExceptions: true, payload: body });
+    }
     const kode = r.getResponseCode();
     if (kode === 200) {
       const j = JSON.parse(r.getContentText());
@@ -414,6 +418,14 @@ function gemini_(prompt) {
     if (kode !== 429 && kode !== 404 && kode < 500) break;  // kuota habis / model tidak ada → coba cadangan
   }
   throw new Error('Gemini gagal (' + terakhir + ')');
+}
+
+/** Jalankan dari editor untuk mengetes API key Gemini (hasilnya dikirim ke Telegram). */
+function tesGemini() {
+  try {
+    const h = gemini_('Balas JSON {"pesan": "halo"} dalam bahasa Indonesia, sapa pemilik toko ATK.');
+    kirim_('✅ Gemini terhubung: ' + esc_(h.pesan || JSON.stringify(h)));
+  } catch (e) { kirim_('❌ ' + esc_(e.message)); throw e; }
 }
 
 // ============================== SHEET ==============================
