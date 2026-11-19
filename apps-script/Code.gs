@@ -147,7 +147,8 @@ function tanganiPesan_(m) {
 
 // ============================== MANAJER AI ==============================
 function manajer_(instruksi) {
-  const produk = bacaTabel_(TAB_PRODUK).rows.filter(p => p.nama && !/^(tidak|no|0)$/i.test(p.aktif || ''));
+  const semuaProduk = bacaTabel_(TAB_PRODUK).rows.filter(p => p.nama);
+  const produk = produkRelevan_(semuaProduk, instruksi, 60);
   const jadwal = bacaTabel_(TAB_JADWAL).rows;
   const hariIni = new Date();
   const dekat = jadwal.filter(r => {
@@ -170,7 +171,8 @@ function manajer_(instruksi) {
     '- Kalau instruksi kurang jelas atau tidak bisa dilakukan, jangan buat aksi; tanyakan di "balasan".',
     '- "balasan": bahasa Indonesia santai, singkat, jelaskan apa yang kamu lakukan.',
     '',
-    'PRODUK: ' + JSON.stringify(produk.map(p => ({ baris: p._row, nama: p.nama, kategori: p.kategori,
+    'KATEGORI PRODUK: ' + JSON.stringify(uniq_(semuaProduk.map(p => p.kategori))),
+    'PRODUK yang relevan dengan instruksi (sebagian dari ' + semuaProduk.length + '): ' + JSON.stringify(produk.map(p => ({ baris: p._row, nama: p.nama, kategori: p.kategori,
       harga: [p.label_harga_1, p.harga_1, p.label_harga_2, p.harga_2].filter(String).join(' ') }))),
     'JADWAL (7 hari lalu s/d 3 minggu ke depan): ' + JSON.stringify(dekat.map(r => ({ baris: r._row,
       tanggal: r.tanggal, jam: r.jam, jenis: r.jenis || 'katalog', nama: r.nama, tunda: r.tunda }))),
@@ -187,10 +189,36 @@ function manajer_(instruksi) {
   const hasil = gemini_(prompt);
   const laporan = [];
   (hasil.aksi || []).slice(0, 15).forEach(a => {
-    try { laporan.push(jalankanAksi_(a, instruksi, produk)); }
+    try { laporan.push(jalankanAksi_(a, instruksi, semuaProduk)); }
     catch (err) { laporan.push('⚠️ ' + esc_(err.message)); }
   });
   return esc_(hasil.balasan || 'Oke.') + (laporan.length ? '\n\n' + laporan.join('\n') : '');
+}
+
+/** Pilih produk yang kata-katanya muncul di instruksi (hemat kuota Gemini untuk daftar produk yang panjang). */
+function produkRelevan_(produk, instruksi, maks) {
+  const kata = uniq_(String(instruksi).toLowerCase().match(/[a-z0-9]{3,}/g) || [])
+    .filter(k => ['yang', 'dan', 'untuk', 'jam', 'besok', 'hari', 'story', 'buat', 'jadwalkan', 'ganti', 'harga', 'tolong', 'dengan'].indexOf(k) < 0);
+  return produk.map(p => {
+    const n = (p.nama + ' ' + (p.kategori || '')).toLowerCase();
+    return { p: p, skor: kata.reduce((s, k) => s + (n.indexOf(k) >= 0 ? (/\d/.test(k) ? 3 : 1) : 0), 0) };
+  }).filter(x => x.skor > 0).sort((a, b) => b.skor - a.skor).slice(0, maks).map(x => x.p);
+}
+
+function uniq_(arr) { return arr.filter((x, i) => x && arr.indexOf(x) === i); }
+
+/** Ambil sampel produk aktif per kategori supaya prompt perencana tetap ringkas. */
+function sampelProduk_(produk, perKategori, hindari) {
+  const grup = {};
+  produk.forEach(p => { (grup[p.kategori || 'LAINNYA'] = grup[p.kategori || 'LAINNYA'] || []).push(p); });
+  const out = [];
+  Object.keys(grup).forEach(k => {
+    const segar = grup[k].filter(p => hindari.indexOf(p.nama) < 0);
+    const pool = (segar.length ? segar : grup[k]).slice();
+    for (let i = pool.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = pool[i]; pool[i] = pool[j]; pool[j] = t; }
+    out.push.apply(out, pool.slice(0, perKategori));
+  });
+  return out;
 }
 
 function jalankanAksi_(a, instruksi, produk) {
@@ -244,6 +272,7 @@ function barisKonten_(d, produk) {
   if (cari) {
     const p = cariProduk_(produk, cari);
     if (!p) throw new Error('Produk "' + cari + '" tidak ada di tab Produk.');
+    if (!p.harga_1) throw new Error('Produk "' + p.nama + '" belum punya harga di tab Produk.');
     ['label_harga_1', 'harga_1', 'label_harga_2', 'harga_2'].forEach(k => baris[k] = p[k] || '');
     if (jenis === 'katalog') {
       baris.nama = p.nama; baris.kategori = (p.kategori || baris.kategori).toUpperCase();
@@ -310,7 +339,7 @@ function buatRencanaMingguan_(paksa) {
     '   Jangan ulang tema yang ada di RIWAYAT. Bahasa Indonesia santai, cocok untuk toko ATK lokal.',
     '3. "ringkasan": 1-2 kalimat strategi minggu ini.',
     '',
-    'PRODUK: ' + JSON.stringify(produk.map(p => ({ nama: p.nama, kategori: p.kategori }))),
+    'PRODUK (pilihan acak per kategori): ' + JSON.stringify(sampelProduk_(produk, 8, riwayat.map(r => r.nama)).map(p => ({ nama: p.nama, kategori: p.kategori }))),
     'KALENDER (dd/MM tiap tahun): ' + JSON.stringify(kalender),
     'RIWAYAT 4 minggu: ' + JSON.stringify(riwayat.map(r => [r.tanggal, r.jenis || 'katalog', r.nama])),
     'SUDAH TERJADWAL minggu ini (jangan duplikat, cukup lengkapi): ' + JSON.stringify(sudahAda.map(r => [r.tanggal, r.jenis || 'katalog', r.nama])),
