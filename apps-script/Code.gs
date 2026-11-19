@@ -280,7 +280,14 @@ function barisKonten_(d, produk) {
     if (jenis === 'katalog') {
       baris.nama = p.nama; baris.kategori = (p.kategori || baris.kategori).toUpperCase();
       baris.detail = p.detail || baris.detail; baris.gambar = p.gambar || '';
+    } else {
+      // feed: harga harus jelas milik produk apa, dan fotonya foto produk itu
+      const lbl = String(p.label_harga_1 || '').trim();
+      baris.label_harga_1 = p.nama + (lbl && !/^harga$/i.test(lbl) ? ' · ' + lbl : '');
+      baris.gambar = p.gambar || ('cari: ' + p.nama);
     }
+  } else if (jenis !== 'katalog' && /^cari$/i.test(String(baris.gambar).trim())) {
+    baris.gambar = '';  // judul feed bukan kata kunci foto yang bisa diandalkan
   }
   if (!baris.nama) throw new Error('Judul/nama kosong.');
   if (jenis !== 'katalog' && !baris.poin && !baris.harga_1) throw new Error('Konten "' + baris.nama + '" belum punya poin.');
@@ -337,8 +344,8 @@ function buatRencanaMingguan_(paksa) {
     '2. "feed": 3 postingan pada ' + hariFeed.join(', ') + ' (boleh geser 1 hari kalau ada momen di KALENDER).',
     '   Campuran: 1 edukasi, 1 promo, 1 info atau momen. Momen dijadwalkan SEBELUM/TEPAT di harinya, promo momen 2-3 hari sebelumnya.',
     '   Tiap feed: jenis, tanggal (dd/MM/yyyy), nama (judul maks 6 kata), detail (1 kalimat), poin (3-4 poin singkat,',
-    '   boleh format "Judul: isi"), gambar ("" atau "cari"), produk_harga (opsional: nama PERSIS dari PRODUK kalau promo',
-    '   menampilkan harga produk itu; JANGAN mengarang harga atau harga paket).',
+    '   boleh format "Judul: isi"), gambar (selalu ""), produk_harga (opsional: nama PERSIS dari PRODUK kalau promo',
+    '   menampilkan harga & foto produk itu; JANGAN mengarang harga atau harga paket).',
     '   Jangan ulang tema yang ada di RIWAYAT. Bahasa Indonesia santai, cocok untuk toko ATK lokal.',
     '3. "ringkasan": 1-2 kalimat strategi minggu ini.',
     '',

@@ -104,18 +104,28 @@ def proses_tombol(s):
 
 
 # ---------------------------------------------------------------- poster & pratinjau
+def pakai_gambar(p):
+    """Story katalog selalu mencari foto produk. Feed: hanya kalau kolom gambar berisi link atau "cari: nama produk"
+    (judul seperti "Spesial Kado Hari Guru" bukan kata kunci foto yang bisa diandalkan)."""
+    g = (p["gambar"] or "").strip().lower()
+    return p["format"] == "story" or (bool(g) and g != "cari")
+
+
 def buat_poster(p, st):
     """Siapkan gambar + render poster. Nama file memuat hash isi supaya tidak kena cache lama."""
     import images, render  # impor berat hanya saat perlu
     WORK.mkdir(exist_ok=True); POSTERS.mkdir(exist_ok=True)
-    pakai_gambar = p["format"] == "story" or bool(p["gambar"])  # konten feed: gambar opsional
     img, sumber = None, ""
-    if pakai_gambar:
+    if pakai_gambar(p):
         img = WORK / f"{p['id']}.png"
-        dari_sheet = bool(p["gambar"]) and p["gambar"].lower() != "cari"
+        dari_sheet = bool(p["gambar"]) and not p["gambar"].lower().startswith("cari")
         # gambar hasil cari otomatis dipakai ulang (supaya sama dengan pratinjau), kecuali sheet memberi link
         url_simpan = None if dari_sheet or st.get("dari_sheet") else st.get("sumber_gambar")
-        sumber = images.siapkan(p, url_simpan, str(img))
+        try:
+            sumber = images.siapkan(p, url_simpan, str(img))
+        except images.GambarTidakKetemu as e:  # lebih baik tanpa foto daripada foto yang salah
+            print(f"  {e} -> poster tanpa foto")
+            img, sumber = None, ""
         st["dari_sheet"] = dari_sheet
     poster = POSTERS / f"{p['id']}-{p['hash_isi']}.jpg"
     render.render(p, str(img) if img else None, str(poster))
@@ -128,12 +138,15 @@ def buat_poster(p, st):
 def kirim_pratinjau(p, st, poster, diperbarui):
     caption = p["caption"] or config.caption_otomatis(p)
     jam = fmt(p["waktu"]) + (" (jam ramai otomatis)" if p["jam_otomatis"] else "")
-    if not p["gambar"] and p["format"] == "story":
-        sumber = f'<a href="{st["sumber_gambar"]}">cari otomatis</a>'
-    elif p["gambar"]:
-        sumber = "cari otomatis" if p["gambar"].lower() == "cari" else "link dari sheet"
+    if pakai_gambar(p) and not st.get("sumber_gambar"):
+        sumber = ("⚠️ foto yang cocok tidak ketemu, poster dibuat tanpa foto. Mau pakai foto? "
+                  "Isi kolom <i>gambar</i> dengan link foto produk.")
+    elif pakai_gambar(p) and not st.get("dari_sheet"):
+        sumber = f'<a href="{st["sumber_gambar"]}">cari otomatis</a> (salah? isi kolom <i>gambar</i> dengan link foto)'
+    elif pakai_gambar(p):
+        sumber = "link dari sheet"
     else:
-        sumber = "tanpa gambar"
+        sumber = "tanpa foto"
     # 1) poster + caption persis seperti yang akan tayang -> siap diteruskan ke Saluran/Status WA
     notify.foto(str(poster), html.escape(caption))
     judul = "🔄 Pratinjau diperbarui" if diperbarui else "👀 Pratinjau"
@@ -335,16 +348,19 @@ def contoh():
     WORK.mkdir(exist_ok=True)
     for p in pilih:
         try:
-            img = None
-            if p["format"] == "story" or p["gambar"]:
+            img, catatan = None, ""
+            if pakai_gambar(p):
                 img = WORK / f"contoh-{p['id']}.png"
-                images.siapkan(p, None, str(img))
+                try:
+                    catatan = "Foto: " + images.siapkan(p, None, str(img))[:150]
+                except images.GambarTidakKetemu as e:
+                    img, catatan = None, f"⚠️ {e} Poster dibuat tanpa foto."
             out = WORK / f"contoh-{p['id']}.jpg"
             render.render(p, str(img) if img else None, str(out))
             caption = p["caption"] or config.caption_otomatis(p)
             notify.foto(str(out), html.escape(caption))
             notify.pesan(f"🧪 <b>CONTOH</b> (tidak diposting): {html.escape(p['nama'])}\n"
-                         f"Rencana tayang di {tempat(p)}: {fmt(p['waktu'])} (baris {p['baris']})")
+                         f"Rencana tayang di {tempat(p)}: {fmt(p['waktu'])} (baris {p['baris']})\n{html.escape(catatan)}")
         except Exception as e:
             traceback.print_exc()
             notify.pesan(f"⚠️ Contoh poster <b>{html.escape(p['nama'])}</b> gagal dibuat: {html.escape(str(e))[:300]}")

@@ -23,24 +23,51 @@ def download(url: str) -> Image.Image:
     return im.convert("RGBA")
 
 
-def cari_kandidat(query: str, n: int = 10) -> list[str]:
-    urls = []
+def cari_kandidat(query: str, n: int = 20) -> list[dict]:
+    """Kandidat gambar: {image, teks} — teks = judul + alamat halaman sumber, untuk cek kecocokan."""
+    hasil = []
     try:
         from ddgs import DDGS
-        hasil = DDGS().images(query, region="id-id", safesearch="moderate", max_results=n)
-        urls = [h["image"] for h in hasil if h.get("image")]
+        for h in DDGS().images(query, region="id-id", safesearch="moderate", max_results=n):
+            if h.get("image"):
+                hasil.append({"image": h["image"], "teks": f"{h.get('title', '')} {h.get('url', '')} {h['image']}"})
     except Exception as e:  # dibatasi / gagal -> coba Serper
         print(f"  DuckDuckGo gagal: {e}")
-    if len(urls) < 3 and SERPER_API_KEY:
+    if SERPER_API_KEY and len([h for h in hasil if cocok(query, h["teks"])]) < 2:
         try:
             r = requests.post("https://google.serper.dev/images", timeout=20,
                               headers={"X-API-KEY": SERPER_API_KEY, "Content-Type": "application/json"},
                               json={"q": query, "gl": "id", "hl": "id", "num": n})
             r.raise_for_status()
-            urls += [h["imageUrl"] for h in r.json().get("images", []) if h.get("imageUrl")]
+            hasil += [{"image": h["imageUrl"], "teks": f"{h.get('title', '')} {h.get('link', '')} {h['imageUrl']}"}
+                      for h in r.json().get("images", []) if h.get("imageUrl")]
         except Exception as e:
             print(f"  Serper gagal: {e}")
-    return urls
+    return hasil
+
+
+_UMUM = {"dan", "isi", "pcs", "pack", "warna", "untuk", "dengan", "the", "per", "box", "lusin"}
+SINONIM = {"pensil": ("pencil",), "bolpen": ("pen", "pulpen", "ballpoint"), "pulpen": ("pen", "bolpen", "ballpoint"),
+           "spidol": ("marker",), "buku": ("book",), "penghapus": ("eraser",), "penggaris": ("ruler",),
+           "gunting": ("scissors",), "lem": ("glue",), "kertas": ("paper",), "tas": ("bag",), "kotak": ("box",)}
+TOKO_ONLINE = ("tokopedia", "shopee", "blibli", "bukalapak", "lazada", "joyko", "kenko", "snowman", "faber",
+               "standard", "deli", "atk", "stationery", "alattulis", "gramedia")
+
+
+def cocok(nama: str, teks: str) -> bool:
+    """Gambar dianggap cocok kalau judul/alamat sumbernya memuat kode model (angka) dan sebagian besar kata nama produk."""
+    t_rapat = re.sub(r"[^a-z0-9]", "", teks.lower())
+    t_kata = set(re.findall(r"[a-z0-9]+", teks.lower()))
+    token = re.findall(r"[a-z0-9]+", nama.lower())
+    kode = [k for k in token if re.search(r"\d", k) and len(k) >= 3]
+    if any(k not in t_rapat for k in kode):
+        return False
+    kata = [k for k in token if k.isalpha() and len(k) >= 3 and k not in _UMUM]
+    if not kata:
+        return bool(kode)
+    kena = sum(1 for k in kata if any(s in t_kata for s in (k, *SINONIM.get(k, ()))))
+    perlu = -(-len(kata) // 2) if kode else -(-len(kata) * 2 // 3)  # ada kode model: 1/2 kata cukup; tanpa kode: 2/3
+    return kena >= max(1, perlu)
 
 
 def _skor_latar_putih(im: Image.Image) -> float:
@@ -51,9 +78,12 @@ def _skor_latar_putih(im: Image.Image) -> float:
     return float((tepi.min(axis=1) > 235).mean())
 
 
-def pilih_terbaik(urls: list[str], maks_coba: int = 8):
+def pilih_terbaik(kandidat: list[dict], nama: str, maks_coba: int = 8):
+    """Hanya kandidat yang cocok dengan nama produk; foto latar putih dari toko online diutamakan."""
+    cocok_ = [k for k in kandidat if cocok(nama, k["teks"])]
     terbaik = None
-    for url in urls[:maks_coba]:
+    for k in cocok_[:maks_coba]:
+        url = k["image"]
         try:
             im = download(url)
         except Exception:
@@ -61,7 +91,8 @@ def pilih_terbaik(urls: list[str], maks_coba: int = 8):
         w, h = im.size
         if min(w, h) < 350:
             continue
-        skor = _skor_latar_putih(im) * 2 + min(w * h, 1200 * 1200) / (1200 * 1200)
+        skor = (_skor_latar_putih(im) * 2 + min(w * h, 1200 * 1200) / (1200 * 1200)
+                + (0.5 if any(t in k["teks"].lower() for t in TOKO_ONLINE) else 0))
         if not terbaik or skor > terbaik[0]:
             terbaik = (skor, url, im)
     return (terbaik[1], terbaik[2]) if terbaik else (None, None)
@@ -98,16 +129,24 @@ def _buang_bagian_kecil(im: Image.Image, rasio: float = 0.08) -> Image.Image:
     return Image.fromarray(a)
 
 
+class GambarTidakKetemu(RuntimeError):
+    pass
+
+
 def siapkan(p: dict, url_tersimpan: str | None, path_out: str) -> str:
-    """Kembalikan URL sumber gambar yang dipakai; gambar bersih disimpan ke path_out."""
-    if p["gambar"] and p["gambar"].lower() != "cari":
-        url, im = p["gambar"], download(p["gambar"])
+    """Kembalikan URL sumber gambar yang dipakai; gambar bersih disimpan ke path_out.
+    Kolom gambar: link langsung, "cari" (pakai nama produk), atau "cari: kata kunci"."""
+    g = (p["gambar"] or "").strip()
+    if g and not g.lower().startswith("cari"):
+        url, im = g, download(g)
     elif url_tersimpan:  # pakai gambar yang sama dengan saat pratinjau
         url, im = url_tersimpan, download(url_tersimpan)
     else:
-        q = p["nama"] if len(p["nama"].split()) > 2 else f"{p['nama']} {p['kategori']}"
-        url, im = pilih_terbaik(cari_kandidat(q))
+        nama = g.split(":", 1)[1].strip() if ":" in g else p["nama"]
+        kat = p.get("kategori", "")
+        q = nama if kat.lower() in nama.lower() else f"{nama} {kat.lower()}"
+        url, im = pilih_terbaik(cari_kandidat(q), nama)
         if not im:
-            raise RuntimeError(f"Gambar untuk '{p['nama']}' tidak ditemukan. Isi kolom gambar di sheet.")
+            raise GambarTidakKetemu(f"Foto yang cocok untuk '{nama}' tidak ketemu.")
     bersihkan(im).save(path_out)
     return url
