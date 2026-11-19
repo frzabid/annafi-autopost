@@ -207,10 +207,59 @@ def kirim_pratinjau(p, st, poster, diperbarui):
         st["status"] = "pratinjau"
 
 
+def proses_permintaan(s):
+    """Contoh poster yang diminta lewat chat bot (tab Permintaan) -> render -> kirim ke Telegram. Tidak memposting."""
+    if not config.SHEET_CSV_URL:
+        return
+    selesai = s.setdefault("permintaan", [])
+    for pid, data in sheet.load_permintaan(config.SHEET_CSV_URL):
+        if pid in selesai:
+            continue
+        selesai.append(pid)
+        del selesai[:-200]
+        save_state(s)  # tandai dulu supaya tidak diulang kalau render gagal
+        p, err = sheet.baris_dari_dict(data, config.SHEET_CSV_URL)
+        if not p:
+            notify.pesan(f"⚠️ Contoh <b>{html.escape(data.get('nama', '?'))}</b> tidak bisa dibuat: {html.escape('; '.join(err))[:300]}")
+            continue
+        try:
+            kirim_contoh(p, judul="🎨 <b>CONTOH SESUAI PERMINTAAN</b> (tidak diposting)",
+                         penutup="Mau dijadwalkan? Balas misalnya: <i>jadwalkan yang tadi hari Sabtu jam 7 malam</i>.")
+        except Exception as e:
+            traceback.print_exc()
+            notify.pesan(f"⚠️ Contoh <b>{html.escape(p['nama'])}</b> gagal dibuat: {html.escape(str(e))[:300]}")
+
+
+def kirim_contoh(p, judul, penutup=""):
+    """Render poster/carousel ke folder kerja dan kirim ke Telegram (tanpa mengubah status jadwal)."""
+    import images, render
+    WORK.mkdir(exist_ok=True)
+    caption = p["caption"] or config.caption_otomatis(p)
+    if pakai_carousel(p):
+        import carousel, tema
+        slides = carousel.render(p, str(WORK / f"contoh-{p['id']}"), foto_kolase(p, f"contoh-{p['id']}"))
+        notify.album(slides, html.escape(caption))
+        info = (f"{len(slides)} slide · tema <b>{tema.TEMA[tema.pilih(p)]['nama']}</b>"
+                + (f" · {len(p['foto_produk'])} foto produk" if p.get("foto_produk") else ""))
+    else:
+        img, info = None, ""
+        if pakai_gambar(p):
+            img = WORK / f"contoh-{p['id']}.png"
+            try:
+                info = "Foto: " + html.escape(images.siapkan(p, None, str(img))[:150])
+            except images.GambarTidakKetemu as e:
+                img, info = None, f"⚠️ {html.escape(str(e))} Poster dibuat tanpa foto."
+        out = WORK / f"contoh-{p['id']}.jpg"
+        render.render(p, str(img) if img else None, str(out))
+        notify.foto(str(out), html.escape(caption))
+    notify.pesan(f"{judul}: {html.escape(p['nama'])}\n{info}" + (f"\n{penutup}" if penutup else ""))
+
+
 def prepare(now=None):
     now = now or datetime.now(TZ)
     s = load_state()
     proses_tombol(s)
+    proses_permintaan(s)
     rows, errors = baca_sheet()
     for e in errors:
         if e not in s["error_terkirim"]:
@@ -348,6 +397,8 @@ def cek(now=None):
     perlu = perlu or bool(tombol)
     salinan = json.loads(json.dumps(s))
     perlu = perlu or terapkan_persetujuan(salinan, sheet.load_persetujuan(config.SHEET_CSV_URL)) > 0
+    if config.SHEET_CSV_URL:  # contoh poster yang diminta lewat chat bot
+        perlu = perlu or any(pid not in s.get("permintaan", []) for pid, _ in sheet.load_permintaan(config.SHEET_CSV_URL))
     for p in rows:
         st = s["produk"].get(p["id"], {})
         if not aktif(p, st) or now < mulai_pratinjau(p):

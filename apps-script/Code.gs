@@ -18,6 +18,8 @@ const CONFIG = {
   TELEGRAM_CHAT_ID: 'ISI_CHAT_ID_TELEGRAM',
   GEMINI_API_KEY: 'ISI_API_KEY_GEMINI',
   WEB_APP_URL: '',   // opsional: alamat Web app berakhiran /exec (Deploy → Manage deployments → salin URL)
+  GITHUB_TOKEN: '',  // opsional: token GitHub (izin Actions) supaya contoh poster jadi ±3 menit; kosong = ±15 menit
+  GITHUB_REPO: 'frzabid/annafi-autopost',
 
   GEMINI_MODEL: 'gemini-flash-latest',            // ganti kalau Google mengubah nama model
   GEMINI_MODEL_CADANGAN: 'gemini-flash-lite-latest',
@@ -37,6 +39,8 @@ const CONFIG = {
 // ==============================================================================================
 
 const TAB_JADWAL = 'Jadwal', TAB_PRODUK = 'Produk', TAB_KALENDER = 'Kalender', TAB_SETUJU = 'Persetujuan';
+const TAB_MINTA = 'Permintaan';  // permintaan contoh poster dari chat, dikerjakan sistem GitHub
+const KOLOM_MINTA = ['waktu', 'id', 'data', 'status'];
 const KOLOM_JADWAL = ['tanggal', 'jam', 'jenis', 'nama', 'kategori', 'detail', 'poin', 'label_harga_1', 'harga_1',
   'label_harga_2', 'harga_2', 'gambar', 'caption', 'tunda', 'tema', 'produk'];
 // tema carousel feed (lihat src/tema.py di GitHub); kosong = ditebak otomatis dari judul
@@ -55,6 +59,7 @@ function setup() {
   ]);
   siapkanTab_(ss, TAB_KALENDER, ['tanggal', 'acara', 'catatan'], KALENDER_AWAL);
   siapkanTab_(ss, TAB_SETUJU, ['waktu', 'id', 'hash', 'aksi'], []);
+  siapkanTab_(ss, TAB_MINTA, KOLOM_MINTA, []);
   // tab Jadwal harus paling kiri (sistem GitHub membaca tab pertama)
   ss.setActiveSheet(ss.getSheetByName(TAB_JADWAL));
   ss.moveActiveSheet(1);
@@ -107,7 +112,9 @@ const BANTUAN = 'Ketik perintah biasa, contoh:\n' +
   '• <i>buat konten edukasi hari Jumat tentang cara memilih kertas</i>\n' +
   '• <i>undur post Hari Guru ke Senin jam 7 malam</i>\n' +
   '• <i>ganti harga satuan Joyko 6151 jadi 2500</i>\n' +
-  '• <i>tunda semua story hari Sabtu</i>\n\n' +
+  '• <i>tunda semua story hari Sabtu</i>\n' +
+  '• <i>buatkan contoh poster tips merawat pulpen</i> (contoh dikirim ke sini, tidak diposting)\n' +
+  '• atau ngobrol biasa: minta ide konten, caption, saran\n\n' +
   '📷 Kirim <b>foto produk</b> dengan caption = nama produk, atau unggah ke folder Drive "Foto Produk Annafi" dengan nama file = nama produk lalu kirim /foto.\n\n' +
   'Perintah cepat: /jadwal (7 hari ke depan) · /rencana (buat rencana minggu depan) · /bantuan';
 
@@ -271,9 +278,13 @@ function manajer_(instruksi) {
     return d && d >= tambahHari_(hariIni, -7) && d <= tambahHari_(hariIni, 21);
   });
   const prompt = [
-    'Kamu adalah manajer konten Instagram/Facebook untuk toko alat tulis "' + CONFIG.NAMA_TOKO + '".',
+    'Kamu asisten AI sekaligus manajer konten Instagram/Facebook untuk toko alat tulis "' + CONFIG.NAMA_TOKO + '" (Menganti, Gresik).',
     'Hari ini ' + fmtHari_(hariIni) + ' (' + fmtTgl_(hariIni) + '), zona WIB.',
-    'Tugasmu: terjemahkan instruksi pemilik toko menjadi aksi terhadap tab Jadwal / Produk.',
+    'Kamu mengobrol dengan pemilik toko lewat Telegram. Kalau ia bertanya, minta ide, caption, saran, atau sekadar ngobrol,',
+    'jawab langsung di "balasan" tanpa aksi (boleh topik umum juga). Kalau ia meminta perubahan jadwal/produk, buat aksi.',
+    'Kalau ia minta CONTOH poster/desain/story, buat aksi "contoh" lengkap dengan isi yang kamu tulis sendiri (tidak diposting).',
+    'Kalau ia ingin contoh terakhir dijadwalkan ("jadwalkan yang tadi", "pakai ini hari Sabtu"), buat aksi "jadwalkan_contoh".',
+    'CONTOH TERAKHIR: ' + (PropertiesService.getScriptProperties().getProperty('contohTerakhir') || 'belum ada'),
     '',
     'ATURAN:',
     (CONFIG.MODE_PROMO ? '- jenis hanya: katalog (story produk), edukasi, promo, info, momen (postingan feed).'
@@ -287,7 +298,10 @@ function manajer_(instruksi) {
     '- Feed tampil sebagai carousel bertema. Kolom "tema" (opsional) salah satu: ' + TEMA.join(', ') + '. Kolom "produk" (opsional) = nama produk dipisah ; untuk slide foto produk.',
     '- Tidak ada aksi hapus; untuk membatalkan pakai aksi "tunda".',
     '- Kalau instruksi kurang jelas atau tidak bisa dilakukan, jangan buat aksi; tanyakan di "balasan".',
-    '- "balasan": bahasa Indonesia santai, singkat, jelaskan apa yang kamu lakukan.',
+    '- "balasan": bahasa Indonesia santai dan ramah. Kalau ada aksi, jelaskan singkat apa yang kamu lakukan. Jawaban obrolan boleh',
+    '  lebih panjang bila perlu, tapi tetap ringkas (maks ~12 kalimat). Jangan pakai format Markdown (*, #); boleh emoji secukupnya.',
+    '- Aksi "contoh": data.format "feed" (carousel: jenis, nama judul maks 6 kata, detail 1 kalimat, poin 3-4 "Judul: isi",',
+    '  tema, produk opsional) atau "story" (nama PERSIS dari PRODUK; harga diisi sistem).',
     '',
     'KATEGORI PRODUK: ' + JSON.stringify(uniq_(semuaProduk.map(p => p.kategori))),
     'PRODUK yang relevan dengan instruksi (sebagian dari ' + semuaProduk.length + '): ' + JSON.stringify(produk.map(p => ({ baris: p._row, nama: p.nama, kategori: p.kategori,
@@ -295,12 +309,15 @@ function manajer_(instruksi) {
     'JADWAL (7 hari lalu s/d 3 minggu ke depan): ' + JSON.stringify(dekat.map(r => ({ baris: r._row,
       tanggal: r.tanggal, jam: r.jam, jenis: r.jenis || 'katalog', nama: r.nama, tunda: r.tunda }))),
     '',
-    'INSTRUKSI PEMILIK: """' + instruksi + '"""',
+    'PERCAKAPAN SEBELUMNYA (lama → baru): ' + JSON.stringify(riwayatChat_()),
+    '',
+    'PESAN PEMILIK SEKARANG: """' + instruksi + '"""',
     '',
     'Jawab HANYA JSON: {"balasan": string, "aksi": [ ' +
       '{"tipe":"tambah","data":{tanggal,jam,jenis,nama,kategori,detail,poin,gambar,caption,tema,produk,produk_harga}} | ' +
       '{"tipe":"ubah","baris":n,"data":{kolom: nilai}} | {"tipe":"tunda","baris":n} | ' +
-      '{"tipe":"ubah_produk","baris":n,"data":{kolom: nilai}} | {"tipe":"rencana"} ]}',
+      '{"tipe":"ubah_produk","baris":n,"data":{kolom: nilai}} | {"tipe":"rencana"} | ' +
+      '{"tipe":"contoh","data":{format,jenis,nama,detail,poin,tema,produk}} | {"tipe":"jadwalkan_contoh","tanggal","jam"} ]}',
     '(produk_harga opsional: nama produk dari PRODUK yang harganya ditampilkan di poster promo; gambar: kosong, "cari", atau link)',
   ].join('\n');
 
@@ -310,7 +327,36 @@ function manajer_(instruksi) {
     try { laporan.push(jalankanAksi_(a, instruksi, semuaProduk)); }
     catch (err) { laporan.push('⚠️ ' + esc_(err.message)); }
   });
-  return esc_(hasil.balasan || 'Oke.') + (laporan.length ? '\n\n' + laporan.join('\n') : '');
+  const jawab = esc_(hasil.balasan || 'Oke.') + (laporan.length ? '\n\n' + laporan.join('\n') : '');
+  simpanChat_(instruksi, hasil.balasan || '');
+  return jawab;
+}
+
+/** Ingatan obrolan singkat (8 pesan terakhir, 6 jam) supaya Gemini paham konteks "yang tadi". */
+function riwayatChat_() {
+  return JSON.parse(CacheService.getScriptCache().get('riwayatChat') || '[]');
+}
+function simpanChat_(pesan, balasan) {
+  const r = riwayatChat_();
+  r.push({ pemilik: String(pesan).slice(0, 500), kamu: String(balasan).slice(0, 700) });
+  CacheService.getScriptCache().put('riwayatChat', JSON.stringify(r.slice(-8)), 21600);
+}
+
+/** Permintaan contoh poster → tab Permintaan; sistem GitHub merender dan mengirimnya ke Telegram. */
+function mintaContoh_(baris) {
+  const sh = siapkanTab_(SpreadsheetApp.getActive(), TAB_MINTA, KOLOM_MINTA, []);
+  const id = Utilities.getUuid().slice(0, 8);
+  sh.appendRow([sekarang_(), id, JSON.stringify(baris), 'baru']);
+  PropertiesService.getScriptProperties().setProperty('contohTerakhir', JSON.stringify(baris));
+  let cepat = false;
+  if (CONFIG.GITHUB_TOKEN) {
+    const r = UrlFetchApp.fetch('https://api.github.com/repos/' + CONFIG.GITHUB_REPO + '/actions/workflows/autopost.yml/dispatches', {
+      method: 'post', contentType: 'application/json', muteHttpExceptions: true, payload: JSON.stringify({ ref: 'main' }),
+      headers: { Authorization: 'Bearer ' + CONFIG.GITHUB_TOKEN, Accept: 'application/vnd.github+json' } });
+    cepat = r.getResponseCode() === 204;
+  }
+  return '🎨 Contoh <b>' + esc_(baris.nama) + '</b> sedang dibuat, masuk ke sini ' + (cepat ? '±3 menit lagi.' : 'dalam ±15 menit.') +
+    '\nMau dijadwalkan? Balas misalnya: <i>jadwalkan yang tadi hari Sabtu</i>.';
 }
 
 /** Pilih produk yang kata-katanya muncul di instruksi (hemat kuota Gemini untuk daftar produk yang panjang). */
@@ -353,6 +399,20 @@ function jalankanAksi_(a, instruksi, produk) {
     data[k] = n;
   });
   if (a.tipe === 'rencana') return buatRencanaMingguan_(true);
+  if (a.tipe === 'contoh') {
+    const d = Object.assign({}, a.data || {});
+    const story = String(d.format || '').toLowerCase() === 'story' || String(d.jenis || '').toLowerCase() === 'katalog';
+    d.jenis = story ? 'katalog' : (d.jenis && d.jenis !== 'katalog' ? d.jenis : 'edukasi');
+    d.tanggal = fmtTgl_(new Date());
+    return mintaContoh_(barisKonten_(d, produk));
+  }
+  if (a.tipe === 'jadwalkan_contoh') {
+    const lama = PropertiesService.getScriptProperties().getProperty('contohTerakhir');
+    if (!lama) throw new Error('Belum ada contoh yang bisa dijadwalkan.');
+    const baris = barisKonten_(Object.assign(JSON.parse(lama), { tanggal: a.tanggal, jam: a.jam || '' }), produk);
+    tambahBaris_(TAB_JADWAL, KOLOM_JADWAL, baris);
+    return '📅 Dijadwalkan: <b>' + esc_(baris.nama) + '</b> — ' + esc_(baris.tanggal) + ' ' + esc_(baris.jam || '(jam ramai)');
+  }
   if (a.tipe === 'tambah') {
     const baris = barisKonten_(a.data || {}, produk);
     tambahBaris_(TAB_JADWAL, KOLOM_JADWAL, baris);

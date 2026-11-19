@@ -162,6 +162,32 @@ def _tab(url: str, nama_tab: str) -> str | None:
         return None
 
 
+def load_permintaan(url: str):
+    """Permintaan contoh poster dari chat bot (tab 'Permintaan'): daftar (id, data dict) berstatus baru."""
+    teks = _tab(url, "Permintaan")
+    hasil = []
+    for row in csv.DictReader(io.StringIO(teks or "")):
+        row = {(k or "").strip().lower(): (v or "").strip() for k, v in row.items()}
+        if row.get("id") and row.get("status", "baru") == "baru" and row.get("data"):
+            try:
+                hasil.append((row["id"], json.loads(row["data"])))
+            except ValueError:
+                print(f"  permintaan {row['id']}: data rusak")
+    return hasil
+
+
+def baris_dari_dict(d: dict, url: str | None = None):
+    """Ubah satu baris (dict kolom Jadwal) jadi item siap render, lewat parser yang sama dengan sheet."""
+    buf = io.StringIO()
+    w = csv.DictWriter(buf, fieldnames=KOLOM, extrasaction="ignore")
+    w.writeheader()
+    w.writerow({k: d.get(k, "") if not isinstance(d.get(k), list) else "; ".join(d[k]) for k in KOLOM})
+    rows, errors = parse(buf.getvalue())
+    if rows and url:
+        pakai_foto_produk(rows, load_foto_produk(url))
+    return (rows[0] if rows else None), errors
+
+
 def load_foto_produk(url: str):
     teks = _tab(url, "Produk")
     if not teks:
