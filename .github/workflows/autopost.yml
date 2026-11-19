@@ -38,6 +38,7 @@ jobs:
       PREVIEW_JAM: ${{ vars.PREVIEW_JAM || '2' }}
       DRY_RUN: ${{ vars.DRY_RUN || '0' }}
       MODE_PROMO: ${{ vars.MODE_PROMO || '0' }}
+      CAROUSEL: ${{ vars.CAROUSEL || '1' }}
       PUBLIC_BASE_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v4

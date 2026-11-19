@@ -51,6 +51,10 @@ File: `apps-script/Code.gs`. Berjalan di dalam Google Sheet, gratis, merespons T
   rencana story kalau sudah punya foto sendiri.
 - **Foto otomatis** hanya dipakai kalau judul/sumbernya cocok dengan nama produk; kalau tidak ketemu, poster dibuat tanpa foto.
 - **`MODE_PROMO: false`** (default): feed buatan AI hanya edukasi/info/momen, tanpa harga & kalimat promo.
+- **Carousel bertema** (default, `CAROUSEL=1`): feed edukasi/info/momen jadi 3–7 slide: sampul, 1 slide per poin,
+  kolase foto produk (kolom `produk`, tanpa harga), penutup + kontak. Tema: umum, guru, maulid, ramadan, idulfitri,
+  kemerdekaan, ujian, sekolah — isi kolom `tema` atau biarkan kosong (ditebak dari judul). Tema baru: tambah di `src/tema.py`.
+  Tanggal Maulid/Ramadan/Idul Fitri diisi sendiri di tab Kalender tiap tahun.
 - **Contoh poster**: GitHub → Actions → Run workflow → centang *Kirim contoh poster* (tanpa posting).
 - Webhook bot harus memakai URL Web app berakhiran **/exec** dengan akses **Anyone** (bukan "Anyone with Google account").
 

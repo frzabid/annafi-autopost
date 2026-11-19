@@ -38,7 +38,9 @@ const CONFIG = {
 
 const TAB_JADWAL = 'Jadwal', TAB_PRODUK = 'Produk', TAB_KALENDER = 'Kalender', TAB_SETUJU = 'Persetujuan';
 const KOLOM_JADWAL = ['tanggal', 'jam', 'jenis', 'nama', 'kategori', 'detail', 'poin', 'label_harga_1', 'harga_1',
-  'label_harga_2', 'harga_2', 'gambar', 'caption', 'tunda'];
+  'label_harga_2', 'harga_2', 'gambar', 'caption', 'tunda', 'tema', 'produk'];
+// tema carousel feed (lihat src/tema.py di GitHub); kosong = ditebak otomatis dari judul
+const TEMA = ['umum', 'guru', 'maulid', 'ramadan', 'idulfitri', 'kemerdekaan', 'ujian', 'sekolah'];
 const KOLOM_PRODUK = ['nama', 'kategori', 'detail', 'label_harga_1', 'harga_1', 'label_harga_2', 'harga_2', 'gambar', 'aktif'];
 const JENIS = ['katalog', 'edukasi', 'promo', 'info', 'momen'];
 const KOLOM_HARGA = ['harga_1', 'harga_2'];
@@ -62,7 +64,9 @@ function setup() {
   ScriptApp.newTrigger('rencanaOtomatis').timeBased().onWeekDay(ScriptApp.WeekDay.SUNDAY)
     .atHour(CONFIG.JAM_RENCANA).inTimezone(CONFIG.ZONA).create();
 
-  const url = CONFIG.WEB_APP_URL || ScriptApp.getService().getUrl();
+  let url = CONFIG.WEB_APP_URL || ScriptApp.getService().getUrl();
+  const lama = (tg_('getWebhookInfo', {}).result || {}).url || '';
+  if (!/\/exec$/.test(url || '') && /\/exec$/.test(lama)) url = lama;  // pertahankan webhook /exec yang sudah benar
   if (!url) throw new Error('Deploy dulu sebagai Web app (Deploy → New deployment → Web app), lalu jalankan setup lagi.');
   // alamat /dev hanya bisa dibuka pemilik → Telegram ditolak 401. Wajib alamat /exec.
   if (!/\/exec$/.test(url)) throw new Error('Alamat Web app harus berakhiran /exec. Salin dari Deploy → Manage deployments, isi di CONFIG.WEB_APP_URL, lalu jalankan setup lagi.');
@@ -280,6 +284,7 @@ function manajer_(instruksi) {
     '- tanggal format dd/MM/yyyy, jam format HH:mm (boleh kosong = jam ramai otomatis).',
     '- poin dipisah titik koma ;, maksimal 5 poin singkat. Judul (nama) maksimal ~6 kata.',
     '- "baris" hanya boleh nomor baris yang ada di JADWAL atau PRODUK di bawah.',
+    '- Feed tampil sebagai carousel bertema. Kolom "tema" (opsional) salah satu: ' + TEMA.join(', ') + '. Kolom "produk" (opsional) = nama produk dipisah ; untuk slide foto produk.',
     '- Tidak ada aksi hapus; untuk membatalkan pakai aksi "tunda".',
     '- Kalau instruksi kurang jelas atau tidak bisa dilakukan, jangan buat aksi; tanyakan di "balasan".',
     '- "balasan": bahasa Indonesia santai, singkat, jelaskan apa yang kamu lakukan.',
@@ -293,7 +298,7 @@ function manajer_(instruksi) {
     'INSTRUKSI PEMILIK: """' + instruksi + '"""',
     '',
     'Jawab HANYA JSON: {"balasan": string, "aksi": [ ' +
-      '{"tipe":"tambah","data":{tanggal,jam,jenis,nama,kategori,detail,poin,gambar,caption,produk_harga}} | ' +
+      '{"tipe":"tambah","data":{tanggal,jam,jenis,nama,kategori,detail,poin,gambar,caption,tema,produk,produk_harga}} | ' +
       '{"tipe":"ubah","baris":n,"data":{kolom: nilai}} | {"tipe":"tunda","baris":n} | ' +
       '{"tipe":"ubah_produk","baris":n,"data":{kolom: nilai}} | {"tipe":"rencana"} ]}',
     '(produk_harga opsional: nama produk dari PRODUK yang harganya ditampilkan di poster promo; gambar: kosong, "cari", atau link)',
@@ -385,7 +390,12 @@ function barisKonten_(d, produk) {
   const poin = Array.isArray(d.poin) ? d.poin.join('; ') : String(d.poin || '');
   const baris = { tanggal: fmtTgl_(keDate_(d.tanggal)), jam: rapikanJam_(d.jam), jenis: jenis, nama: String(d.nama || '').trim(),
     kategori: String(d.kategori || '').toUpperCase(), detail: d.detail || '', poin: poin, gambar: d.gambar || '',
-    caption: d.caption || '', tunda: '' };
+    caption: d.caption || '', tunda: '', tema: TEMA.indexOf(String(d.tema || '').toLowerCase()) >= 0 ? String(d.tema).toLowerCase() : '',
+    produk: '' };
+  if (jenis !== 'katalog' && d.produk) {  // foto produk untuk slide kolase carousel: hanya produk yang SUDAH punya foto
+    const daftar = (Array.isArray(d.produk) ? d.produk : String(d.produk).split(/;|\n/)).map(x => String(x).trim()).filter(String);
+    baris.produk = daftar.map(n => cariProduk_(produk, n)).filter(p => p && p.gambar).slice(0, 4).map(p => p.nama).join('; ');
+  }
   if (!CONFIG.MODE_PROMO && jenis === 'promo') throw new Error('konten promo sedang dimatikan (MODE_PROMO: false)');
   const cari = jenis === 'katalog' ? baris.nama : (CONFIG.MODE_PROMO ? d.produk_harga || '' : '');
   if (cari) {
@@ -463,18 +473,21 @@ function buatRencanaMingguan_(paksa) {
       : '   Campuran: edukasi, info, dan momen (TANPA promo). Isinya umum & bermanfaat: tips, pengetahuan, ucapan hari besar.\n' +
         '   DILARANG: harga, kata promo/diskon/murah/hemat/spesial/beli sekarang, ajakan belanja. produk_harga selalu "".'),
     '   Tiap feed: jenis, tanggal (dd/MM/yyyy), nama (judul maks 6 kata), detail (1 kalimat), poin (3-4 poin singkat,',
-    '   boleh format "Judul: isi"), gambar (selalu ""), produk_harga (opsional: nama PERSIS dari PRODUK kalau promo',
-    '   menampilkan harga & foto produk itu; JANGAN mengarang harga atau harga paket).',
+    '   boleh format "Judul: isi" — tiap poin jadi 1 slide carousel, jadi isi 6-14 kata yang bermakna), gambar (selalu ""),',
+    '   tema (salah satu: ' + TEMA.join(', ') + '; pilih yang paling cocok dengan topik/momen, "umum" untuk tips biasa),',
+    '   produk (opsional, maks 4 nama PERSIS dari PRODUK_BERFOTO yang relevan dengan topik; untuk slide foto produk TANPA harga),',
+    '   produk_harga (opsional: nama PERSIS dari PRODUK kalau promo menampilkan harga; JANGAN mengarang harga atau harga paket).',
     '   Jangan ulang tema yang ada di RIWAYAT. Bahasa Indonesia santai, cocok untuk toko ATK lokal.',
     '3. "ringkasan": 1-2 kalimat strategi minggu ini.',
     '',
     'PRODUK (pilihan acak per kategori): ' + JSON.stringify(sampelProduk_(produk.filter(bisaStory_), 8, riwayat.map(r => r.nama)).map(p => ({ nama: p.nama, kategori: p.kategori }))),
+    'PRODUK_BERFOTO (boleh dipakai di kolom produk): ' + JSON.stringify(produk.filter(p => p.gambar).slice(0, 80).map(p => p.nama)),
     'KALENDER (dd/MM tiap tahun): ' + JSON.stringify(kalender),
     'RIWAYAT 4 minggu: ' + JSON.stringify(riwayat.map(r => [r.tanggal, r.jenis || 'katalog', r.nama])),
     'SUDAH TERJADWAL minggu ini (jangan duplikat, cukup lengkapi): ' + JSON.stringify(sudahAda.map(r => [r.tanggal, r.jenis || 'katalog', r.nama])),
     '',
     'Jawab HANYA JSON: {"ringkasan": string, "story": [{"tanggal": "dd/MM/yyyy", "produk": string}], ' +
-      '"feed": [{"jenis","tanggal","nama","detail","poin":[string],"gambar","produk_harga"}]}',
+      '"feed": [{"jenis","tanggal","nama","detail","poin":[string],"gambar","tema","produk":[string],"produk_harga"}]}',
   ].join('\n');
 
   const hasil = gemini_(prompt);

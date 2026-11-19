@@ -35,6 +35,55 @@ def post_instagram(image_url: str, caption: str, story: bool = False) -> str:
     return link.get("permalink", "")
 
 
+def _tunggu(cid):
+    for _ in range(20):  # tunggu Instagram selesai memproses gambar
+        s = _cek(requests.get(f"{G}/{cid}", timeout=30, params={"fields": "status_code", "access_token": META_PAGE_TOKEN}))
+        if s.get("status_code") == "FINISHED":
+            return
+        if s.get("status_code") == "ERROR":
+            raise RuntimeError("Instagram gagal memproses gambar")
+        time.sleep(3)
+
+
+def post_instagram_carousel(image_urls: list[str], caption: str) -> str:
+    """Carousel feed Instagram (2-10 gambar): container per gambar -> container CAROUSEL -> publish."""
+    if len(image_urls) == 1:
+        return post_instagram(image_urls[0], caption)
+    if DRY_RUN:
+        print(f"[IG CAROUSEL {len(image_urls)}] {image_urls[0]}")
+        return "https://instagram.com/p/DRYRUN"
+    anak = []
+    for url in image_urls[:10]:
+        c = _cek(requests.post(f"{G}/{META_IG_USER_ID}/media", timeout=60, data={
+            "image_url": url, "is_carousel_item": "true", "access_token": META_PAGE_TOKEN}))
+        _tunggu(c["id"])
+        anak.append(c["id"])
+    c = _cek(requests.post(f"{G}/{META_IG_USER_ID}/media", timeout=60, data={
+        "media_type": "CAROUSEL", "children": ",".join(anak), "caption": caption, "access_token": META_PAGE_TOKEN}))
+    _tunggu(c["id"])
+    pub = _cek(requests.post(f"{G}/{META_IG_USER_ID}/media_publish", timeout=60, data={
+        "creation_id": c["id"], "access_token": META_PAGE_TOKEN}))
+    link = _cek(requests.get(f"{G}/{pub['id']}", timeout=30, params={"fields": "permalink", "access_token": META_PAGE_TOKEN}))
+    return link.get("permalink", "")
+
+
+def post_facebook_album(image_urls: list[str], caption: str) -> str:
+    """Postingan Facebook Page berisi beberapa foto (unggah tanpa terbit dulu, lalu satukan di satu post)."""
+    if len(image_urls) == 1:
+        return post_facebook(image_urls[0], caption)
+    if DRY_RUN:
+        print(f"[FB ALBUM {len(image_urls)}] {image_urls[0]}")
+        return "https://facebook.com/DRYRUN"
+    ids = [_cek(requests.post(f"{G}/{META_PAGE_ID}/photos", timeout=60, data={
+        "url": u, "published": "false", "access_token": META_PAGE_TOKEN}))["id"] for u in image_urls[:10]]
+    import json
+    data = {"message": caption, "access_token": META_PAGE_TOKEN}
+    for i, pid in enumerate(ids):
+        data[f"attached_media[{i}]"] = json.dumps({"media_fbid": pid})
+    d = _cek(requests.post(f"{G}/{META_PAGE_ID}/feed", timeout=60, data=data))
+    return f"https://facebook.com/{d.get('id')}"
+
+
 def post_facebook(image_url: str, caption: str) -> str:
     if DRY_RUN:
         print(f"[FB] {image_url}")
@@ -59,13 +108,16 @@ def post_facebook_file(path: str, caption: str, published: bool = True):
     return f"https://facebook.com/{d.get('post_id', d['id'])}", url
 
 
-def post_make(image_url: str, caption: str) -> str:
-    """Kirim poster ke skenario Make.com yang memposting ke Feed Instagram + Facebook Page."""
+def post_make(image_url: str, caption: str, semua: list[str] | None = None) -> str:
+    """Kirim poster ke skenario Make.com yang memposting ke Feed Instagram + Facebook Page.
+    `semua` = semua slide carousel (gambar = slide pertama, untuk skenario 1 gambar)."""
     from config import MAKE_WEBHOOK_URL, MAKE_KUNCI
     if DRY_RUN:
         print(f"[MAKE] {image_url}")
         return "dikirim ke Make (DRY RUN)"
-    r = requests.post(MAKE_WEBHOOK_URL, timeout=90, json={"kunci": MAKE_KUNCI, "gambar": image_url, "caption": caption})
+    r = requests.post(MAKE_WEBHOOK_URL, timeout=90, json={"kunci": MAKE_KUNCI, "gambar": image_url, "caption": caption,
+                                                                 "gambar_semua": semua or [image_url],
+                                                                 "jumlah": len(semua or [image_url])})
     if r.status_code >= 400:
         raise RuntimeError(f"Make menolak ({r.status_code}): {r.text[:200]}")
     return r.text.strip()[:300] or "diterima Make"

@@ -111,8 +111,41 @@ def pakai_gambar(p):
     return p["format"] == "story" or (bool(g) and g != "cari")
 
 
+def pakai_carousel(p):
+    return p["format"] == "konten" and config.CAROUSEL
+
+
+def foto_kolase(p, awalan):
+    """Foto produk (dari tab Produk) untuk slide kolase carousel, latarnya dihapus. Yang gagal dilewati."""
+    import images
+    hasil = []
+    for k, (nama, link) in enumerate(p.get("foto_produk", [])):
+        try:
+            path = WORK / f"{awalan}-produk{k}.png"
+            images.bersihkan(images.download(link)).save(path)
+            hasil.append((nama, str(path)))
+        except Exception as e:
+            print(f"  foto produk {nama} gagal: {e}")
+    return hasil
+
+
+def buat_carousel(p, st):
+    """Feed edukasi/info/momen -> beberapa slide bertema (posters/<id>-<hash>-<n>.jpg)."""
+    import carousel
+    WORK.mkdir(exist_ok=True); POSTERS.mkdir(exist_ok=True)
+    slides = carousel.render(p, str(POSTERS / f"{p['id']}-{p['hash_isi']}"), foto_kolase(p, p["id"]))
+    nama = [pathlib.Path(x).name for x in slides]
+    for lama in st.get("slides", []) + ([st["poster"]] if st.get("poster") else []):
+        if lama not in nama:
+            (POSTERS / lama).unlink(missing_ok=True)  # buang versi lama
+    st.update(poster=nama[0], slides=nama, sumber_gambar="", hash=p["hash_isi"])
+    return POSTERS / nama[0]
+
+
 def buat_poster(p, st):
     """Siapkan gambar + render poster. Nama file memuat hash isi supaya tidak kena cache lama."""
+    if pakai_carousel(p):
+        return buat_carousel(p, st)
     import images, render  # impor berat hanya saat perlu
     WORK.mkdir(exist_ok=True); POSTERS.mkdir(exist_ok=True)
     img, sumber = None, ""
@@ -132,6 +165,7 @@ def buat_poster(p, st):
     if st.get("poster") and st["poster"] != poster.name:
         (POSTERS / st["poster"]).unlink(missing_ok=True)  # buang versi lama
     st.update(poster=poster.name, sumber_gambar=sumber, hash=p["hash_isi"])
+    st.pop("slides", None)
     return poster
 
 
@@ -147,14 +181,21 @@ def kirim_pratinjau(p, st, poster, diperbarui):
         sumber = "link dari sheet"
     else:
         sumber = "tanpa foto"
+    if st.get("slides"):
+        import tema
+        sumber = (f"carousel {len(st['slides'])} slide, tema <b>{tema.TEMA[tema.pilih(p)]['nama']}</b>"
+                  + (f", {len(p['foto_produk'])} foto produk" if p.get("foto_produk") else ""))
     # 1) poster + caption persis seperti yang akan tayang -> siap diteruskan ke Saluran/Status WA
-    notify.foto(str(poster), html.escape(caption))
+    if st.get("slides"):
+        notify.album([str(POSTERS / x) for x in st["slides"]], html.escape(caption))
+    else:
+        notify.foto(str(poster), html.escape(caption))
     judul = "🔄 Pratinjau diperbarui" if diperbarui else "👀 Pratinjau"
     info = (f"{judul}: <b>{html.escape(p['nama'])}</b>\n"
             f"Tayang di {tempat(p)}: {jam} (baris {p['baris']})\nGambar: {sumber}\n\n")
     if p["butuh_setuju"]:
         info += ("❗ Konten ini <b>hanya tayang kalau kamu setujui</b>. Mau ubah? Edit baris di sheet, "
-                 "pratinjau baru akan dikirim.\n📲 Untuk Saluran/Status WA: teruskan poster di atas.")
+                 "pratinjau baru akan dikirim.\n📲 Untuk Saluran/Status WA: teruskan gambar di atas.")
         notify.pesan(info, tombol=[("✅ Setujui", f"ok:{p['id']}:{p['hash_isi']}"),
                                    ("❌ Batalkan", f"no:{p['id']}:{p['hash_isi']}")])
         st["status"] = "menunggu"
@@ -206,6 +247,7 @@ def prepare(now=None):
                 continue
             caption = p["caption"] or config.caption_otomatis(p)
             antrian.append({"id": p["id"], "nama": p["nama"], "poster": st["poster"], "caption": caption,
+                            "slides": st.get("slides") or [st["poster"]],
                             "format": p["format"], "kategori": p["kategori"]})
     save_state(s)
     QUEUE.write_text(json.dumps(antrian, indent=1, ensure_ascii=False))
@@ -214,6 +256,13 @@ def prepare(now=None):
 
 
 # ---------------------------------------------------------------- posting
+def url_slides(item, st):
+    """URL publik semua slide (mode GitHub). Mode laptop: carousel belum didukung, pakai slide pertama."""
+    if config.PUBLIC_BASE_URL:
+        return [f"{config.PUBLIC_BASE_URL.rstrip('/')}/posters/{x}" for x in item.get("slides") or [item["poster"]]]
+    return [url_publik(item, st)]
+
+
 def url_publik(item, st):
     if config.PUBLIC_BASE_URL:  # mode GitHub: poster sudah punya URL publik di repo
         return f"{config.PUBLIC_BASE_URL.rstrip('/')}/posters/{item['poster']}"
@@ -247,15 +296,16 @@ def publish():
                              f"📌 Jangan lupa masukkan ke Sorotan <b>{html.escape(sorotan)}</b>: buka profil IG → ketuk foto "
                              f"profil (story) → ketuk <i>Sorot</i> → pilih/buat Sorotan \"{html.escape(sorotan)}\".")
             elif meta_siap or (config.DRY_RUN and not make_siap):
-                url = url_publik(item, st)
-                ig = st.get("link_ig") or meta.post_instagram(url, item["caption"])
+                urls = url_slides(item, st)
+                ig = st.get("link_ig") or meta.post_instagram_carousel(urls, item["caption"])
                 st["link_ig"] = ig  # simpan dulu supaya tidak dobel kalau FB gagal
                 save_state(s)
-                fb = meta.post_facebook(url, item["caption"])
+                fb = meta.post_facebook_album(urls, item["caption"])
                 st.update(status="terposting", link_fb=fb, waktu_posting=datetime.now(TZ).isoformat())
                 notify.pesan(f"✅ <b>{nama}</b> sudah tayang.\nIG: {ig}\nFB: {fb}")
             elif make_siap:
-                hasil = meta.post_make(url_publik(item, st), item["caption"])
+                urls = url_slides(item, st)
+                hasil = meta.post_make(urls[0], item["caption"], urls)
                 st.update(status="terposting", cara="make", waktu_posting=datetime.now(TZ).isoformat())
                 notify.pesan(f"✅ <b>{nama}</b> dikirim ke Instagram & Facebook lewat Make.\n{html.escape(hasil)}")
             else:  # belum ada jalur posting feed: beri tahu sekali, jangan dihitung gagal
@@ -347,6 +397,20 @@ def contoh():
         notify.pesan("🧪 Belum ada jadwal mendatang untuk dibuatkan contoh poster."); return
     WORK.mkdir(exist_ok=True)
     for p in pilih:
+        if pakai_carousel(p):
+            try:
+                import carousel, tema
+                slides = carousel.render(p, str(WORK / f"contoh-{p['id']}"), foto_kolase(p, f"contoh-{p['id']}"))
+                notify.album(slides, html.escape(p["caption"] or config.caption_otomatis(p)))
+                notify.pesan(f"🧪 <b>CONTOH CAROUSEL</b> (tidak diposting): {html.escape(p['nama'])}\n"
+                             f"{len(slides)} slide · tema <b>{tema.TEMA[tema.pilih(p)]['nama']}</b>"
+                             + (f" · {len(p['foto_produk'])} foto produk" if p.get("foto_produk") else "")
+                             + f"\nRencana tayang di {tempat(p)}: {fmt(p['waktu'])} (baris {p['baris']})\n"
+                             "Tema bisa diganti lewat kolom <i>tema</i> di sheet.")
+            except Exception as e:
+                traceback.print_exc()
+                notify.pesan(f"⚠️ Contoh carousel <b>{html.escape(p['nama'])}</b> gagal dibuat: {html.escape(str(e))[:300]}")
+            continue
         try:
             img, catatan = None, ""
             if pakai_gambar(p):

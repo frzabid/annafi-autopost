@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import requests
 from config import TZ, JAM_STORY, JAM_FEED, MODE_PROMO
 
-KOLOM = ["tanggal", "jam", "jenis", "nama", "kategori", "detail", "poin",
+KOLOM = ["tanggal", "jam", "jenis", "nama", "kategori", "detail", "poin", "tema", "produk",
          "label_harga_1", "harga_1", "label_harga_2", "harga_2",
          "gambar", "caption", "tunda"]
 
@@ -97,6 +97,9 @@ def parse(text: str):
             "butuh_setuju": fmt == "konten", "nama": r["nama"], "kategori": r.get("kategori", "").upper(),
             "detail": r.get("detail", ""), "poin": poin[:6], "harga": harga, "gambar": r.get("gambar", ""),
             "caption": r.get("caption", ""), "tunda": r.get("tunda", "").lower() in ("ya", "y", "tunda", "1", "true"),
+            "tema": r.get("tema", "").strip(),
+            "produk": [x.strip() for x in re.split(r"[;\n]", r.get("produk", "")) if x.strip()][:4],
+            "foto_produk": [],
         }
         # id tetap selama tanggal, jam & nama sama; hash isi untuk mendeteksi perubahan setelah pratinjau
         p["id"] = hashlib.sha1(f"{waktu.isoformat()}|{p['nama'].lower()}".encode()).hexdigest()[:10]
@@ -106,9 +109,10 @@ def parse(text: str):
 
 
 def _hash(p):
-    return hashlib.sha1(json.dumps(
-        [p["jenis"], p["kategori"], p["detail"], p["poin"], p["harga"], p["gambar"], p["caption"]],
-        sort_keys=True).encode()).hexdigest()[:10]
+    isi = [p["jenis"], p["kategori"], p["detail"], p["poin"], p["harga"], p["gambar"], p["caption"]]
+    if p.get("tema") or p.get("produk"):  # kolom baru: hanya ikut kalau terisi, supaya hash lama tetap sama
+        isi += [p.get("tema", ""), p.get("produk", []), p.get("foto_produk", [])]
+    return hashlib.sha1(json.dumps(isi, sort_keys=True).encode()).hexdigest()[:10]
 
 
 def _token(nama: str):
@@ -119,16 +123,26 @@ def pakai_foto_produk(rows, produk):
     """Story yang kolom gambarnya kosong memakai foto dari tab Produk (kiriman bot / folder Drive).
     Nama dicocokkan per kata, jadi "Pensil Joyko 6151 HB" = "Pensil Joyko HB 6151"."""
     foto = [(set(_token(n)), _token(n), link) for n, link in produk if link.startswith("http")]
+    nama_asli = {link: n for n, link in produk}
+
+    def cari(nama):
+        t = _token(nama)
+        sama = [link for _, tok, link in foto if tok == t]
+        if not sama:  # semua kata ada di nama produk, dan hanya satu produk yang cocok
+            sama = [link for st, _, link in foto if set(t) <= st]
+            sama = sama if len(sama) == 1 else []
+        return sama[0] if sama else None
+
+    for p in rows:  # feed: kolom produk -> foto dari tab Produk untuk slide kolase (tanpa harga)
+        if p["format"] == "konten" and p.get("produk"):
+            p["foto_produk"] = [(nama_asli[l], l) for l in (cari(n) for n in p["produk"]) if l]
+            p["hash_isi"] = _hash(p)
     for p in rows:
         if p["format"] != "story" or (p["gambar"] and not p["gambar"].lower().startswith("cari")):
             continue
-        t = _token(p["nama"])
-        sama = [link for _, tok, link in foto if tok == t]
-        if not sama:  # semua kata jadwal ada di nama produk, dan hanya satu produk yang cocok
-            sama = [link for st, _, link in foto if set(t) <= st]
-            sama = sama if len(sama) == 1 else []
-        if sama:
-            p["gambar"] = sama[0]
+        link = cari(p["nama"])
+        if link:
+            p["gambar"] = link
             p["hash_isi"] = _hash(p)
     return rows
 

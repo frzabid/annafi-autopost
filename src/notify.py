@@ -31,6 +31,30 @@ def foto(path: str, teks: str):
     r.raise_for_status()
 
 
+def album(paths: list[str], teks: str):
+    """Kirim beberapa gambar sebagai satu album (pratinjau carousel). Caption di gambar pertama."""
+    if len(paths) == 1:
+        return foto(paths[0], teks)
+    if not _AKTIF:
+        print(f"[TELEGRAM ALBUM {len(paths)} slide] {teks}")
+        return
+    import json
+    media, files = [], {}
+    for i, path in enumerate(paths[:10]):
+        m = {"type": "photo", "media": f"attach://f{i}"}
+        if i == 0:
+            m.update(caption=teks[:1024], parse_mode="HTML")
+        media.append(m)
+        files[f"f{i}"] = open(path, "rb")
+    try:
+        r = requests.post(f"{API}/sendMediaGroup", timeout=120, files=files,
+                          data={"chat_id": TELEGRAM_CHAT_ID, "media": json.dumps(media)})
+        r.raise_for_status()
+    finally:
+        for f in files.values():
+            f.close()
+
+
 def ambil_tombol(offset: int):
     """Ambil tombol yang ditekan sejak offset. Kembalikan (daftar (data, callback), offset_baru)."""
     if not _AKTIF:
