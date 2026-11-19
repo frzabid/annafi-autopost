@@ -207,6 +207,57 @@ def kirim_pratinjau(p, st, poster, diperbarui):
         st["status"] = "pratinjau"
 
 
+def waktu_cek_foto(now):
+    """(perlu kirim sekarang?, tanggal besok) — pengingat foto dikirim sekali sehari mulai JAM_CEK_FOTO."""
+    h, m = map(int, config.JAM_CEK_FOTO.split(":"))
+    besok = (now + timedelta(days=1)).strftime("%d/%m/%Y")
+    return now >= now.replace(hour=h, minute=m, second=0, microsecond=0), besok
+
+
+def cek_foto_besok(s, rows, now, paksa=False):
+    """Sehari sebelum tayang: daftar story katalog besok beserta status fotonya, supaya sempat difoto dulu."""
+    waktunya, besok = waktu_cek_foto(now)
+    if not paksa and (not waktunya or s.get("cek_foto") == besok):
+        return
+    s["cek_foto"] = besok
+    story = [p for p in rows if p["format"] == "story" and p["waktu"].strftime("%d/%m/%Y") == besok
+             and aktif(p, s["produk"].get(p["id"], {}))]
+    if not story:
+        save_state(s)
+        return
+    import images
+    baris, kurang = [], 0
+    for p in sorted(story, key=lambda r: r["waktu"]):
+        g = (p["gambar"] or "").strip()
+        nama = html.escape(p["nama"])
+        if g and not g.lower().startswith("cari"):
+            baris.append(f"✅ {nama} — foto sendiri")
+            continue
+        try:  # coba cari foto internet yang cocok (tanpa disimpan) untuk memberi gambaran
+            kandidat = [k for k in images.cari_kandidat(p["nama"]) if images.cocok(p["nama"], k["teks"])]
+        except Exception as e:
+            print(f"  cek foto {p['nama']}: {e}")
+            kandidat = []
+        kurang += 1
+        if kandidat:
+            baris.append(f'🔍 {nama} — belum ada foto sendiri; foto internet <a href="{html.escape(kandidat[0]["image"])}">ditemukan</a> (cek benar/tidak)')
+        else:
+            baris.append(f"⚠️ <b>{nama}</b> — belum ada foto, di internet juga tidak ketemu → poster tanpa foto")
+    w = story[0]["waktu"]
+    tgl = f"{HARI[w.weekday()]} {w:%d/%m}"
+    teks = f"📷 <b>Cek foto story besok ({tgl})</b>\n\n" + "\n".join(baris)
+    if kurang:
+        teks += ("\n\nSupaya pakai foto asli: kirim foto produknya ke sini dengan <b>caption = nama produk</b> "
+                 "(atau unggah ke folder Drive <i>Foto Produk Annafi</i>), paling lambat 2 jam sebelum tayang.")
+    else:
+        teks += "\n\nSemua sudah punya foto sendiri 👍"
+    notify.pesan(teks)
+    save_state(s)
+
+
+HARI = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
+
+
 def proses_permintaan(s):
     """Contoh poster yang diminta lewat chat bot (tab Permintaan) -> render -> kirim ke Telegram. Tidak memposting."""
     if not config.SHEET_CSV_URL:
@@ -261,6 +312,10 @@ def prepare(now=None):
     proses_tombol(s)
     proses_permintaan(s)
     rows, errors = baca_sheet()
+    try:
+        cek_foto_besok(s, rows, now)
+    except Exception:
+        traceback.print_exc()
     for e in errors:
         if e not in s["error_terkirim"]:
             notify.pesan(f"⚠️ Cek sheet: {e}")
@@ -397,6 +452,8 @@ def cek(now=None):
     perlu = perlu or bool(tombol)
     salinan = json.loads(json.dumps(s))
     perlu = perlu or terapkan_persetujuan(salinan, sheet.load_persetujuan(config.SHEET_CSV_URL)) > 0
+    waktunya, besok = waktu_cek_foto(now)
+    perlu = perlu or (waktunya and s.get("cek_foto") != besok)  # pengingat foto story besok
     if config.SHEET_CSV_URL:  # contoh poster yang diminta lewat chat bot
         perlu = perlu or any(pid not in s.get("permintaan", []) for pid, _ in sheet.load_permintaan(config.SHEET_CSV_URL))
     for p in rows:

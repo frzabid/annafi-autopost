@@ -21,8 +21,8 @@ const CONFIG = {
   GITHUB_TOKEN: '',  // opsional: token GitHub (izin Actions) supaya contoh poster jadi ±3 menit; kosong = ±15 menit
   GITHUB_REPO: 'frzabid/annafi-autopost',
 
-  GEMINI_MODEL: 'gemini-flash-latest',            // ganti kalau Google mengubah nama model
-  GEMINI_MODEL_CADANGAN: 'gemini-flash-lite-latest',
+  GEMINI_MODEL: 'gemini-flash-lite-latest',       // cepat (±1-5 detik); ganti kalau Google mengubah nama model
+  GEMINI_MODEL_CADANGAN: 'gemini-flash-latest',    // lebih pintar tapi sering sibuk (503) & lambat
   STORY_PER_HARI: 2,                               // jumlah story katalog per hari
   HARI_FEED: [1, 3, 5],                            // hari postingan feed: 1=Senin 3=Rabu 5=Jumat
   JAM_FEED: '19:00',

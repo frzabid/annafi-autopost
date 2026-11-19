@@ -55,6 +55,7 @@ File: `apps-script/Code.gs`. Berjalan di dalam Google Sheet, gratis, merespons T
   kolase foto produk (kolom `produk`, tanpa harga), penutup + kontak. Tema: umum, guru, maulid, ramadan, idulfitri,
   kemerdekaan, ujian, sekolah — isi kolom `tema` atau biarkan kosong (ditebak dari judul). Tema baru: tambah di `src/tema.py`.
   Tanggal Maulid/Ramadan/Idul Fitri diisi sendiri di tab Kalender tiap tahun.
+- **Pengingat foto**: jam 19.00 bot mengirim daftar story katalog besok + status fotonya (foto sendiri / ketemu di internet / tidak ada).
 - **Contoh poster**: GitHub → Actions → Run workflow → centang *Kirim contoh poster* (tanpa posting).
 - Webhook bot harus memakai URL Web app berakhiran **/exec** dengan akses **Anyone** (bukan "Anyone with Google account").
 

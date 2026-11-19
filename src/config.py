@@ -31,6 +31,8 @@ JAM_STORY = ["07:00", "12:00", "16:00", "19:00"]  # story katalog disebar sepanj
 JAM_FEED = ["19:00"]                               # postingan feed: malam hari
 # Pratinjau konten feed (edukasi/promo/...) dikirim malam sebelumnya jam segini, dengan tombol setuju
 JAM_PRATINJAU_FEED = _env("JAM_PRATINJAU_FEED", "20:00")
+# jam pengingat foto story katalog untuk besok (produk yang belum punya foto)
+JAM_CEK_FOTO = _env("JAM_CEK_FOTO", "19:00")
 # Kalau jadwal sudah lewat lebih dari ini (misal GitHub sempat mati), jangan diposting, cukup diberi tahu
 BATAS_TELAT_JAM = float(_env("BATAS_TELAT_JAM", "3"))
 
