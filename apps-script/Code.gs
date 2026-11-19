@@ -165,7 +165,10 @@ function tanganiFoto_(m) {
   const n = nama.toLowerCase();
   let p = semua.filter(x => x.nama.toLowerCase() === n)[0];
   if (!p) {
-    const mirip = semua.filter(x => x.nama.toLowerCase().indexOf(n) >= 0);
+    // cukup semua kata/kode di caption ada di nama produk (urutan, huruf besar-kecil, tanda - dan spasi diabaikan)
+    const rapat = t => String(t).toLowerCase().replace(/[^a-z0-9]/g, '');
+    const kata = n.match(/[a-z0-9]+/g) || [];
+    const mirip = semua.filter(x => { const r = rapat(x.nama); return kata.every(k => r.indexOf(k) >= 0); });
     if (mirip.length === 1) p = mirip[0];
     else {
       const saran = (mirip.length ? mirip : produkRelevan_(semua, nama, 6)).slice(0, 6);
