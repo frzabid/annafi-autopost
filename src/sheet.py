@@ -100,11 +100,64 @@ def parse(text: str):
         }
         # id tetap selama tanggal, jam & nama sama; hash isi untuk mendeteksi perubahan setelah pratinjau
         p["id"] = hashlib.sha1(f"{waktu.isoformat()}|{p['nama'].lower()}".encode()).hexdigest()[:10]
-        p["hash_isi"] = hashlib.sha1(json.dumps(
-            [p["jenis"], p["kategori"], p["detail"], p["poin"], p["harga"], p["gambar"], p["caption"]],
-            sort_keys=True).encode()).hexdigest()[:10]
+        p["hash_isi"] = _hash(p)
         rows.append(p)
     return rows, errors
+
+
+def _hash(p):
+    return hashlib.sha1(json.dumps(
+        [p["jenis"], p["kategori"], p["detail"], p["poin"], p["harga"], p["gambar"], p["caption"]],
+        sort_keys=True).encode()).hexdigest()[:10]
+
+
+def _token(nama: str):
+    return sorted(re.findall(r"[a-z0-9]+", nama.lower()))
+
+
+def pakai_foto_produk(rows, produk):
+    """Story yang kolom gambarnya kosong memakai foto dari tab Produk (kiriman bot / folder Drive).
+    Nama dicocokkan per kata, jadi "Pensil Joyko 6151 HB" = "Pensil Joyko HB 6151"."""
+    foto = [(set(_token(n)), _token(n), link) for n, link in produk if link.startswith("http")]
+    for p in rows:
+        if p["format"] != "story" or (p["gambar"] and not p["gambar"].lower().startswith("cari")):
+            continue
+        t = _token(p["nama"])
+        sama = [link for _, tok, link in foto if tok == t]
+        if not sama:  # semua kata jadwal ada di nama produk, dan hanya satu produk yang cocok
+            sama = [link for st, _, link in foto if set(t) <= st]
+            sama = sama if len(sama) == 1 else []
+        if sama:
+            p["gambar"] = sama[0]
+            p["hash_isi"] = _hash(p)
+    return rows
+
+
+def _tab(url: str, nama_tab: str) -> str | None:
+    m = re.search(r"docs\.google\.com/spreadsheets/d/([\w-]+)", url or "")
+    if not m or m[1] == "e":
+        return None
+    try:
+        r = requests.get(f"https://docs.google.com/spreadsheets/d/{m[1]}/gviz/tq",
+                         params={"tqx": "out:csv", "sheet": nama_tab}, timeout=30)
+        r.raise_for_status()
+        r.encoding = "utf-8"
+        return r.text
+    except Exception as e:
+        print(f"  tab {nama_tab} tidak terbaca: {e}")
+        return None
+
+
+def load_foto_produk(url: str):
+    teks = _tab(url, "Produk")
+    if not teks:
+        return []
+    hasil = []
+    for row in csv.DictReader(io.StringIO(teks)):
+        row = {(k or "").strip().lower(): (v or "").strip() for k, v in row.items()}
+        if row.get("nama") and row.get("gambar", "").startswith("http"):
+            hasil.append((row["nama"], row["gambar"]))
+    return hasil
 
 
 def csv_url(url: str) -> str:
@@ -122,7 +175,8 @@ def load(url_or_path: str):
         resp = requests.get(csv_url(url_or_path), timeout=30)
         resp.raise_for_status()
         resp.encoding = "utf-8"
-        return parse(resp.text)
+        rows, errors = parse(resp.text)
+        return pakai_foto_produk(rows, load_foto_produk(url_or_path)), errors
     with open(url_or_path, encoding="utf-8") as f:
         return parse(f.read())
 
