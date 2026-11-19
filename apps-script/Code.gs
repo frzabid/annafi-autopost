@@ -24,6 +24,10 @@ const CONFIG = {
   STORY_PER_HARI: 2,                               // jumlah story katalog per hari
   HARI_FEED: [1, 3, 5],                            // hari postingan feed: 1=Senin 3=Rabu 5=Jumat
   JAM_FEED: '19:00',
+  // kategori yang fotonya jarang ada di internet: hanya masuk rencana story kalau sudah ada foto sendiri
+  KATEGORI_WAJIB_FOTO: ['AKSESORIS & FASHION', 'MAINAN', 'BUKU BACAAN & ISLAMI', 'KOSMETIK & PERAWATAN',
+    'PESTA & ULANG TAHUN', 'SERAGAM SEKOLAH', 'RUMAH TANGGA & LAINNYA', 'MINUMAN & JAJANAN', 'PRAMUKA'],
+  FOLDER_FOTO: 'Foto Produk Annafi',               // folder Google Drive untuk foto kiriman lewat bot
   JAM_RENCANA: 17,                                 // Minggu jam 17.00 rencana minggu depan dibuat
   ZONA: 'Asia/Jakarta',
   NAMA_TOKO: 'Annafi Atk Menganti',
@@ -99,6 +103,7 @@ const BANTUAN = 'Ketik perintah biasa, contoh:\n' +
   '• <i>undur promo paket ujian ke Senin jam 7 malam</i>\n' +
   '• <i>ganti harga satuan Joyko 6151 jadi 2500</i>\n' +
   '• <i>tunda semua story hari Sabtu</i>\n\n' +
+  '📷 Kirim <b>foto produk</b> dengan caption = nama produk → foto dipakai untuk story produk itu.\n\n' +
   'Perintah cepat: /jadwal (7 hari ke depan) · /rencana (buat rencana minggu depan) · /bantuan';
 
 // ============================== TELEGRAM WEBHOOK ==============================
@@ -109,6 +114,7 @@ function doPost(e) {
     if (cache.get('u' + u.update_id)) return HtmlService.createHtmlOutput('ok');  // cegah proses ganda
     cache.put('u' + u.update_id, '1', 21600);
     if (u.callback_query) tanganiTombol_(u.callback_query);
+    else if (u.message && (u.message.photo || /^image\//.test((u.message.document || {}).mime_type || ''))) tanganiFoto_(u.message);
     else if (u.message && u.message.text) tanganiPesan_(u.message);
   } catch (err) {
     console.error(err);
@@ -146,6 +152,59 @@ function tanganiPesan_(m) {
   if (perintah === '/rencana') return kirim_(buatRencanaMingguan_(true));
   tg_('sendChatAction', { chat_id: m.chat.id, action: 'typing' });
   kirim_(manajer_(teks));
+}
+
+// ============================== FOTO PRODUK DARI TELEGRAM ==============================
+/** Foto + caption nama produk → disimpan di Google Drive, link-nya diisi ke kolom gambar (tab Produk & jadwal mendatang). */
+function tanganiFoto_(m) {
+  if (!bolehAkses_(m.chat.id)) return;
+  const nama = String(m.caption || '').trim();
+  if (!nama) return kirim_('📷 Fotonya belum ada keterangan. Kirim ulang dengan <b>caption = nama produk</b>, mis. <i>Al-Quran Khot Besar</i>.');
+  const tabel = bacaTabel_(TAB_PRODUK);
+  const semua = tabel.rows.filter(p => p.nama);
+  const n = nama.toLowerCase();
+  let p = semua.filter(x => x.nama.toLowerCase() === n)[0];
+  if (!p) {
+    const mirip = semua.filter(x => x.nama.toLowerCase().indexOf(n) >= 0);
+    if (mirip.length === 1) p = mirip[0];
+    else {
+      const saran = (mirip.length ? mirip : produkRelevan_(semua, nama, 6)).slice(0, 6);
+      return kirim_('❓ Produk "<b>' + esc_(nama) + '</b>" ' + (mirip.length ? 'cocok dengan beberapa produk.' : 'tidak ketemu di tab Produk.') +
+        (saran.length ? '\nMaksudnya salah satu ini? (tekan untuk salin)\n' + saran.map(x => '• <code>' + esc_(x.nama) + '</code>').join('\n') : '') +
+        '\n\nKirim ulang fotonya dengan caption nama yang persis.');
+    }
+  }
+  const fileId = m.photo ? m.photo[m.photo.length - 1].file_id : m.document.file_id;  // foto terbesar
+  const f = tg_('getFile', { file_id: fileId });
+  if (!f.ok) throw new Error('Foto gagal diambil dari Telegram: ' + f.description);
+  const blob = UrlFetchApp.fetch('https://api.telegram.org/file/bot' + CONFIG.TELEGRAM_BOT_TOKEN + '/' + f.result.file_path)
+    .getBlob().setName(p.nama + '.jpg');
+  const it = DriveApp.getFoldersByName(CONFIG.FOLDER_FOTO);
+  const folder = it.hasNext() ? it.next() : DriveApp.createFolder(CONFIG.FOLDER_FOTO);
+  const file = folder.createFile(blob);
+  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);  // supaya bisa dibaca sistem poster
+  const link = 'https://drive.google.com/file/d/' + file.getId() + '/view';
+  ubahBaris_(TAB_PRODUK, tabel.header, p._row, { gambar: link });
+
+  // jadwal story produk ini yang belum tayang ikut memakai foto baru
+  const jt = bacaTabel_(TAB_JADWAL), hariIni = keDate_(fmtTgl_(new Date()));
+  let nJadwal = 0;
+  jt.rows.forEach(r => {
+    const d = keDate_(r.tanggal);
+    if (d && d >= hariIni && (r.jenis || 'katalog').toLowerCase() === 'katalog' && r.nama.toLowerCase() === p.nama.toLowerCase()) {
+      ubahBaris_(TAB_JADWAL, jt.header, r._row, { gambar: link }); nJadwal++;
+    }
+  });
+  kirim_('✅ Foto disimpan untuk <b>' + esc_(p.nama) + '</b> (baris ' + p._row + ' tab Produk).' +
+    (nJadwal ? '\n' + nJadwal + ' jadwal story produk ini ikut diperbarui.' : '') +
+    '\nMulai sekarang produk ini bisa masuk rencana story otomatis.');
+}
+
+/** Jalankan sekali dari editor setelah memasang versi ini: memberi izin Google Drive untuk fitur foto. */
+function izinkanDrive() {
+  const it = DriveApp.getFoldersByName(CONFIG.FOLDER_FOTO);
+  const folder = it.hasNext() ? it.next() : DriveApp.createFolder(CONFIG.FOLDER_FOTO);
+  kirim_('📁 Folder foto siap: <b>' + esc_(folder.getName()) + '</b>. Sekarang kirim foto produk ke sini dengan caption nama produk.');
 }
 
 // ============================== MANAJER AI ==============================
@@ -206,6 +265,11 @@ function produkRelevan_(produk, instruksi, maks) {
     const n = (p.nama + ' ' + (p.kategori || '')).toLowerCase();
     return { p: p, skor: kata.reduce((s, k) => s + (n.indexOf(k) >= 0 ? (/\d/.test(k) ? 3 : 1) : 0), 0) };
   }).filter(x => x.skor > 0).sort((a, b) => b.skor - a.skor).slice(0, maks).map(x => x.p);
+}
+
+/** Produk di kategori "wajib foto" baru boleh dipilih untuk story kalau kolom gambar sudah terisi. */
+function bisaStory_(p) {
+  return !!p.gambar || CONFIG.KATEGORI_WAJIB_FOTO.indexOf(String(p.kategori || '').toUpperCase()) < 0;
 }
 
 function uniq_(arr) { return arr.filter((x, i) => x && arr.indexOf(x) === i); }
@@ -349,7 +413,7 @@ function buatRencanaMingguan_(paksa) {
     '   Jangan ulang tema yang ada di RIWAYAT. Bahasa Indonesia santai, cocok untuk toko ATK lokal.',
     '3. "ringkasan": 1-2 kalimat strategi minggu ini.',
     '',
-    'PRODUK (pilihan acak per kategori): ' + JSON.stringify(sampelProduk_(produk, 8, riwayat.map(r => r.nama)).map(p => ({ nama: p.nama, kategori: p.kategori }))),
+    'PRODUK (pilihan acak per kategori): ' + JSON.stringify(sampelProduk_(produk.filter(bisaStory_), 8, riwayat.map(r => r.nama)).map(p => ({ nama: p.nama, kategori: p.kategori }))),
     'KALENDER (dd/MM tiap tahun): ' + JSON.stringify(kalender),
     'RIWAYAT 4 minggu: ' + JSON.stringify(riwayat.map(r => [r.tanggal, r.jenis || 'katalog', r.nama])),
     'SUDAH TERJADWAL minggu ini (jangan duplikat, cukup lengkapi): ' + JSON.stringify(sudahAda.map(r => [r.tanggal, r.jenis || 'katalog', r.nama])),
