@@ -29,6 +29,8 @@ jobs:
       META_PAGE_TOKEN: ${{ secrets.META_PAGE_TOKEN }}
       META_IG_USER_ID: ${{ secrets.META_IG_USER_ID }}
       SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
+      MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
+      MAKE_KUNCI: ${{ secrets.MAKE_KUNCI }}
       PREVIEW_JAM: ${{ vars.PREVIEW_JAM || '2' }}
       DRY_RUN: ${{ vars.DRY_RUN || '0' }}
       PUBLIC_BASE_URL: https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}

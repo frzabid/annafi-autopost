@@ -63,7 +63,10 @@ META_PAGE_ID = _env("META_PAGE_ID", "")
 META_PAGE_TOKEN = _env("META_PAGE_TOKEN", "")
 META_IG_USER_ID = _env("META_IG_USER_ID", "")
 GRAPH_VERSION = _env("GRAPH_VERSION", "v25.0")
-SERPER_API_KEY = _env("SERPER_API_KEY", "")  # opsional, cadangan pencarian gambar
+SERPER_API_KEY = _env("SERPER_API_KEY", "")
+# Make.com (posting feed IG+FB tanpa akun developer Meta)
+MAKE_WEBHOOK_URL = _env("MAKE_WEBHOOK_URL", "")
+MAKE_KUNCI = _env("MAKE_KUNCI", "")  # kode rahasia, dicek oleh filter di skenario Make  # opsional, cadangan pencarian gambar
 
 # URL publik folder posters/ (mode GitHub). Kosong = mode laptop: gambar di-host lewat foto Facebook
 PUBLIC_BASE_URL = _env("PUBLIC_BASE_URL", "")

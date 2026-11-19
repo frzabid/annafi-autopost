@@ -57,3 +57,15 @@ def post_facebook_file(path: str, caption: str, published: bool = True):
     img = _cek(requests.get(f"{G}/{d['id']}", timeout=30, params={"fields": "images", "access_token": META_PAGE_TOKEN}))
     url = max(img["images"], key=lambda i: i["width"])["source"]
     return f"https://facebook.com/{d.get('post_id', d['id'])}", url
+
+
+def post_make(image_url: str, caption: str) -> str:
+    """Kirim poster ke skenario Make.com yang memposting ke Feed Instagram + Facebook Page."""
+    from config import MAKE_WEBHOOK_URL, MAKE_KUNCI
+    if DRY_RUN:
+        print(f"[MAKE] {image_url}")
+        return "dikirim ke Make (DRY RUN)"
+    r = requests.post(MAKE_WEBHOOK_URL, timeout=90, json={"kunci": MAKE_KUNCI, "gambar": image_url, "caption": caption})
+    if r.status_code >= 400:
+        raise RuntimeError(f"Make menolak ({r.status_code}): {r.text[:200]}")
+    return r.text.strip()[:300] or "diterima Make"

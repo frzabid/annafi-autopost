@@ -211,33 +211,46 @@ def url_publik(item, st):
 def publish():
     s = load_state()
     antrian = json.loads(QUEUE.read_text()) if QUEUE.exists() else []
-    meta_siap = all([config.META_PAGE_ID, config.META_PAGE_TOKEN, config.META_IG_USER_ID]) or config.DRY_RUN
+    meta_siap = all([config.META_PAGE_ID, config.META_PAGE_TOKEN, config.META_IG_USER_ID])
+    make_siap = bool(config.MAKE_WEBHOOK_URL)
     for item in antrian:
         st = s["produk"][item["id"]]
         nama = html.escape(item["nama"])
-        if not meta_siap:  # belum diatur: jangan hitung sebagai gagal, cukup beri tahu sekali
-            if not st.get("info_meta"):
-                notify.pesan(f"ℹ️ <b>{nama}</b> sudah waktunya tayang, tapi akun Instagram/Facebook "
-                             f"belum dihubungkan (secret META_* kosong). Belum diposting.")
-                st["info_meta"] = True
-                save_state(s)
-            continue
+        sorotan = item.get("kategori", "").title() or "Katalog"
         try:
-            url = url_publik(item, st)
-            if item["format"] == "story":
-                ig = meta.post_instagram(url, "", story=True)
+            if item["format"] == "story" and not (meta_siap or config.DRY_RUN):
+                # semi-otomatis: kirim poster ke Telegram, kamu yang memposting ke Story IG
+                notify.foto(str(POSTERS / item["poster"]),
+                            f"⏰ <b>Saatnya posting story: {nama}</b>\n\n1. Tekan lama foto ini → Simpan\n"
+                            f"2. Instagram → Story → pilih foto ini → Bagikan\n"
+                            f"3. Ketuk <i>Sorot</i> → Sorotan \"{html.escape(sorotan)}\"\n"
+                            f"4. Teruskan juga ke Saluran/Status WA")
+                st.update(status="terposting", cara="manual", waktu_posting=datetime.now(TZ).isoformat())
+            elif item["format"] == "story":
+                ig = meta.post_instagram(url_publik(item, st), "", story=True)
                 st.update(status="terposting", link_ig=ig, waktu_posting=datetime.now(TZ).isoformat())
-                sorotan = item["kategori"].title() or "Katalog"
                 notify.pesan(f"✅ Story <b>{nama}</b> sudah tayang di Instagram.\n\n"
                              f"📌 Jangan lupa masukkan ke Sorotan <b>{html.escape(sorotan)}</b>: buka profil IG → ketuk foto "
-                             f"profil (story) → ketuk <i>Sorot</i> di bawah → pilih/buat Sorotan \"{html.escape(sorotan)}\".")
-            else:
+                             f"profil (story) → ketuk <i>Sorot</i> → pilih/buat Sorotan \"{html.escape(sorotan)}\".")
+            elif meta_siap or (config.DRY_RUN and not make_siap):
+                url = url_publik(item, st)
                 ig = st.get("link_ig") or meta.post_instagram(url, item["caption"])
                 st["link_ig"] = ig  # simpan dulu supaya tidak dobel kalau FB gagal
                 save_state(s)
                 fb = meta.post_facebook(url, item["caption"])
                 st.update(status="terposting", link_fb=fb, waktu_posting=datetime.now(TZ).isoformat())
                 notify.pesan(f"✅ <b>{nama}</b> sudah tayang.\nIG: {ig}\nFB: {fb}")
+            elif make_siap:
+                hasil = meta.post_make(url_publik(item, st), item["caption"])
+                st.update(status="terposting", cara="make", waktu_posting=datetime.now(TZ).isoformat())
+                notify.pesan(f"✅ <b>{nama}</b> dikirim ke Instagram & Facebook lewat Make.\n{html.escape(hasil)}")
+            else:  # belum ada jalur posting feed: beri tahu sekali, jangan dihitung gagal
+                if not st.get("info_meta"):
+                    notify.pesan(f"ℹ️ <b>{nama}</b> sudah waktunya tayang, tapi jalur posting feed belum diatur "
+                                 f"(secret MAKE_WEBHOOK_URL atau META_* kosong). Belum diposting.")
+                    st["info_meta"] = True
+                    save_state(s)
+                continue
         except Exception as e:
             traceback.print_exc()
             st["gagal"] = st.get("gagal", 0) + 1
@@ -285,7 +298,8 @@ def cek(now=None):
 def tes():
     """Kirim pesan uji ke Telegram dan laporkan secret mana yang sudah/belum diisi."""
     cek_isi = {k: bool(getattr(config, k)) for k in
-               ["SHEET_CSV_URL", "TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID", "META_PAGE_ID", "META_PAGE_TOKEN", "META_IG_USER_ID"]}
+               ["SHEET_CSV_URL", "TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID", "MAKE_WEBHOOK_URL", "MAKE_KUNCI",
+                "META_PAGE_ID", "META_PAGE_TOKEN", "META_IG_USER_ID"]}
     daftar = "\n".join(f"{'✅' if v else '⬜'} {k}" for k, v in cek_isi.items())
     if config.SHEET_CSV_URL:
         try:
