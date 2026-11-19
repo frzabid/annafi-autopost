@@ -40,7 +40,8 @@ HASHTAG = "#annafiatk #atkmenganti #alattulis #atkmurah #perlengkapansekolah"
 
 def caption_otomatis(p) -> str:
     kat = "".join(ch for ch in p.get("kategori", "").lower() if ch.isalnum())
-    tag = HASHTAG + (f" #{kat}" if kat else "")
+    tag = HASHTAG if MODE_PROMO else HASHTAG.replace(" #atkmurah", "")  # tanpa kesan promo saat mode promo mati
+    tag += f" #{kat}" if kat else ""
     bagian = [p["nama"] + (f"\n{p['detail']}" if p.get("detail") else "")]
     if p.get("poin"):
         bagian.append("\n".join(f"✅ {x}" for x in p["poin"]))
