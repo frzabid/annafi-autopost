@@ -44,6 +44,16 @@ File: `apps-script/Code.gs`. Berjalan di dalam Google Sheet, gratis, merespons T
    Bot akan mengirim "🤖 Manajer AI Annafi aktif!".
 6. Isi tab **Produk** (nama, kategori, harga) dan cek tab **Kalender** (isi tanggal Ramadan/Idul Fitri sendiri).
 
+### Fitur tambahan
+- **Foto produk sendiri**: kirim foto ke bot dengan caption nama produk (boleh sebagian, mis. `joyko 6151`), atau unggah ke
+  folder Drive **Foto Produk Annafi** dengan nama file = nama produk (dicek tiap jam, atau kirim `/foto`).
+  Jalankan `izinkanDrive` sekali dari editor. Kategori rawan foto (mainan, aksesoris, buku islami, dll.) hanya masuk
+  rencana story kalau sudah punya foto sendiri.
+- **Foto otomatis** hanya dipakai kalau judul/sumbernya cocok dengan nama produk; kalau tidak ketemu, poster dibuat tanpa foto.
+- **`MODE_PROMO: false`** (default): feed buatan AI hanya edukasi/info/momen, tanpa harga & kalimat promo.
+- **Contoh poster**: GitHub → Actions → Run workflow → centang *Kirim contoh poster* (tanpa posting).
+- Webhook bot harus memakai URL Web app berakhiran **/exec** dengan akses **Anyone** (bukan "Anyone with Google account").
+
 Tab **Jadwal harus tetap paling kiri** (sistem GitHub membaca tab pertama).
 Kalau kode diubah: **Deploy → Manage deployments → ✏️ → Version: New version → Deploy**.
 
