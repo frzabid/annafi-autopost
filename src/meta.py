@@ -13,12 +13,14 @@ def _cek(r):
     return data
 
 
-def post_instagram(image_url: str, caption: str) -> str:
+def post_instagram(image_url: str, caption: str, story: bool = False) -> str:
+    """Feed (dengan caption) atau Story (media_type=STORIES, story tidak memakai caption)."""
     if DRY_RUN:
-        print(f"[IG] {image_url}")
-        return "https://instagram.com/p/DRYRUN"
-    c = _cek(requests.post(f"{G}/{META_IG_USER_ID}/media", timeout=60, data={
-        "image_url": image_url, "caption": caption, "access_token": META_PAGE_TOKEN}))
+        print(f"[IG {'STORY' if story else 'FEED'}] {image_url}")
+        return "https://instagram.com/stories/DRYRUN" if story else "https://instagram.com/p/DRYRUN"
+    data = {"image_url": image_url, "access_token": META_PAGE_TOKEN}
+    data.update({"media_type": "STORIES"} if story else {"caption": caption})
+    c = _cek(requests.post(f"{G}/{META_IG_USER_ID}/media", timeout=60, data=data))
     cid = c["id"]
     for _ in range(20):  # tunggu Instagram selesai memproses gambar
         s = _cek(requests.get(f"{G}/{cid}", timeout=30, params={"fields": "status_code", "access_token": META_PAGE_TOKEN}))
@@ -42,14 +44,16 @@ def post_facebook(image_url: str, caption: str) -> str:
     return f"https://facebook.com/{d.get('post_id', d.get('id'))}"
 
 
-def post_facebook_file(path: str, caption: str):
-    """Mode laptop: unggah poster langsung ke Page, kembalikan (link post, URL gambar publik untuk IG)."""
+def post_facebook_file(path: str, caption: str, published: bool = True):
+    """Mode laptop: unggah poster ke Page (published=False -> hanya untuk dapat URL publik, tidak tampil).
+    Kembalikan (link post, URL gambar publik untuk IG)."""
     if DRY_RUN:
-        print(f"[FB upload] {path}")
+        print(f"[FB upload published={published}] {path}")
         return "https://facebook.com/DRYRUN", "https://example.com/poster.jpg"
     with open(path, "rb") as f:
         d = _cek(requests.post(f"{G}/{META_PAGE_ID}/photos", timeout=120, files={"source": f},
-                               data={"caption": caption, "access_token": META_PAGE_TOKEN}))
+                               data={"caption": caption, "published": str(published).lower(),
+                                     "access_token": META_PAGE_TOKEN}))
     img = _cek(requests.get(f"{G}/{d['id']}", timeout=30, params={"fields": "images", "access_token": META_PAGE_TOKEN}))
     url = max(img["images"], key=lambda i: i["width"])["source"]
     return f"https://facebook.com/{d.get('post_id', d['id'])}", url

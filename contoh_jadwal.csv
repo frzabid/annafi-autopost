@@ -1,5 +1,6 @@
-tanggal,jam,nama,kategori,detail,label_harga_1,harga_1,label_harga_2,harga_2,gambar,caption,tunda
-20/11/2026,10:00,Pensil Joyko 6151 HB,Pensil,Pensil HB dengan penghapus · isi 12 pcs per pack,Per Pack (12 pcs),12.000,Satuan,2.000,,,
-20/11/2026,15:00,Pensil Joyko 2B P-8137,Pensil,Tipe P-8137 · isi 12 pcs per pack,Per Pack (12 pcs),12.000,Satuan,2.000,,,
-21/11/2026,9:30,Buku Tulis Sidu 38 Lembar,Buku,Isi 10 buku per pack,Per Pack (10 buku),Rp35.000,Satuan,4000,,,YA
-22/11/2026,25:99,Baris Salah,Pensil,,,,,,,,
+tanggal,jam,jenis,nama,kategori,detail,poin,label_harga_1,harga_1,label_harga_2,harga_2,gambar,caption,tunda
+20/11/2026,10:00,katalog,Pensil Joyko 6151 HB,Pensil,Pensil HB dengan penghapus · isi 12 pcs per pack,,Per Pack (12 pcs),12.000,Satuan,2.000,,,
+20/11/2026,,katalog,Pensil Joyko 2B P-8137,Pensil,Tipe P-8137 · isi 12 pcs per pack,,Per Pack (12 pcs),12.000,Satuan,2.000,,,
+21/11/2026,,edukasi,Pensil 2B vs HB: Mana untuk Ujian?,,Jangan sampai jawaban LJK tidak terbaca mesin,2B: lebih hitam & tebal untuk LJK; HB: lebih keras untuk menulis biasa; Tips: bawa 2 pensil 2B yang sudah diraut,,,,,,,
+22/11/2026,19:00,promo,Paket Ujian Hemat,,Siap ujian akhir semester,2 Pensil 2B Joyko; Penghapus + rautan; Papan ujian,Harga paket,25000,Normal,32000,,,
+22/11/2026,08:00,info,Jam Buka Toko,,,,,,,,,,

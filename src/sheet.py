@@ -1,12 +1,18 @@
-"""Baca jadwal dari Google Sheet yang di-'Publikasikan ke web' sebagai CSV."""
+"""Baca jadwal dari Google Sheet (link bagikan biasa atau 'Publikasikan ke web' CSV)."""
 import csv, hashlib, io, json, re
-from datetime import datetime
+from collections import defaultdict
+from datetime import datetime, timedelta
 import requests
-from config import TZ
+from config import TZ, JAM_STORY, JAM_FEED
 
-KOLOM = ["tanggal", "jam", "nama", "kategori", "detail",
+KOLOM = ["tanggal", "jam", "jenis", "nama", "kategori", "detail", "poin",
          "label_harga_1", "harga_1", "label_harga_2", "harga_2",
          "gambar", "caption", "tunda"]
+
+# jenis -> katalog tayang sebagai Story IG; lainnya jadi postingan feed IG + FB (wajib disetujui)
+JENIS = {"katalog": "katalog", "produk": "katalog", "story": "katalog", "": "katalog",
+         "edukasi": "edukasi", "tips": "edukasi", "promo": "promo", "diskon": "promo",
+         "info": "info", "pengumuman": "info", "momen": "momen", "spesial": "momen", "ucapan": "momen"}
 
 
 def _harga(s: str):
@@ -33,15 +39,38 @@ def _waktu(tgl: str, jam: str):
         return None
 
 
+def _tanggal(tgl: str):
+    return _waktu(tgl, "00:00")
+
+
 def parse(text: str):
     rows, errors = [], []
     reader = csv.DictReader(io.StringIO(text))
     reader.fieldnames = [(h or "").strip().lower().replace(" ", "_") for h in reader.fieldnames or []]
+    slot_terpakai = defaultdict(int)  # (tanggal, format) -> jumlah jam otomatis yang sudah dipakai
     for i, r in enumerate(reader, start=2):
         r = {k: (v or "").strip() for k, v in r.items() if k}
         if not r.get("nama"):
             continue
-        waktu = _waktu(r.get("tanggal"), r.get("jam"))
+        jenis = JENIS.get(r.get("jenis", "").lower())
+        if not jenis:
+            errors.append(f"Baris {i} ({r['nama']}): jenis '{r.get('jenis')}' tidak dikenal "
+                          f"(pakai katalog/edukasi/promo/info/momen)")
+            continue
+        fmt = "story" if jenis == "katalog" else "konten"
+        jam_otomatis = not r.get("jam")
+        if jam_otomatis:  # jam kosong -> pakai jam ramai
+            tgl = _tanggal(r.get("tanggal"))
+            if not tgl:
+                errors.append(f"Baris {i} ({r['nama']}): tanggal tidak terbaca")
+                continue
+            daftar = JAM_STORY if fmt == "story" else JAM_FEED
+            n = slot_terpakai[(tgl.date(), fmt)]
+            slot_terpakai[(tgl.date(), fmt)] += 1
+            hh, mm = map(int, daftar[n % len(daftar)].split(":"))
+            waktu = tgl.replace(hour=hh, minute=mm) + timedelta(minutes=30 * (n // len(daftar)))
+        else:
+            waktu = _waktu(r.get("tanggal"), r.get("jam"))
         if not waktu:
             errors.append(f"Baris {i} ({r['nama']}): tanggal/jam tidak terbaca")
             continue
@@ -50,18 +79,24 @@ def parse(text: str):
             v = _harga(r.get(f"harga_{n}"))
             if v:
                 harga.append({"label": r.get(f"label_harga_{n}") or ("Harga" if n == 1 else "Harga lain"), "nilai": v})
-        if not harga:
+        if jenis == "katalog" and not harga:
             errors.append(f"Baris {i} ({r['nama']}): harga kosong")
             continue
+        poin = [x.strip(" •-") for x in re.split(r"[;\n]", r.get("poin", "")) if x.strip(" •-")]
+        if fmt == "konten" and not poin and not harga:
+            errors.append(f"Baris {i} ({r['nama']}): kolom poin kosong (pisahkan tiap poin dengan ;)")
+            continue
         p = {
-            "baris": i, "waktu": waktu, "nama": r["nama"], "kategori": r.get("kategori", "").upper(),
-            "detail": r.get("detail", ""), "harga": harga, "gambar": r.get("gambar", ""),
+            "baris": i, "waktu": waktu, "jam_otomatis": jam_otomatis, "jenis": jenis, "format": fmt,
+            "butuh_setuju": fmt == "konten", "nama": r["nama"], "kategori": r.get("kategori", "").upper(),
+            "detail": r.get("detail", ""), "poin": poin[:6], "harga": harga, "gambar": r.get("gambar", ""),
             "caption": r.get("caption", ""), "tunda": r.get("tunda", "").lower() in ("ya", "y", "tunda", "1", "true"),
         }
         # id tetap selama tanggal, jam & nama sama; hash isi untuk mendeteksi perubahan setelah pratinjau
         p["id"] = hashlib.sha1(f"{waktu.isoformat()}|{p['nama'].lower()}".encode()).hexdigest()[:10]
         p["hash_isi"] = hashlib.sha1(json.dumps(
-            [p["kategori"], p["detail"], p["harga"], p["gambar"], p["caption"]], sort_keys=True).encode()).hexdigest()[:10]
+            [p["jenis"], p["kategori"], p["detail"], p["poin"], p["harga"], p["gambar"], p["caption"]],
+            sort_keys=True).encode()).hexdigest()[:10]
         rows.append(p)
     return rows, errors
 

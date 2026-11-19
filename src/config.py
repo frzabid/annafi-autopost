@@ -26,6 +26,11 @@ TOKO = {
 
 # Pratinjau dikirim ke Telegram sekian jam sebelum jadwal posting
 PREVIEW_JAM = float(_env("PREVIEW_JAM", "2"))
+# Jam ramai (WIB) dipakai kalau kolom jam di sheet dikosongkan
+JAM_STORY = ["07:00", "12:00", "16:00", "19:00"]  # story katalog disebar sepanjang hari
+JAM_FEED = ["19:00"]                               # postingan feed: malam hari
+# Pratinjau konten feed (edukasi/promo/...) dikirim malam sebelumnya jam segini, dengan tombol setuju
+JAM_PRATINJAU_FEED = _env("JAM_PRATINJAU_FEED", "20:00")
 # Kalau jadwal sudah lewat lebih dari ini (misal GitHub sempat mati), jangan diposting, cukup diberi tahu
 BATAS_TELAT_JAM = float(_env("BATAS_TELAT_JAM", "3"))
 
@@ -34,13 +39,16 @@ HASHTAG = "#annafiatk #atkmenganti #alattulis #atkmurah #perlengkapansekolah"
 
 
 def caption_otomatis(p) -> str:
-    baris_harga = "\n".join(f"• {h['label']}: {rupiah(h['nilai'])}" for h in p["harga"])
     kat = "".join(ch for ch in p.get("kategori", "").lower() if ch.isalnum())
     tag = HASHTAG + (f" #{kat}" if kat else "")
-    detail = f"\n{p['detail']}" if p.get("detail") else ""
-    return (f"{p['nama']}{detail}\n\n{baris_harga}\n\n"
-            f"Pesan langsung via WhatsApp {TOKO['wa']} 📲\n"
-            f"📍 {TOKO['fb']}\n\n{tag}")
+    bagian = [p["nama"] + (f"\n{p['detail']}" if p.get("detail") else "")]
+    if p.get("poin"):
+        bagian.append("\n".join(f"✅ {x}" for x in p["poin"]))
+    if p.get("harga"):
+        bagian.append("\n".join(f"• {h['label']}: {rupiah(h['nilai'])}" for h in p["harga"]))
+    bagian.append(f"Pesan langsung via WhatsApp {TOKO['wa']} 📲\n📍 {TOKO['fb']}")
+    bagian.append(tag)
+    return "\n\n".join(bagian)
 
 
 def rupiah(n: int) -> str:

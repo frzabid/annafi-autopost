@@ -100,7 +100,7 @@ def _buang_bagian_kecil(im: Image.Image, rasio: float = 0.08) -> Image.Image:
 
 def siapkan(p: dict, url_tersimpan: str | None, path_out: str) -> str:
     """Kembalikan URL sumber gambar yang dipakai; gambar bersih disimpan ke path_out."""
-    if p["gambar"]:
+    if p["gambar"] and p["gambar"].lower() != "cari":
         url, im = p["gambar"], download(p["gambar"])
     elif url_tersimpan:  # pakai gambar yang sama dengan saat pratinjau
         url, im = url_tersimpan, download(url_tersimpan)

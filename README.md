@@ -1,17 +1,23 @@
-# Autopost Katalog Annafi ATK
+# Autopost Konten Annafi ATK
 
-Posting katalog produk otomatis ke **Instagram + Facebook** sesuai jadwal di Google Sheet.
+Posting konten otomatis ke **Instagram (Story & Feed) + Facebook** sesuai jadwal di Google Sheet.
+
+| jenis di sheet | tayang di | pratinjau Telegram | perlu disetujui? |
+|---|---|---|---|
+| `katalog` | Story Instagram (9:16) | 2 jam sebelum tayang | Tidak — tayang otomatis, tahan dengan kolom `tunda` = YA |
+| `edukasi` / `promo` / `info` / `momen` | Feed Instagram + Facebook (4:5) | jam 20.00 malam sebelumnya | **Ya** — tombol ✅ Setujui / ❌ Batalkan |
 
 ```
 Google Sheet ──► GitHub Actions (tiap 15 menit)
-                   ├─ 2 jam sebelum jadwal: buat poster → kirim pratinjau ke Telegram
-                   └─ saat jadwal: posting ke Instagram + Facebook → kabari di Telegram
+                   ├─ pratinjau: poster + caption ke Telegram (siap diteruskan ke Saluran/Status WA)
+                   ├─ tombol ✅/❌ diproses di pengecekan berikutnya
+                   └─ jam tayang: posting → kabari di Telegram (+ pengingat Sorotan untuk story)
 ```
 
-- Gambar: link di kolom `gambar`, atau dicari otomatis (DuckDuckGo, cadangan Serper) lalu latarnya dihapus.
-- Pratinjau = poster + caption persis seperti yang akan tayang, siap diteruskan ke Saluran/Status WhatsApp.
-- Kalau pratinjau salah: ubah baris di sheet (misal tempel link gambar lain) → poster dibuat ulang.
-- Kalau tidak sempat cek: tetap diposting. Isi kolom `tunda` = `YA` untuk menahan.
+- Jam dikosongkan → otomatis jam ramai: story 07.00 / 12.00 / 16.00 / 19.00, feed 19.00 (WIB).
+- Gambar katalog: link di kolom `gambar`, atau dicari otomatis (DuckDuckGo, cadangan Serper) lalu latarnya dihapus.
+- Kalau isi baris diubah setelah pratinjau → poster dibuat ulang & pratinjau baru dikirim (persetujuan lama gugur).
+- Sorotan (Highlights) tidak bisa lewat API Meta → bot mengingatkan untuk menambahkannya manual.
 - Jadwal yang terlewat lebih dari 3 jam tidak diposting (diberi tahu di Telegram).
 
 ---

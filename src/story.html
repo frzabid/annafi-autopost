@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<!-- Story katalog 1080x1920. Isi penting di antara y=230..1690 (atas & bawah tertutup UI Instagram) -->
+<style>
+  @font-face{font-family:Poppins;font-weight:400;src:url({assets}/fonts/Poppins-Regular.ttf)}
+  @font-face{font-family:Poppins;font-weight:700;src:url({assets}/fonts/Poppins-Bold.ttf)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{width:1080px;height:1920px;font-family:Poppins,sans-serif;background:#1565d8;overflow:hidden}
+  .frame{position:absolute;inset:26px;background:#fdfdfd;border-radius:56px;overflow:hidden}
+  .frame:before{content:"";position:absolute;inset:20px;border:3px dashed #9cc4f2;border-radius:40px}
+  .wrap{position:absolute;top:200px;bottom:200px;left:70px;right:70px;display:flex;flex-direction:column}
+  .top{display:flex;justify-content:space-between;align-items:center}
+  .cat{background:#e7f0fd;color:#1565d8;font-weight:700;font-size:26px;padding:10px 24px;border-radius:40px;letter-spacing:1px}
+  .logo{height:96px}
+  h1{font-weight:700;font-size:80px;line-height:1.05;color:#14213d;margin-top:34px}
+  .sub{font-size:32px;color:#5b6475;margin-top:12px}
+  .photo{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;margin:30px 0}
+  .photo img{max-height:100%;max-width:100%;object-fit:contain;filter:drop-shadow(0 20px 26px rgba(20,33,61,.18))}
+  .prices{display:flex;gap:22px}
+  .pr{flex:1;border-radius:30px;padding:22px 30px;background:#eef4fd;border:3px solid #d3e3fa}
+  .pr.main{background:#1565d8;border-color:#1565d8}
+  .pr.main .lbl{color:#d6e6fb}
+  .pr.main .val{color:#fff}
+  .pr .lbl{font-size:28px;font-weight:700;color:#3d4659}
+  .pr .val{font-size:62px;font-weight:700;color:#14213d;line-height:1.1}
+  .foot{margin-top:34px;border-top:2px dashed #c9dcf5;padding-top:22px;display:grid;grid-template-columns:1fr 1fr;row-gap:14px;column-gap:24px}
+  .foot div{display:flex;align-items:center;gap:12px;font-size:23px;font-weight:700;color:#2b3447}
+  .foot img,.foot .fb{width:34px;height:34px;border-radius:8px;flex:none}
+  .foot .fb{background:#1877f2;color:#fff;font:700 27px/38px Poppins,sans-serif;text-align:center;overflow:hidden}
+  .doodle{position:absolute;color:#7fb3ee;font-size:72px;opacity:.7}
+</style></head>
+<body><div class="frame">
+  <div class="doodle" style="top:640px;right:60px">☆</div>
+  <div class="doodle" style="top:1180px;left:54px;font-size:58px">♡</div>
+  <div class="wrap">
+    <div class="top"><span class="cat">{kategori}</span><img class="logo" src="{assets}/logo.png"></div>
+    <h1>{nama}</h1>
+    <p class="sub">{detail}</p>
+    <div class="photo"><img src="{gambar}"></div>
+    <div class="prices">{harga_html}</div>
+    <div class="foot">
+      <div><img src="{assets}/ic_wa.png">{wa}</div>
+      <div><img src="{assets}/ic_ig.png">{ig}</div>
+      <div><span class="fb">f</span>{fb}</div>
+      <div><img src="{assets}/ic_tt.png">{tiktok}</div>
+    </div>
+  </div>
+</div></body></html>
