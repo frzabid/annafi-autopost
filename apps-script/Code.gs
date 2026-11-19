@@ -103,7 +103,7 @@ const BANTUAN = 'Ketik perintah biasa, contoh:\n' +
   '• <i>undur promo paket ujian ke Senin jam 7 malam</i>\n' +
   '• <i>ganti harga satuan Joyko 6151 jadi 2500</i>\n' +
   '• <i>tunda semua story hari Sabtu</i>\n\n' +
-  '📷 Kirim <b>foto produk</b> dengan caption = nama produk → foto dipakai untuk story produk itu.\n\n' +
+  '📷 Kirim <b>foto produk</b> dengan caption = nama produk, atau unggah ke folder Drive "Foto Produk Annafi" dengan nama file = nama produk lalu kirim /foto.\n\n' +
   'Perintah cepat: /jadwal (7 hari ke depan) · /rencana (buat rencana minggu depan) · /bantuan';
 
 // ============================== TELEGRAM WEBHOOK ==============================
@@ -150,64 +150,109 @@ function tanganiPesan_(m) {
   if (perintah === '/start' || perintah === '/bantuan' || perintah === '/help') return kirim_(BANTUAN);
   if (perintah === '/jadwal') return kirim_(ringkasJadwal_(7));
   if (perintah === '/rencana') return kirim_(buatRencanaMingguan_(true));
+  if (perintah === '/foto') return sinkronFoto(true);
   tg_('sendChatAction', { chat_id: m.chat.id, action: 'typing' });
   kirim_(manajer_(teks));
 }
 
-// ============================== FOTO PRODUK DARI TELEGRAM ==============================
-/** Foto + caption nama produk → disimpan di Google Drive, link-nya diisi ke kolom gambar (tab Produk & jadwal mendatang). */
+// ============================== FOTO PRODUK (TELEGRAM & FOLDER DRIVE) ==============================
+/** Cari produk dari teks bebas: sama persis, atau semua kata/kode teks ada di nama produk
+ *  (urutan, huruf besar-kecil, tanda - dan spasi diabaikan). Hasil {p} kalau pasti, {mirip} kalau ragu. */
+function cocokProduk_(semua, teks) {
+  const n = String(teks).toLowerCase().trim();
+  const persis = semua.filter(x => x.nama.toLowerCase() === n)[0];
+  if (persis) return { p: persis, mirip: [] };
+  const rapat = t => String(t).toLowerCase().replace(/[^a-z0-9]/g, '');
+  const kata = n.match(/[a-z0-9]+/g) || [];
+  const mirip = kata.length ? semua.filter(x => { const r = rapat(x.nama); return kata.every(k => r.indexOf(k) >= 0); }) : [];
+  return mirip.length === 1 ? { p: mirip[0], mirip: [] } : { p: null, mirip: mirip };
+}
+
+function folderFoto_() {
+  const it = DriveApp.getFoldersByName(CONFIG.FOLDER_FOTO);
+  return it.hasNext() ? it.next() : DriveApp.createFolder(CONFIG.FOLDER_FOTO);
+}
+
+/** Bagikan file (lihat saja) supaya bisa dibaca sistem poster, isi kolom gambar di Produk & jadwal story mendatang. */
+function pasangFoto_(tabel, p, file) {
+  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  const link = 'https://drive.google.com/file/d/' + file.getId() + '/view';
+  ubahBaris_(TAB_PRODUK, tabel.header, p._row, { gambar: link });
+  p.gambar = link;
+  const jt = bacaTabel_(TAB_JADWAL), hariIni = keDate_(fmtTgl_(new Date()));
+  let n = 0;
+  jt.rows.forEach(r => {
+    const d = keDate_(r.tanggal);
+    if (d && d >= hariIni && (r.jenis || 'katalog').toLowerCase() === 'katalog' && r.nama.toLowerCase() === p.nama.toLowerCase()) {
+      ubahBaris_(TAB_JADWAL, jt.header, r._row, { gambar: link }); n++;
+    }
+  });
+  return n;
+}
+
+function saranProduk_(semua, teks, mirip) {
+  const saran = (mirip.length ? mirip : produkRelevan_(semua, teks, 6)).slice(0, 6);
+  return saran.length ? '\nMaksudnya salah satu ini? (tekan untuk salin)\n' + saran.map(x => '• <code>' + esc_(x.nama) + '</code>').join('\n') : '';
+}
+
+/** Foto dikirim ke bot dengan caption nama produk. */
 function tanganiFoto_(m) {
   if (!bolehAkses_(m.chat.id)) return;
   const nama = String(m.caption || '').trim();
   if (!nama) return kirim_('📷 Fotonya belum ada keterangan. Kirim ulang dengan <b>caption = nama produk</b>, mis. <i>Al-Quran Khot Besar</i>.');
   const tabel = bacaTabel_(TAB_PRODUK);
   const semua = tabel.rows.filter(p => p.nama);
-  const n = nama.toLowerCase();
-  let p = semua.filter(x => x.nama.toLowerCase() === n)[0];
-  if (!p) {
-    // cukup semua kata/kode di caption ada di nama produk (urutan, huruf besar-kecil, tanda - dan spasi diabaikan)
-    const rapat = t => String(t).toLowerCase().replace(/[^a-z0-9]/g, '');
-    const kata = n.match(/[a-z0-9]+/g) || [];
-    const mirip = semua.filter(x => { const r = rapat(x.nama); return kata.every(k => r.indexOf(k) >= 0); });
-    if (mirip.length === 1) p = mirip[0];
-    else {
-      const saran = (mirip.length ? mirip : produkRelevan_(semua, nama, 6)).slice(0, 6);
-      return kirim_('❓ Produk "<b>' + esc_(nama) + '</b>" ' + (mirip.length ? 'cocok dengan beberapa produk.' : 'tidak ketemu di tab Produk.') +
-        (saran.length ? '\nMaksudnya salah satu ini? (tekan untuk salin)\n' + saran.map(x => '• <code>' + esc_(x.nama) + '</code>').join('\n') : '') +
-        '\n\nKirim ulang fotonya dengan caption nama yang persis.');
-    }
-  }
+  const c = cocokProduk_(semua, nama);
+  if (!c.p) return kirim_('❓ Produk "<b>' + esc_(nama) + '</b>" ' + (c.mirip.length ? 'cocok dengan beberapa produk.' : 'tidak ketemu di tab Produk.') +
+    saranProduk_(semua, nama, c.mirip) + '\n\nKirim ulang fotonya dengan caption nama yang persis.');
   const fileId = m.photo ? m.photo[m.photo.length - 1].file_id : m.document.file_id;  // foto terbesar
   const f = tg_('getFile', { file_id: fileId });
   if (!f.ok) throw new Error('Foto gagal diambil dari Telegram: ' + f.description);
   const blob = UrlFetchApp.fetch('https://api.telegram.org/file/bot' + CONFIG.TELEGRAM_BOT_TOKEN + '/' + f.result.file_path)
-    .getBlob().setName(p.nama + '.jpg');
-  const it = DriveApp.getFoldersByName(CONFIG.FOLDER_FOTO);
-  const folder = it.hasNext() ? it.next() : DriveApp.createFolder(CONFIG.FOLDER_FOTO);
-  const file = folder.createFile(blob);
-  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);  // supaya bisa dibaca sistem poster
-  const link = 'https://drive.google.com/file/d/' + file.getId() + '/view';
-  ubahBaris_(TAB_PRODUK, tabel.header, p._row, { gambar: link });
-
-  // jadwal story produk ini yang belum tayang ikut memakai foto baru
-  const jt = bacaTabel_(TAB_JADWAL), hariIni = keDate_(fmtTgl_(new Date()));
-  let nJadwal = 0;
-  jt.rows.forEach(r => {
-    const d = keDate_(r.tanggal);
-    if (d && d >= hariIni && (r.jenis || 'katalog').toLowerCase() === 'katalog' && r.nama.toLowerCase() === p.nama.toLowerCase()) {
-      ubahBaris_(TAB_JADWAL, jt.header, r._row, { gambar: link }); nJadwal++;
-    }
-  });
-  kirim_('✅ Foto disimpan untuk <b>' + esc_(p.nama) + '</b> (baris ' + p._row + ' tab Produk).' +
-    (nJadwal ? '\n' + nJadwal + ' jadwal story produk ini ikut diperbarui.' : '') +
-    '\nMulai sekarang produk ini bisa masuk rencana story otomatis.');
+    .getBlob().setName(c.p.nama + '.jpg');
+  const n = pasangFoto_(tabel, c.p, folderFoto_().createFile(blob));
+  kirim_('✅ Foto disimpan untuk <b>' + esc_(c.p.nama) + '</b> (baris ' + c.p._row + ' tab Produk).' +
+    (n ? '\n' + n + ' jadwal story produk ini ikut diperbarui.' : ''));
 }
 
-/** Jalankan sekali dari editor setelah memasang versi ini: memberi izin Google Drive untuk fitur foto. */
+/** Foto yang diunggah langsung ke folder Drive "Foto Produk Annafi" dengan NAMA FILE = nama produk.
+ *  Jalan otomatis tiap jam, atau kirim /foto ke bot untuk menjalankan sekarang. */
+function sinkronFoto(laporSelalu) {
+  laporSelalu = laporSelalu === true;  // pemicu jam mengirim objek event, bukan true
+  const tabel = bacaTabel_(TAB_PRODUK);
+  const semua = tabel.rows.filter(p => p.nama);
+  const terpakai = semua.map(p => p.gambar).join(' ');
+  const props = PropertiesService.getScriptProperties();
+  const dilapor = JSON.parse(props.getProperty('fotoDilapor') || '[]');
+  const ok = [], gagal = [];
+  const files = folderFoto_().getFiles();
+  while (files.hasNext()) {
+    const f = files.next();
+    if (!/^image\//.test(f.getMimeType()) || terpakai.indexOf(f.getId()) >= 0) continue;
+    const nama = f.getName().replace(/\.[a-z0-9]+$/i, '');
+    const c = cocokProduk_(semua, nama);
+    if (c.p) { const n = pasangFoto_(tabel, c.p, f); ok.push('• ' + esc_(c.p.nama) + (n ? ' (+' + n + ' jadwal)' : '')); }
+    else if (laporSelalu || dilapor.indexOf(f.getId()) < 0) {
+      gagal.push('• <b>' + esc_(f.getName()) + '</b>: ' + (c.mirip.length ? 'cocok ke ' + c.mirip.length + ' produk, perjelas namanya'
+        : 'tidak ada produk dengan nama itu') + saranProduk_(semua, nama, c.mirip).replace(/\n/g, '\n   '));
+      dilapor.push(f.getId());
+    }
+  }
+  props.setProperty('fotoDilapor', JSON.stringify(dilapor.slice(-300)));
+  if (ok.length || gagal.length || laporSelalu) kirim_('📁 <b>Foto dari folder Drive</b>\n' +
+    (ok.length ? '✅ Terpasang:\n' + ok.join('\n') + '\n' : '') +
+    (gagal.length ? '⚠️ Belum terpasang (ganti nama filenya jadi nama produk):\n' + gagal.join('\n') : '') +
+    (!ok.length && !gagal.length ? 'Tidak ada foto baru.' : ''));
+}
+
+/** Jalankan sekali dari editor: izin Google Drive + pemicu sinkron foto tiap jam. */
 function izinkanDrive() {
-  const it = DriveApp.getFoldersByName(CONFIG.FOLDER_FOTO);
-  const folder = it.hasNext() ? it.next() : DriveApp.createFolder(CONFIG.FOLDER_FOTO);
-  kirim_('📁 Folder foto siap: <b>' + esc_(folder.getName()) + '</b>. Sekarang kirim foto produk ke sini dengan caption nama produk.');
+  const folder = folderFoto_();
+  ScriptApp.getProjectTriggers().filter(t => t.getHandlerFunction() === 'sinkronFoto').forEach(t => ScriptApp.deleteTrigger(t));
+  ScriptApp.newTrigger('sinkronFoto').timeBased().everyHours(1).create();
+  kirim_('📁 Folder foto siap: <b>' + esc_(folder.getName()) + '</b>.\nCara 1: kirim foto ke bot dengan caption nama produk.\n' +
+    'Cara 2: unggah ke folder itu dengan <b>nama file = nama produk</b> (dicek tiap jam, atau kirim /foto).');
+  sinkronFoto(true);
 }
 
 // ============================== MANAJER AI ==============================
