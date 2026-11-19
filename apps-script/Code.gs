@@ -28,6 +28,7 @@ const CONFIG = {
   KATEGORI_WAJIB_FOTO: ['AKSESORIS & FASHION', 'MAINAN', 'BUKU BACAAN & ISLAMI', 'KOSMETIK & PERAWATAN',
     'PESTA & ULANG TAHUN', 'SERAGAM SEKOLAH', 'RUMAH TANGGA & LAINNYA', 'MINUMAN & JAJANAN', 'PRAMUKA'],
   FOLDER_FOTO: 'Foto Produk Annafi',               // folder Google Drive untuk foto kiriman lewat bot
+  MODE_PROMO: false,   // false = postingan feed umum (edukasi/info/momen) tanpa kalimat promo & tanpa harga
   JAM_RENCANA: 17,                                 // Minggu jam 17.00 rencana minggu depan dibuat
   ZONA: 'Asia/Jakarta',
   NAMA_TOKO: 'Annafi Atk Menganti',
@@ -100,7 +101,7 @@ const KALENDER_AWAL = [
 const BANTUAN = 'Ketik perintah biasa, contoh:\n' +
   '• <i>jadwalkan story Pensil Joyko 6151 HB besok jam 12</i>\n' +
   '• <i>buat konten edukasi hari Jumat tentang cara memilih kertas</i>\n' +
-  '• <i>undur promo paket ujian ke Senin jam 7 malam</i>\n' +
+  '• <i>undur post Hari Guru ke Senin jam 7 malam</i>\n' +
   '• <i>ganti harga satuan Joyko 6151 jadi 2500</i>\n' +
   '• <i>tunda semua story hari Sabtu</i>\n\n' +
   '📷 Kirim <b>foto produk</b> dengan caption = nama produk, atau unggah ke folder Drive "Foto Produk Annafi" dengan nama file = nama produk lalu kirim /foto.\n\n' +
@@ -271,7 +272,9 @@ function manajer_(instruksi) {
     'Tugasmu: terjemahkan instruksi pemilik toko menjadi aksi terhadap tab Jadwal / Produk.',
     '',
     'ATURAN:',
-    '- jenis hanya: katalog (story produk), edukasi, promo, info, momen (postingan feed).',
+    (CONFIG.MODE_PROMO ? '- jenis hanya: katalog (story produk), edukasi, promo, info, momen (postingan feed).'
+      : '- jenis hanya: katalog (story produk), edukasi, info, momen (postingan feed). Konten promo SEDANG DIMATIKAN: ' +
+        'feed harus informatif/umum, tanpa harga dan tanpa kata promo/diskon/murah/beli sekarang. Kalau diminta promo, jelaskan di balasan.'),
     '- Untuk katalog, "nama" HARUS persis salah satu nama di PRODUK; harga diisi sistem, jangan tulis harga.',
     '- Jangan mengarang harga. Ubah harga hanya kalau pemilik menyebut angkanya di instruksi.',
     '- tanggal format dd/MM/yyyy, jam format HH:mm (boleh kosong = jam ramai otomatis).',
@@ -383,7 +386,8 @@ function barisKonten_(d, produk) {
   const baris = { tanggal: fmtTgl_(keDate_(d.tanggal)), jam: rapikanJam_(d.jam), jenis: jenis, nama: String(d.nama || '').trim(),
     kategori: String(d.kategori || '').toUpperCase(), detail: d.detail || '', poin: poin, gambar: d.gambar || '',
     caption: d.caption || '', tunda: '' };
-  const cari = jenis === 'katalog' ? baris.nama : (d.produk_harga || '');
+  if (!CONFIG.MODE_PROMO && jenis === 'promo') throw new Error('konten promo sedang dimatikan (MODE_PROMO: false)');
+  const cari = jenis === 'katalog' ? baris.nama : (CONFIG.MODE_PROMO ? d.produk_harga || '' : '');
   if (cari) {
     const p = cariProduk_(produk, cari);
     if (!p) throw new Error('Produk "' + cari + '" tidak ada di tab Produk.');
@@ -454,7 +458,10 @@ function buatRencanaMingguan_(paksa) {
     '1. "story": tepat ' + CONFIG.STORY_PER_HARI + ' produk per hari (7 hari), nama PERSIS dari PRODUK. Gilir produk,',
     '   hindari produk yang muncul di RIWAYAT 2 minggu terakhir kalau masih ada pilihan lain, dahulukan yang relevan dengan momen.',
     '2. "feed": 3 postingan pada ' + hariFeed.join(', ') + ' (boleh geser 1 hari kalau ada momen di KALENDER).',
-    '   Campuran: 1 edukasi, 1 promo, 1 info atau momen. Momen dijadwalkan SEBELUM/TEPAT di harinya, promo momen 2-3 hari sebelumnya.',
+    (CONFIG.MODE_PROMO
+      ? '   Campuran: 1 edukasi, 1 promo, 1 info atau momen. Momen dijadwalkan SEBELUM/TEPAT di harinya, promo momen 2-3 hari sebelumnya.'
+      : '   Campuran: edukasi, info, dan momen (TANPA promo). Isinya umum & bermanfaat: tips, pengetahuan, ucapan hari besar.\n' +
+        '   DILARANG: harga, kata promo/diskon/murah/hemat/spesial/beli sekarang, ajakan belanja. produk_harga selalu "".'),
     '   Tiap feed: jenis, tanggal (dd/MM/yyyy), nama (judul maks 6 kata), detail (1 kalimat), poin (3-4 poin singkat,',
     '   boleh format "Judul: isi"), gambar (selalu ""), produk_harga (opsional: nama PERSIS dari PRODUK kalau promo',
     '   menampilkan harga & foto produk itu; JANGAN mengarang harga atau harga paket).',
