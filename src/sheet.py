@@ -3,7 +3,7 @@ import csv, hashlib, io, json, re
 from collections import defaultdict
 from datetime import datetime, timedelta
 import requests
-from config import TZ, JAM_STORY, JAM_FEED
+from config import TZ, JAM_STORY, JAM_FEED, MODE_PROMO
 
 KOLOM = ["tanggal", "jam", "jenis", "nama", "kategori", "detail", "poin",
          "label_harga_1", "harga_1", "label_harga_2", "harga_2",
@@ -82,6 +82,12 @@ def parse(text: str):
         if jenis == "katalog" and not harga:
             errors.append(f"Baris {i} ({r['nama']}): harga kosong")
             continue
+        if fmt == "konten" and not MODE_PROMO:
+            if jenis == "promo":
+                errors.append(f"Baris {i} ({r['nama']}): konten promo sedang dimatikan, baris ini dilewati "
+                              "(ubah jenisnya ke edukasi/info/momen kalau tetap mau diposting)")
+                continue
+            harga = []  # feed umum: tanpa harga
         poin = [x.strip(" •-") for x in re.split(r"[;\n]", r.get("poin", "")) if x.strip(" •-")]
         if fmt == "konten" and not poin and not harga:
             errors.append(f"Baris {i} ({r['nama']}): kolom poin kosong (pisahkan tiap poin dengan ;)")

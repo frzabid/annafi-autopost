@@ -71,4 +71,5 @@ MAKE_KUNCI = _env("MAKE_KUNCI", "")  # kode rahasia, dicek oleh filter di skenar
 # URL publik folder posters/ (mode GitHub). Kosong = mode laptop: gambar di-host lewat foto Facebook
 PUBLIC_BASE_URL = _env("PUBLIC_BASE_URL", "")
 
+MODE_PROMO = _env("MODE_PROMO", "0") == "1"  # 0 = feed tanpa harga, baris berjenis promo tidak diproses
 DRY_RUN = _env("DRY_RUN", "") == "1"  # 1 = tidak benar-benar kirim/posting
