@@ -323,7 +323,7 @@ function manajer_(instruksi) {
 
   const hasil = gemini_(prompt);
   const laporan = [];
-  (hasil.aksi || []).slice(0, 15).forEach(a => {
+  (hasil.aksi || []).slice(0, 40).forEach(a => {
     try { laporan.push(jalankanAksi_(a, instruksi, semuaProduk)); }
     catch (err) { laporan.push('⚠️ ' + esc_(err.message)); }
   });
@@ -361,12 +361,25 @@ function mintaContoh_(baris) {
 
 /** Pilih produk yang kata-katanya muncul di instruksi (hemat kuota Gemini untuk daftar produk yang panjang). */
 function produkRelevan_(produk, instruksi, maks) {
-  const kata = uniq_(String(instruksi).toLowerCase().match(/[a-z0-9]{3,}/g) || [])
-    .filter(k => ['yang', 'dan', 'untuk', 'jam', 'besok', 'hari', 'story', 'buat', 'jadwalkan', 'ganti', 'harga', 'tolong', 'dengan'].indexOf(k) < 0);
-  return produk.map(p => {
-    const n = (p.nama + ' ' + (p.kategori || '')).toLowerCase();
-    return { p: p, skor: kata.reduce((s, k) => s + (n.indexOf(k) >= 0 ? (/\d/.test(k) ? 3 : 1) : 0), 0) };
-  }).filter(x => x.skor > 0).sort((a, b) => b.skor - a.skor).slice(0, maks).map(x => x.p);
+  // Cocokkan per KATA (bukan potongan huruf: "per" tidak lagi cocok ke "paper"), kata yang terlalu umum diabaikan,
+  // dan kata langka diberi bobot lebih besar supaya "krayon" mengalahkan kata yang muncul di ratusan produk.
+  const SINONIM = { crayon: 'krayon', pulpen: 'bolpen', pena: 'bolpen', pen: 'bolpen', stabilo: 'highlighter',
+    tipex: 'tip', notebook: 'buku', binder: 'binder', cat: 'cat', lem: 'lem' };
+  const BUANG = ['yang', 'dan', 'untuk', 'jam', 'besok', 'hari', 'story', 'buat', 'buatkan', 'jadwalkan', 'jadwal', 'ganti', 'harga',
+    'tolong', 'dengan', 'ubah', 'kedepan', 'depan', 'dalam', 'satu', 'minggu', 'seluruh', 'semua', 'katalog', 'fokus', 'sudah',
+    'kamu', 'bebas', 'mengatur', 'sehari', 'atau', 'per', 'merk', 'barang', 'produk', 'postingan', 'poster', 'contoh', 'ini',
+    'itu', 'saja', 'juga', 'bisa', 'mau', 'ingin', 'aku', 'saya', 'tiap', 'setiap', 'kali', 'pagi', 'siang', 'sore', 'malam'];
+  const kata = uniq_((String(instruksi).toLowerCase().match(/[a-z0-9]{3,}/g) || []).map(k => SINONIM[k] || k))
+    .filter(k => BUANG.indexOf(k) < 0);
+  const token = produk.map(p => (p.nama + ' ' + (p.kategori || '')).toLowerCase().match(/[a-z0-9]+/g) || []);
+  const cocok = (tok, k) => tok.some(t => t === k || (k.length >= 4 && t.indexOf(k) === 0));
+  const bobot = {};
+  kata.forEach(k => {
+    const df = token.filter(tok => cocok(tok, k)).length;
+    if (df && df <= produk.length * 0.15) bobot[k] = (/\d/.test(k) ? 3 : 1) / Math.log(2 + df);  // terlalu umum = diabaikan
+  });
+  return produk.map((p, i) => ({ p: p, skor: Object.keys(bobot).reduce((s, k) => s + (cocok(token[i], k) ? bobot[k] : 0), 0) }))
+    .filter(x => x.skor > 0).sort((a, b) => b.skor - a.skor).slice(0, maks).map(x => x.p);
 }
 
 /** Produk di kategori "wajib foto" baru boleh dipilih untuk story kalau kolom gambar sudah terisi. */
