@@ -57,7 +57,9 @@ File: `apps-script/Code.gs`. Berjalan di dalam Google Sheet, gratis, merespons T
   Tanggal Maulid/Ramadan/Idul Fitri diisi sendiri di tab Kalender tiap tahun.
 - **Pengingat foto**: jam 19.00 bot mengirim daftar story katalog besok + status fotonya (foto sendiri / ketemu di internet / tidak ada).
 - **Posting feed lewat Make.com** (skenario *Annafi Autopost*): Webhook → filter (gambar harus dari repo ini) → Instagram
-  *Create a carousel post* (Files = `files`) → Facebook Pages *Create a Post with Photos* (Photos = `foto`, page ANNAFI PRINTING).
+  *Create a carousel post* (Files = `files`) → Facebook Pages *Create a Post with Photos* (Photos = `foto`, page ANNAFI PRINTING) — **dinonaktifkan** lewat filter
+  (`kirim_fb_page` = ya), karena akun Facebook utama "Annafi Atk Menganti" adalah profil pribadi (mode profesional),
+  bukan Page — API Meta tidak bisa memposting ke profil pribadi.
   Alamat webhook disimpan di secret GitHub `MAKE_WEBHOOK_URL`. Kalau izin Facebook kedaluwarsa, buka Make → Credentials → Reauthorize.
 - **Contoh poster**: GitHub → Actions → Run workflow → centang *Kirim contoh poster* (tanpa posting).
 - Webhook bot harus memakai URL Web app berakhiran **/exec** dengan akses **Anyone** (bukan "Anyone with Google account").
