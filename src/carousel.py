@@ -61,9 +61,10 @@ body{font-family:Poppins,sans-serif;color:#1d2a44;background:#ccc}
 .sub{position:absolute;left:120px;right:120px;text-align:center;font-size:32px;line-height:1.45;color:#5a4a30;z-index:5}
 /* slide poin */
 .num{position:absolute;top:190px;left:70px;font-weight:700;font-size:210px;line-height:1;color:transparent;-webkit-text-stroke:4px var(--primary)}
-.ttl{position:absolute;top:410px;left:70px;right:70px;font-weight:700;line-height:1.08}
+.poin{position:absolute;top:410px;left:70px;right:90px;z-index:5}
+.ttl{font-weight:700;line-height:1.08}
 .ttl span{background:linear-gradient(transparent 62%,var(--soft0) 62%)}
-.txt{position:absolute;left:70px;right:90px;line-height:1.5;color:#3b3325}
+.txt{margin-top:34px;line-height:1.5;color:#3b3325}
 .blob{position:absolute;right:-60px;bottom:80px;width:700px;height:590px;border-radius:52% 48% 46% 54%/55% 45% 55% 45%}
 .art{position:absolute;right:20px;bottom:110px;width:660px;height:520px}
 .art svg{width:100%;height:100%}
@@ -169,14 +170,13 @@ def susun_html(p: dict, foto_produk=None) -> tuple[str, int]:
         sisa = " ".join(kata[2:]) if len(kata) > 2 else ""
         ttl = f'<span>{_e(sorot)}</span>' + (f" {_e(sisa)}" if sisa else "")
         uk = _ukuran_judul(judul_p, (84, 74, 64, 56))
-        baris_judul = 1 if len(judul_p) * uk * 0.55 < 940 else 2 if len(judul_p) * uk * 0.55 < 1880 else 3
-        top_txt = 410 + int(uk * 1.08 * baris_judul) + 40
         uk_txt = 44 if len(isi) <= 70 else 38 if len(isi) <= 140 else 32
         art = T.ART[t["art"][k % len(t["art"])]]
         slides.append(
             f'<div class="slide">{_bagian_atas(t, pill)}<div class="num">0{k + 1}</div>'
-            f'<div class="ttl" style="font-size:{uk}px">{ttl}</div>'
-            f'<div class="txt" style="top:{top_txt}px;font-size:{uk_txt}px">{_e(isi)}</div>'
+            # judul & penjelasan mengalir dalam satu blok: panjang judul berapa pun tidak bisa menimpa teks
+            f'<div class="poin"><div class="ttl" style="font-size:{uk}px">{ttl}</div>'
+            f'<div class="txt" style="font-size:{uk_txt}px">{_e(isi)}</div></div>'
             f'<div class="blob" style="background:{t["soft"][k % len(t["soft"])]}"></div><div class="art">{art}</div>'
             f'{_bagian_bawah(i, n)}</div>')
         i += 1
