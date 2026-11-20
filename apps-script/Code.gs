@@ -346,7 +346,7 @@ function simpanChat_(pesan, balasan) {
 /** Permintaan contoh poster → tab Permintaan; sistem GitHub merender dan mengirimnya ke Telegram. */
 function mintaContoh_(baris) {
   const sh = siapkanTab_(SpreadsheetApp.getActive(), TAB_MINTA, KOLOM_MINTA, []);
-  const id = Utilities.getUuid().slice(0, 8);
+  const id = 'c' + Utilities.getUuid().replace(/-/g, '').slice(0, 7); // huruf di depan: supaya Sheets tidak mengubahnya jadi angka
   sh.appendRow([sekarang_(), id, JSON.stringify(baris), 'baru']);
   PropertiesService.getScriptProperties().setProperty('contohTerakhir', JSON.stringify(baris));
   let cepat = false;
