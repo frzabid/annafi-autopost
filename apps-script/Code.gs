@@ -24,7 +24,8 @@ const CONFIG = {
   GEMINI_MODEL: 'gemini-flash-lite-latest',       // cepat (±1-5 detik); ganti kalau Google mengubah nama model
   GEMINI_MODEL_CADANGAN: 'gemini-flash-latest',    // lebih pintar tapi sering sibuk (503) & lambat
   STORY_PER_HARI: 2,                               // jumlah story katalog per hari
-  HARI_FEED: [1, 3, 5],                            // hari postingan feed: 1=Senin 3=Rabu 5=Jumat
+  HARI_FEED: [1, 2, 3, 5, 6],                      // hari favorit feed (1=Senin … 7=Minggu); AI memilih 4-5 di antaranya
+  FEED_PER_MINGGU: '4-5',                          // jumlah feed seminggu; idenya diatur AI, tiap feed tetap menunggu ✅ darimu
   JAM_FEED: '19:00',
   // kategori yang fotonya jarang ada di internet: hanya masuk rencana story kalau sudah ada foto sendiri
   KATEGORI_WAJIB_FOTO: ['AKSESORIS & FASHION', 'MAINAN', 'BUKU BACAAN & ISLAMI', 'KOSMETIK & PERAWATAN',
@@ -541,7 +542,9 @@ function buatRencanaMingguan_(paksa) {
     'BUTUHKAN:',
     '1. "story": tepat ' + CONFIG.STORY_PER_HARI + ' produk per hari (7 hari), nama PERSIS dari PRODUK. Gilir produk,',
     '   hindari produk yang muncul di RIWAYAT 2 minggu terakhir kalau masih ada pilihan lain, dahulukan yang relevan dengan momen.',
-    '2. "feed": 3 postingan pada ' + hariFeed.join(', ') + ' (boleh geser 1 hari kalau ada momen di KALENDER).',
+    '2. "feed": ' + CONFIG.FEED_PER_MINGGU + ' postingan seminggu, ide & harinya KAMU yang atur. Utamakan hari: ' + hariFeed.join(', ') +
+      ' (boleh geser kalau ada momen di KALENDER). Maksimal 1 feed per hari. Kalau SUDAH TERJADWAL sudah berisi feed, cukup lengkapi sampai total ' + CONFIG.FEED_PER_MINGGU + '.',
+    '   Variasikan: jangan dua feed berturut-turut dengan jenis/topik yang sama.',
     (CONFIG.MODE_PROMO
       ? '   Campuran: 1 edukasi, 1 promo, 1 info atau momen. Momen dijadwalkan SEBELUM/TEPAT di harinya, promo momen 2-3 hari sebelumnya.'
       : '   Campuran: edukasi, info, dan momen (TANPA promo). Isinya umum & bermanfaat: tips, pengetahuan, ucapan hari besar.\n' +

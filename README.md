@@ -27,7 +27,7 @@ Google Sheet ──► GitHub Actions (tiap 15 menit)
 File: `apps-script/Code.gs`. Berjalan di dalam Google Sheet, gratis, merespons Telegram dalam hitungan detik.
 
 - **Chat bebas ke bot** → Gemini mengubah jadi aksi di tab Jadwal/Produk (tambah, ubah, tunda — tidak pernah menghapus).
-- **Tiap Minggu 17.00** → rencana konten minggu depan (story katalog dari tab Produk + 3 feed) ditulis ke tab Jadwal,
+- **Tiap Minggu 17.00** → rencana konten minggu depan (story katalog dari tab Produk + 4–5 feed yang idenya diatur AI) ditulis ke tab Jadwal,
   ringkasannya dikirim ke Telegram. Ketik `/rencana` untuk membuat kapan saja.
 - **Tombol ✅/❌** dicatat ke tab `Persetujuan`; sistem GitHub membacanya di pengecekan berikutnya.
 - Pengaman: harga hanya dari tab Produk atau angka yang kamu ketik sendiri; orang lain yang chat ke bot diabaikan.
