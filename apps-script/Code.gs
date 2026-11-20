@@ -130,7 +130,7 @@ function doPost(e) {
     else if (u.message && u.message.text) tanganiPesan_(u.message);
   } catch (err) {
     console.error(err);
-    try { kirim_('⚠️ Terjadi kesalahan: ' + esc_(String(err && err.message || err))); } catch (e2) {}
+    try { kirim_('⚠️ ' + esc_(String(err && err.message || err))); } catch (e2) {}
   }
   // HtmlService (bukan ContentService): ContentService membalas redirect 302 yang ditolak webhook Telegram
   return HtmlService.createHtmlOutput('ok');
@@ -609,30 +609,38 @@ function ringkasJadwal_(nHari) {
 
 // ============================== GEMINI ==============================
 function gemini_(prompt) {
-  const model = [CONFIG.GEMINI_MODEL, CONFIG.GEMINI_MODEL_CADANGAN];
+  // Model utama → cadangan → model stabil; tiap model dicoba ulang singkat kalau sedang sibuk (503) / kena batas (429)
+  const model = uniq_([CONFIG.GEMINI_MODEL, CONFIG.GEMINI_MODEL_CADANGAN, 'gemini-2.5-flash-lite', 'gemini-2.5-flash']);
   const body = JSON.stringify({ contents: [{ role: 'user', parts: [{ text: prompt }] }],
     generationConfig: { responseMimeType: 'application/json', temperature: 0.7 } });
-  let terakhir = '';
+  let terakhir = '', sibuk = false;
   for (let i = 0; i < model.length; i++) {
     const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model[i] + ':generateContent';
-    // Key format baru "AQ." maupun lama "AIza": kirim lewat header; kalau ditolak (401/403) coba lewat parameter ?key=
-    let r = UrlFetchApp.fetch(url, { method: 'post', contentType: 'application/json', muteHttpExceptions: true,
-      headers: { 'x-goog-api-key': CONFIG.GEMINI_API_KEY }, payload: body });
-    if (r.getResponseCode() === 401 || r.getResponseCode() === 403) {
-      r = UrlFetchApp.fetch(url + '?key=' + encodeURIComponent(CONFIG.GEMINI_API_KEY),
-        { method: 'post', contentType: 'application/json', muteHttpExceptions: true, payload: body });
+    for (let coba = 0; coba < 2; coba++) {
+      // Key format baru "AQ." maupun lama "AIza": kirim lewat header; kalau ditolak (401/403) coba lewat parameter ?key=
+      let r = UrlFetchApp.fetch(url, { method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+        headers: { 'x-goog-api-key': CONFIG.GEMINI_API_KEY }, payload: body });
+      if (r.getResponseCode() === 401 || r.getResponseCode() === 403) {
+        r = UrlFetchApp.fetch(url + '?key=' + encodeURIComponent(CONFIG.GEMINI_API_KEY),
+          { method: 'post', contentType: 'application/json', muteHttpExceptions: true, payload: body });
+      }
+      const kode = r.getResponseCode();
+      if (kode === 200) {
+        const j = JSON.parse(r.getContentText());
+        const teks = j.candidates && j.candidates[0] && j.candidates[0].content.parts
+          .filter(p => !p.thought).map(p => p.text || '').join('');
+        return JSON.parse(String(teks).replace(/^```(json)?|```$/g, '').trim());
+      }
+      terakhir = kode + ' ' + model[i];
+      if (kode === 404) break;                         // model tidak ada → langsung ke model berikutnya
+      if (kode !== 429 && kode < 500) throw new Error('Gemini menolak permintaan (' + kode + '): ' +
+        r.getContentText().replace(/\s+/g, ' ').slice(0, 160));
+      sibuk = true;
+      Utilities.sleep(1500 * (coba + 1));              // sibuk sebentar → tunggu lalu coba lagi
     }
-    const kode = r.getResponseCode();
-    if (kode === 200) {
-      const j = JSON.parse(r.getContentText());
-      const teks = j.candidates && j.candidates[0] && j.candidates[0].content.parts
-        .filter(p => !p.thought).map(p => p.text || '').join('');
-      return JSON.parse(String(teks).replace(/^```(json)?|```$/g, '').trim());
-    }
-    terakhir = kode + ' ' + r.getContentText().slice(0, 200);
-    if (kode !== 429 && kode !== 404 && kode < 500) break;  // kuota habis / model tidak ada → coba cadangan
   }
-  throw new Error('Gemini gagal (' + terakhir + ')');
+  throw new Error(sibuk ? 'Server Gemini sedang sibuk (semua model penuh). Coba kirim ulang pesanmu 1-2 menit lagi ya.'
+    : 'Gemini gagal (' + terakhir + ')');
 }
 
 /** Jalankan dari editor untuk mengetes API key Gemini (hasilnya dikirim ke Telegram). */
