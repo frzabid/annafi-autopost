@@ -120,7 +120,7 @@ def post_make(image_url: str, caption: str, semua: list[str] | None = None) -> s
         "kunci": MAKE_KUNCI, "gambar": image_url, "caption": caption, "gambar_semua": semua, "jumlah": len(semua),
         # bentuk siap pakai untuk modul Make: Instagram "Create a carousel post" (Files) & Facebook Pages (Photos)
         "files": [{"media_type": "IMAGE", "image_url": u} for u in semua],
-        "foto": [{"url": u} for u in semua]})
+        "foto": [{"type": "url", "url": u} for u in semua]})
     if r.status_code >= 400:
         raise RuntimeError(f"Make menolak ({r.status_code}): {r.text[:200]}")
     return r.text.strip()[:300] or "diterima Make"
