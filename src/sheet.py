@@ -59,7 +59,10 @@ def parse(text: str):
             continue
         fmt = "story" if jenis == "katalog" else "konten"
         jam_otomatis = not r.get("jam")
-        if jam_otomatis:  # jam kosong -> pakai jam ramai
+        ditunda = r.get("tunda", "").lower() in ("ya", "y", "tunda", "1", "true")
+        if jam_otomatis and ditunda:  # baris ditunda tidak memakai jatah jam ramai
+            waktu = _waktu(r.get("tanggal"), "23:59")
+        elif jam_otomatis:  # jam kosong -> pakai jam ramai
             tgl = _tanggal(r.get("tanggal"))
             if not tgl:
                 errors.append(f"Baris {i} ({r['nama']}): tanggal tidak terbaca")
