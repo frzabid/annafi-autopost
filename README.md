@@ -59,7 +59,8 @@ File: `apps-script/Code.gs`. Berjalan di dalam Google Sheet, gratis, merespons T
 - **Posting feed lewat Make.com** (skenario *Annafi Autopost*): Webhook → filter (gambar harus dari repo ini) → Instagram
   *Create a carousel post* (Files = `files`) → Facebook Pages *Create a Post with Photos* (Photos = `foto`, page ANNAFI PRINTING) — **dinonaktifkan** lewat filter
   (`kirim_fb_page` = ya), karena akun Facebook utama "Annafi Atk Menganti" adalah profil pribadi (mode profesional),
-  bukan Page — API Meta tidak bisa memposting ke profil pribadi.
+  bukan Page — API Meta tidak bisa memposting ke profil pribadi. Setelah feed tayang, bot mengingatkan di Telegram
+  untuk menekan "Bagikan ke Facebook" dari postingan Instagram (bagi-otomatis Pusat Akun tidak berlaku untuk posting API).
   Alamat webhook disimpan di secret GitHub `MAKE_WEBHOOK_URL`. Kalau izin Facebook kedaluwarsa, buka Make → Credentials → Reauthorize.
 - **Contoh poster**: GitHub → Actions → Run workflow → centang *Kirim contoh poster* (tanpa posting).
 - Webhook bot harus memakai URL Web app berakhiran **/exec** dengan akses **Anyone** (bukan "Anyone with Google account").

@@ -411,7 +411,10 @@ def publish():
                 urls = url_slides(item, st)
                 hasil = meta.post_make(urls[0], item["caption"], urls)
                 st.update(status="terposting", cara="make", waktu_posting=datetime.now(TZ).isoformat())
-                notify.pesan(f"✅ <b>{nama}</b> dikirim ke Instagram & Facebook lewat Make.\n{html.escape(hasil)}")
+                link_ig = f"https://www.instagram.com/{config.TOKO['ig'].lstrip('@')}/"
+                notify.pesan(f"✅ <b>{nama}</b> dikirim ke Instagram (tayang ±1 menit lagi).\n\n"
+                             f"📲 <b>Bagikan ke Facebook</b> (profil Annafi Atk Menganti tidak bisa otomatis):\n"
+                             f"buka postingannya di {link_ig} → ketuk <b>Bagikan ke Facebook</b> di bawah foto.")
             else:  # belum ada jalur posting feed: beri tahu sekali, jangan dihitung gagal
                 if not st.get("info_meta"):
                     notify.pesan(f"ℹ️ <b>{nama}</b> sudah waktunya tayang, tapi jalur posting feed belum diatur "
