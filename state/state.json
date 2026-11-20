@@ -14,13 +14,15 @@
   },
   "e34ed5e46b": {
    "nama": "Pensil Joyko 2B P-8137",
-   "status": "pratinjau",
+   "status": "terposting",
    "gagal": 0,
    "waktu_tayang": "Jumat 20/11 15:00",
    "dari_sheet": false,
    "poster": "e34ed5e46b-49bbcf61f0.jpg",
    "sumber_gambar": "",
-   "hash": "49bbcf61f0"
+   "hash": "49bbcf61f0",
+   "cara": "manual",
+   "waktu_posting": "2026-11-20T15:01:38.599828+07:00"
   },
   "632c4be81f": {
    "nama": "Buku Spiral A5 Fancy",
