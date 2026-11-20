@@ -2,9 +2,13 @@
  "produk": {
   "49ecfbb87a": {
    "nama": "Pensil Joyko 6151 HB",
-   "status": "baru",
+   "status": "pratinjau",
    "gagal": 0,
-   "waktu_tayang": "Jumat 20/11 10:00"
+   "waktu_tayang": "Jumat 20/11 10:00",
+   "dari_sheet": true,
+   "poster": "49ecfbb87a-a741c7f3a8.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1NIiwW5_WktS0tdUS_78jsFkzuJRBjA4y/view",
+   "hash": "a741c7f3a8"
   },
   "e34ed5e46b": {
    "nama": "Pensil Joyko 2B P-8137",
