@@ -3,6 +3,8 @@
 Suara dibuat dengan ElevenLabs bila secret ELEVENLABS_API_KEY tersedia (model eleven_multilingual_v2,
 mendukung bahasa Indonesia); kalau tidak, cadangan edge-tts (gratis, tidak resmi). Butuh internet -> GitHub Actions.
 ID suara ElevenLabs bisa diganti lewat variabel ELEVEN_VOICE_NARATOR / ELEVEN_VOICE_NAFI (dari Voice Library).
+Pilihan ketiga: Gemini TTS (secret GEMINI_API_KEY) - suara diarahkan dengan instruksi gaya bahasa alami.
+Mesin dipilih lewat variabel TTS_MESIN = gemini | eleven | edge (kosong = otomatis: eleven > gemini > edge).
 Tiap baris punya waktu mulai; kalau lebih panjang dari slotnya, otomatis dipercepat sedikit.
 Pakai:  python cerita/suara.py video_bisu.mp4 out.mp4
 """
@@ -13,6 +15,8 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
+
+import base64
 
 import requests
 
@@ -25,6 +29,20 @@ ELEVEN = {
     "nafi": {"voice": os.environ.get("ELEVEN_VOICE_NAFI") or "EXAVITQu4vr4xnSDxMaL",
              "settings": {"stability": 0.4, "similarity_boost": 0.8, "style": 0.55, "use_speaker_boost": True}},
 }
+
+GEMINI_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
+GEMINI_TTS_MODEL = [m for m in (os.environ.get("GEMINI_TTS_MODEL"), "gemini-3.1-flash-tts-preview",
+                                "gemini-2.5-flash-preview-tts") if m]
+GEMINI = {
+    "narator": {"voice": os.environ.get("GEMINI_VOICE_NARATOR") or "Charon",
+                "gaya": "Bacakan dalam bahasa Indonesia dengan suara narator cerita misteri: pelan, hangat, "
+                        "sedikit menegangkan, beri jeda dramatis pada tanda titik-titik"},
+    "nafi": {"voice": os.environ.get("GEMINI_VOICE_NAFI") or "Leda",
+             "gaya": "Ucapkan dalam bahasa Indonesia sebagai perempuan muda yang ramah, "
+                     "dengan nada kaget dan penasaran"},
+}
+MESIN = (os.environ.get("TTS_MESIN") or "").strip().lower() or (
+    "eleven" if ELEVEN_KEY else "gemini" if GEMINI_KEY else "edge")
 
 SUARA = {
     "narator": {"voice": "id-ID-ArdiNeural", "rate": "-4%", "pitch": "-6Hz"},
@@ -62,19 +80,50 @@ def _eleven(teks: str, tokoh: str, out: str) -> None:
     Path(out).write_bytes(r.content)
 
 
+def _gemini(teks: str, tokoh: str, out: str) -> None:
+    c = GEMINI[tokoh]
+    body = {"contents": [{"parts": [{"text": f"{c['gaya']}: {teks}"}]}],
+            "generationConfig": {"responseModalities": ["AUDIO"],
+                                 "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": c["voice"]}}}}}
+    err = ""
+    for model in GEMINI_TTS_MODEL:
+        r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+                          headers={"x-goog-api-key": GEMINI_KEY}, json=body, timeout=180)
+        if r.status_code == 200:
+            part = r.json()["candidates"][0]["content"]["parts"][0]["inlineData"]
+            pcm = Path(out).with_suffix(".pcm")
+            pcm.write_bytes(base64.b64decode(part["data"]))
+            rate = 24000
+            if "rate=" in part.get("mimeType", ""):
+                rate = int(part["mimeType"].split("rate=")[1].split(";")[0])
+            subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "s16le", "-ar", str(rate), "-ac", "1",
+                            "-i", str(pcm), out], check=True)
+            print(f"    (gemini {model}, suara {c['voice']})")
+            return
+        err = f"{model} {r.status_code}: {r.text[:200]}"
+    raise RuntimeError(f"Gemini TTS gagal: {err}")
+
+
 def _tts(teks: str, tokoh: str, out: str) -> None:
-    if ELEVEN_KEY:
+    if MESIN == "eleven" and ELEVEN_KEY:
         return _eleven(teks, tokoh, out)
+    if MESIN == "gemini" and GEMINI_KEY:
+        return _gemini(teks, tokoh, out)
     import edge_tts
     s = SUARA[tokoh]
     asyncio.run(edge_tts.Communicate(teks, s["voice"], rate=s["rate"], pitch=s["pitch"]).save(out))
 
 
 def tambah_suara(video: str, out: str, baris=BARIS_PEMBUKA, volume_efek: float = 0.55) -> str:
+    # mesin diminta tapi kuncinya tidak ada -> pakai cadangan, dan beri tahu
+    global MESIN
+    if (MESIN == "gemini" and not GEMINI_KEY) or (MESIN == "eleven" and not ELEVEN_KEY):
+        print(f"! kunci untuk {MESIN} tidak ada, pakai edge-tts")
+        MESIN = "edge"
     with tempfile.TemporaryDirectory() as tmp:
         inputs, filt = ["-i", video], []
         for i, (mulai, slot, tokoh, teks) in enumerate(baris):
-            mp3 = str(Path(tmp) / f"b{i}.mp3")
+            mp3 = str(Path(tmp) / f"b{i}.{'wav' if MESIN == 'gemini' else 'mp3'}")
             _tts(teks, tokoh, mp3)
             d = _durasi(mp3)
             tempo = min(1.35, max(1.0, d / slot))  # percepat bila tidak muat di slotnya
@@ -92,5 +141,5 @@ def tambah_suara(video: str, out: str, baris=BARIS_PEMBUKA, volume_efek: float =
 
 
 if __name__ == "__main__":
-    print("Mesin suara:", f"ElevenLabs ({ELEVEN_MODEL})" if ELEVEN_KEY else "edge-tts (cadangan)")
+    print("Mesin suara:", MESIN)
     print(tambah_suara(sys.argv[1], sys.argv[2]))

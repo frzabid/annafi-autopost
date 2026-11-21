@@ -2,6 +2,11 @@ name: Render cerita (motion comic)
 
 on:
   workflow_dispatch:
+    inputs:
+      mesin:
+        description: "Mesin suara: gemini / eleven / edge (kosong = otomatis)"
+        required: false
+        default: ""
   push:
     branches: [main]
     paths:
@@ -34,9 +39,12 @@ jobs:
           ELEVEN_VOICE_NARATOR: ${{ vars.ELEVEN_VOICE_NARATOR }}
           ELEVEN_VOICE_NAFI: ${{ vars.ELEVEN_VOICE_NAFI }}
           ELEVEN_MODEL: ${{ vars.ELEVEN_MODEL }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TTS_MESIN: ${{ inputs.mesin || vars.TTS_MESIN }}
         run: |
           python cerita/render_pembuka.py /tmp/bisu.mp4
-          python cerita/suara.py /tmp/bisu.mp4 cerita/contoh/misteri_part1_pembuka_suara.mp4
+          M="${TTS_MESIN:-auto}"
+          python cerita/suara.py /tmp/bisu.mp4 "cerita/contoh/misteri_part1_pembuka_suara_${M}.mp4"
       - name: Simpan hasil
         run: |
           git config user.name "annafi-bot"
