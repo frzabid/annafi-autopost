@@ -2,6 +2,7 @@
 
 Tokoh: Mbak Laras (±32, penjaga toko; pakaian biasa, tanpa logo). Latar toko dibuat mirip toko Annafi asli. Laras, Hadi, Rani = sahabat SMA, kini ±32 th (lulus 2011). Bima (17) = keponakan Rani. Raka (17, SMA kelas 12), Dinda (16, adik Raka, SMA, rambut pendek tanpa kerudung). Pak Hadi = guru (batik hijau). Rani tanpa kerudung. Kilas balik / foto lama: Laras, Hadi, Rani berseragam SMA.
 Kostum: pagi/jam sekolah = seragam SMA; sore setelah pulang, malam, hari Minggu = baju bebas (raka_bebas, dinda_bebas, bima_bebas, hadi_bebas); Bima berjaket gelap = bima_jaket (Part 2–3); kilas balik = laras_sma, hadi_sma, rani_sma.
+Sosok/siluet berjaket hitam yang belum terungkap = tokoh "siluet" (wajah tidak terlihat); jangan pakai bima_jaket atau rani untuk sosok ini sebelum Part 8.
 Lokasi: JANGAN menyebut nama daerah/kota (Menganti, Gresik, dll.) di dialog, narasi, teks layar, maupun caption; cukup "toko" / "toko Annafi".
 Format: reel 9:16, 45–60 dtk per part, kilas balik 3 dtk di awal, akhir menggantung. Jadwal Selasa & Jumat 19.00.
 

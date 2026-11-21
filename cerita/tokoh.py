@@ -122,6 +122,8 @@ TOKOH = {
     "hadi_bebas": dict(nama="Hadi (bebas)", jk="l", rambut="#1d1716", gaya_rambut="rapi", kulit="#D49A70", kacamata=True, kumis=True,
                        skala=1.03, baju="#d8c7a3", baju2="#b9a67e", kerah=True, kerah_warna="#d8c7a3", lengan_pendek=True,
                        bawah="#5a4a3a", bawah_jenis="celana", sepatu="#3b2b25"),
+    # sosok misterius berjaket hitam bertudung: wajah tidak terlihat (identitas dirahasiakan sampai Part 8)
+    "siluet": dict(nama="Sosok misterius", jk="", siluet=True, skala=1.0),
     # kilas balik / foto lama (SMA, ±2011)
     "laras_sma": dict(nama="Laras (SMA)", jk="p", kulit=KULIT, skala=0.97, **_KERUDUNG_SEKOLAH, **_SMA_P),
     "hadi_sma": dict(nama="Hadi (SMA)", jk="l", rambut="#1d1716", gaya_rambut="rapi", kulit="#D49A70", kacamata=True,
@@ -249,9 +251,35 @@ def _atasan(t: dict, y1: int = 290) -> str:
     return out
 
 
+_HITAM = "#121216"
+
+
+def _siluet_badan() -> str:
+    return f'''<svg viewBox="0 0 400 900" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="200" cy="872" rx="120" ry="16" fill="#000" opacity=".2"/>
+    <path d="M116 520 L284 520 L282 850 L212 850 L200 640 L188 850 L118 850Z" fill="{_HITAM}"/>
+    <path d="M118 330 C88 380 80 460 92 560" stroke="{_HITAM}" stroke-width="48" fill="none" stroke-linecap="round"/>
+    <path d="M282 330 C312 380 320 460 308 560" stroke="{_HITAM}" stroke-width="48" fill="none" stroke-linecap="round"/>
+    <path d="M104 330 C104 296 150 284 200 284 C250 284 296 296 296 330 L300 560 L100 560Z" fill="{_HITAM}"/>
+    <path d="M200 66 C126 66 108 140 116 220 C122 280 150 316 200 316 C250 316 278 280 284 220 C292 140 274 66 200 66Z" fill="{_HITAM}"/>
+    <ellipse cx="200" cy="214" rx="52" ry="62" fill="#000"/>
+    <path d="M150 330 L200 380 L250 330" stroke="#2a2a30" stroke-width="5" fill="none"/>
+    </svg>'''
+
+
+def _siluet_dada() -> str:
+    return f'''<svg viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg">
+    <path d="M50 520 C50 400 120 350 200 350 C280 350 350 400 350 520Z" fill="{_HITAM}"/>
+    <path d="M200 80 C116 80 96 164 104 252 C110 320 146 360 200 360 C254 360 290 320 296 252 C304 164 284 80 200 80Z" fill="{_HITAM}"/>
+    <ellipse cx="200" cy="244" rx="60" ry="72" fill="#000"/>
+    </svg>'''
+
+
 def badan(id_: str, ekspresi: str = "senang") -> str:
     """Tokoh seluruh badan, viewBox 0 0 400 900 (kaki di y=868)."""
     t = TOKOH[id_]
+    if t.get("siluet"):
+        return _siluet_badan()
     b, k, bw = t["baju"], t["kulit"], t["bawah"]
     if t["bawah_jenis"] == "rok":
         bawah = f'<path d="M120 520 L280 520 L318 850 L82 850Z" fill="{bw}"/>'
@@ -294,6 +322,8 @@ def badan(id_: str, ekspresi: str = "senang") -> str:
 def dada(id_: str, ekspresi: str = "senang") -> str:
     """Tokoh setengah badan untuk close-up, viewBox 0 0 400 520."""
     t = TOKOH[id_]
+    if t.get("siluet"):
+        return _siluet_dada()
     b, b2 = t["baju"], t["baju2"]
     if t.get("batik"):
         b = "url(#batik)"
