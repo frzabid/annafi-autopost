@@ -153,6 +153,7 @@ tokoh SVG `tokoh.py` + latar toko `latar.py`, suara Gemini TTS, panjang adegan m
 - Lewat bot Telegram: *buat part 1* / *ulang part 1, Raka lebih panik* → video contoh masuk ke Telegram (tidak diposting).
   *jadwalkan yang tadi hari Selasa* → masuk tab Jadwal (`jenis` = cerita, jam kosong = 20.00).
 - Rencana mingguan otomatis menambah part berikutnya tiap Selasa & Jumat (sesuai part yang ada di naskah).
-- H-1 jam 20.00 video dirender → Telegram ✅/❌. Jam tayang: `MAKE_REEL` = 1 → diposting lewat Make; kalau belum,
-  videonya dikirim ke Telegram untuk diunggah manual.
+- **Semi-manual**: H-2 bot mengingatkan render (Claude merender lewat workflow *Render cerita*), tombol **Sudah dirender**;
+  pengingat diulang H-1 20.00 kalau belum. Jam tayang: bot mengirim caption siap salin + tombol **Sudah upload**
+  (diingatkan lagi 1 jam kemudian, berhenti setelah 24 jam).
 - Manual: Actions → *Render cerita* → Run workflow (part, arahan).
