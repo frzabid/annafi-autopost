@@ -578,10 +578,12 @@
   },
   "cbc8e806dd": {
    "nama": "Misteri Surat Tanpa Nama Part 1",
-   "status": "menunggu_upload",
+   "status": "terposting",
    "gagal": 0,
    "waktu_tayang": "Sabtu 21/11 17:15",
-   "hash": "8770e841be"
+   "hash": "8770e841be",
+   "cara": "manual",
+   "waktu_posting": "2026-11-21T17:30:00+07:00"
   }
  },
  "error_terkirim": [
