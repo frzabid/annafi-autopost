@@ -46,7 +46,8 @@ LEBAR = {"depan_buka", "depan", "depan_malam", "dalam"}  # tokoh tampil seluruh 
 OBJEK = {"amplop": "amplop krem bergambar bintang biru", "amplop_tua": "amplop tua kekuningan",
          "surat": "kertas surat bertulisan tangan"}
 KAMERA = ["diam", "zoom_in", "zoom_out", "geser", "goyang"]
-EFEK = {"bel": 1.6, "klik": 0.2, "kertas": 0.6, "deg": 1.4, "langkah": 1.6}
+EFEK = {"bel": 1.6, "klik": 0.2, "kertas": 0.6, "deg": 1.4, "langkah": 1.6, "lari": 1.4, "jantung": 2.4,
+        "angin": 3.0, "detik": 2.0, "pintu": 1.2, "petir": 3.0}
 WAKTU = ["pagi", "siang", "sore", "malam"]
 POSISI_LEBAR = {"kiri": 230, "tengah": 540, "kanan": 850}
 POSISI_DEKAT = {"kiri": 290, "tengah": 540, "kanan": 790}
@@ -306,15 +307,43 @@ def _rekam(page, isi, durasi, folder):
 SFX = {
     "bel": "(0.22*sin(2*PI*1046.5*t)+0.16*sin(2*PI*1568*t))*exp(-4*t)+if(gte(t,0.2),(0.2*sin(2*PI*1318.5*t)+0.14*sin(2*PI*1975.5*t))*exp(-4*(t-0.2)),0)",
     "klik": "0.35*sin(2*PI*2200*t)*exp(-60*t)",
-    "kertas": "0.22*(random(0)*2-1)*exp(-5*t)*(0.6+0.4*sin(2*PI*9*t))",
-    "deg": "0.6*sin(2*PI*52*t)*exp(-4*t)",
-    "langkah": "0.45*sin(2*PI*85*t)*(exp(-28*t)+if(gte(t,0.38),exp(-28*(t-0.38)),0)+if(gte(t,0.76),exp(-28*(t-0.76)),0)"
+    "kertas": "0.3*(random(0)*2-1)*exp(-5*t)*(0.55+0.45*sin(2*PI*11*t))",
+    "deg": "0.7*sin(2*PI*52*t)*exp(-4*t)+0.25*sin(2*PI*104*t)*exp(-6*t)",
+    "langkah": "0.5*sin(2*PI*85*t)*(exp(-28*t)+if(gte(t,0.38),exp(-28*(t-0.38)),0)+if(gte(t,0.76),exp(-28*(t-0.76)),0)"
                "+if(gte(t,1.14),exp(-28*(t-1.14)),0))",
+    "lari": "0.5*sin(2*PI*95*t)*(exp(-35*t)+if(gte(t,0.2),exp(-35*(t-0.2)),0)+if(gte(t,0.4),exp(-35*(t-0.4)),0)+if(gte(t,0.6),exp(-35*(t-0.6)),0)"
+            "+if(gte(t,0.8),exp(-35*(t-0.8)),0)+if(gte(t,1.0),exp(-35*(t-1.0)),0))*(1.2-t/1.4)",
+    "jantung": "0.9*sin(2*PI*55*t)*(exp(-22*t)+if(gte(t,0.24),0.7*exp(-22*(t-0.24)),0)+if(gte(t,1.2),exp(-22*(t-1.2)),0)"
+               "+if(gte(t,1.44),0.7*exp(-22*(t-1.44)),0))",
+    "angin": "0.22*(random(0)*2-1)*(0.55+0.45*sin(2*PI*0.35*t))*min(1,t/0.8)*min(1,(3-t)/0.8)",
+    "detik": "0.35*sin(2*PI*2100*t)*exp(-90*mod(t,0.5))*if(lt(mod(t,1),0.5),1,0.7)",
+    "pintu": "0.18*sin(2*PI*(300+180*sin(2*PI*1.7*t))*t)*min(1,t/0.1)*exp(-1.5*t)",
+    "petir": "0.6*(random(0)*2-1)*exp(-3*t)*if(lt(t,0.08),2,1)+0.6*sin(2*PI*38*t)*exp(-1.2*t)",
+    # otomatis (dipasang mesin, bukan dipilih AI)
+    "whoosh": "0.45*(random(0)*2-1)*pow(sin(PI*t/0.7),2)",
+    "stinger": "0.75*sin(2*PI*46*t)*exp(-2.4*t)+0.22*sin(2*PI*880*t)*exp(-3*t)*(1+0.5*sin(2*PI*7*t))+0.14*sin(2*PI*1318.5*t)*exp(-4*t)"
+               "+0.12*sin(2*PI*622*t)*exp(-2.5*t)",
+    "riser": "0.22*sin(2*PI*(180*t+90*t*t))*pow(t/3,2)+0.22*(random(0)*2-1)*pow(t/3,3)",
+    "burung": "0.07*sin(2*PI*(2600+900*sin(2*PI*14*t))*t)*gt(sin(2*PI*1.1*t+1),0.82)"
+              "+0.05*sin(2*PI*(3400+700*sin(2*PI*18*t))*t)*gt(sin(2*PI*0.7*t),0.9)",
+    "jangkrik": "0.05*sin(2*PI*4300*t)*gt(sin(2*PI*28*t),0)*gt(sin(2*PI*0.9*t),0.2)"
+                "+0.04*sin(2*PI*3900*t)*gt(sin(2*PI*24*t+1),0)*gt(sin(2*PI*0.6*t+2),0.3)",
 }
+SFX_AF = {  # filter tambahan supaya efek sintetis terdengar lebih alami
+    "kertas": "highpass=f=1200,lowpass=f=7000", "angin": "lowpass=f=600,highpass=f=80",
+    "whoosh": "highpass=f=300,lowpass=f=2600", "riser": "highpass=f=150", "petir": "lowpass=f=1800",
+    "langkah": "lowpass=f=900", "lari": "lowpass=f=900",
+}
+DURASI_OTO = {"whoosh": 0.7, "stinger": 2.6, "riser": 3.0}
+# rantai suara: buang dengung rendah, tonjolkan kejelasan (presence), ratakan volume
+SUARA_JERNIH = ("aresample=44100,highpass=f=90,lowpass=f=11000,equalizer=f=220:t=q:w=1:g=-3,"
+                "equalizer=f=3200:t=q:w=1.3:g=4,equalizer=f=6500:t=q:w=2:g=1.5,"
+                "acompressor=threshold=-22dB:ratio=3.5:attack=4:release=90:makeup=5,loudnorm=I=-15:TP=-1.5:LRA=7")
 
 
-def _wav(expr, d, out):
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i", f"aevalsrc='{expr}':s=44100:d={d:.2f}", out], check=True)
+def _wav(expr, d, out, af=""):
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i", f"aevalsrc='{expr}':s=44100:d={d:.2f}",
+                    *(["-af", af] if af else []), out], check=True)
     return out
 
 
@@ -360,32 +389,70 @@ def render(papan, out_mp4, terakhir=False):
             filt.append(f"{vlab}[{i}:v]xfade=transition=fade:duration={X}:offset={mulai[i]:.3f}[v{i}]")
             vlab = f"[v{i}]"
         idx = len(klip)
-        musik = ("(0.035*sin(2*PI*220*t)+0.03*sin(2*PI*261.6*t)+0.025*sin(2*PI*329.6*t))*(0.75+0.25*sin(2*PI*0.25*t))"
-                 "*min(1,t/1.5)")
-        inputs += ["-i", _wav(musik, total, str(tmp / "musik.wav"))]
-        label.append(f"[{idx}:a]")
+        # musik latar misteri: drone rendah + pulsa pelan, naik sedikit menjelang akhir
+        musik = ("(0.045*sin(2*PI*110*t)+0.03*sin(2*PI*164.8*t)+0.025*sin(2*PI*220*t)+0.018*sin(2*PI*261.6*t))"
+                 "*(0.7+0.3*sin(2*PI*0.2*t))*min(1,t/1.5)"
+                 f"*(1+0.5*min(1,max(0,(t-{max(0, mulai[-1] - 6):.2f})/6)))"
+                 "+0.05*sin(2*PI*48*t)*exp(-9*mod(t,1.6))")
+        inputs += ["-i", _wav(musik, total, str(tmp / "musik.wav"), "lowpass=f=1500")]
+        bg, vo = [f"[{idx}:a]"], []
         idx += 1
+        cache = {}
 
-        def taruh(path, detik, vol, nama):
+        def efek(nama, d=None):
+            d = d or EFEK.get(nama) or DURASI_OTO[nama]
+            k = f"{nama}-{d:.2f}"
+            if k not in cache:
+                cache[k] = _wav(SFX[nama], d, str(tmp / f"sfx_{k}.wav"), SFX_AF.get(nama, ""))
+            return cache[k]
+
+        def taruh(path, detik, vol, nama, suara=False):
             nonlocal idx
             ms = int(max(0, detik) * 1000)
             inputs.extend(["-i", path])
-            filt.append(f"[{idx}:a]adelay={ms}|{ms},volume={vol}[{nama}]")
-            label.append(f"[{nama}]")
+            rantai = (SUARA_JERNIH + "," if suara else "aresample=44100,")
+            filt.append(f"[{idx}:a]{rantai}aformat=channel_layouts=mono,adelay={ms}|{ms},volume={vol}[{nama}]")
+            (vo if suara else bg).append(f"[{nama}]")
             idx += 1
 
-        sfx_cache = {}
         for i, a in enumerate(adegan):
+            m = mulai[i]
+            if i:  # transisi antar adegan
+                taruh(efek("whoosh"), m - 0.35, 0.55, f"w{i}")
+            # suasana: burung di pagi hari (luar toko), jangkrik + angin di malam hari
+            if a.get("waktu") == "malam":
+                taruh(efek("jangkrik", a["_durasi"]), m, 0.7, f"amb{i}")
+                taruh(efek("angin", a["_durasi"]), m, 0.5, f"ang{i}")
+            elif a.get("waktu") == "pagi" and a["latar"] in ("depan", "depan_buka"):
+                taruh(efek("burung", a["_durasi"]), m, 0.6, f"amb{i}")
             for j, e in enumerate(a.get("efek", [])):
-                if e not in sfx_cache:
-                    sfx_cache[e] = _wav(SFX[e], EFEK[e], str(tmp / f"sfx_{e}.wav"))
-                taruh(sfx_cache[e], mulai[i] + 0.25 + 0.45 * j, 0.8, f"e{i}_{j}")
+                taruh(efek(e), m + 0.25 + 0.45 * j, 0.85, f"e{i}_{j}")
+            tegang = any(t["ekspresi"] in ("kaget", "takut") for t in a["tokoh"]) or any(
+                it.get("ekspresi") in ("kaget", "takut") for it in a["urutan"])
+            stinger = False
             for k, it in enumerate(a["urutan"]):
                 if it.get("_wav"):
-                    taruh(it["_wav"], mulai[i] + it["_mulai"], 1.6, f"s{i}_{k}")
-        taruh(_wav(SFX["deg"], EFEK["deg"], str(tmp / "dentum.wav")), mulai[-1], 0.9, "dentum")
-        filt.append("".join(label) + f"amix=inputs={len(label)}:duration=first:normalize=0,"
-                    f"afade=t=out:st={total - 0.8:.2f}:d=0.8,alimiter=limit=0.95[a]")
+                    taruh(it["_wav"], m + it["_mulai"], 1.0, f"s{i}_{k}", suara=True)
+                if not stinger and (it.get("teks") or it.get("ekspresi") in ("kaget", "takut")):
+                    taruh(efek("stinger"), m + it["_mulai"] - 0.05, 0.7, f"st{i}_{k}")
+                    stinger = True
+                if it.get("jeda"):
+                    taruh(efek("detik", min(2.0, it["_durasi"] + 0.4)), m + it["_mulai"], 0.6, f"dt{i}_{k}")
+            if tegang and "jantung" not in a.get("efek", []):
+                taruh(efek("jantung"), m + 0.3, 0.6, f"j{i}")
+        # menjelang kartu "Bersambung": riser lalu hantaman
+        taruh(efek("riser"), mulai[-1] - 3.0, 0.6, "riser")
+        taruh(efek("stinger"), mulai[-1], 0.95, "hit")
+        # campur: latar (musik+efek) diredam otomatis saat ada suara (ducking), suara di depan
+        if not vo:  # tanpa ucapan sama sekali: suara kosong
+            taruh(_wav("0", total, str(tmp / "hening.wav")), 0, 1, "hening", suara=False)
+            vo.append(bg.pop())
+        filt.append("".join(vo) + f"amix=inputs={len(vo)}:duration=longest:normalize=0,apad=whole_dur={total:.2f},"
+                    "asplit=2[vo1][vo2]")
+        filt.append("".join(bg) + f"amix=inputs={len(bg)}:duration=first:normalize=0[bg0]")
+        filt.append("[bg0][vo1]sidechaincompress=threshold=0.04:ratio=5:attack=15:release=350:makeup=1[bg]")
+        filt.append(f"[bg][vo2]amix=inputs=2:duration=first:normalize=0,afade=t=out:st={total - 0.8:.2f}:d=0.8,"
+                    "loudnorm=I=-14:TP=-1.2:LRA=11,alimiter=limit=0.95[a]")
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", *inputs, "-filter_complex", ";".join(filt),
                         "-map", vlab, "-map", "[a]", "-t", f"{total:.2f}", "-c:v", "libx264", "-preset", "veryfast", "-crf", "21",
                         "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", out_mp4], check=True)

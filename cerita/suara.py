@@ -35,7 +35,8 @@ GEMINI_TTS_MODEL = [m for m in (os.environ.get("GEMINI_TTS_MODEL"), "gemini-3.1-
                                 "gemini-2.5-flash-preview-tts") if m]
 GEMINI = {
     "narator": {"voice": os.environ.get("GEMINI_VOICE_NARATOR") or "Charon",
-                "gaya": "Bacakan dalam bahasa Indonesia baku dengan pelafalan yang jelas dan natural seperti pendongeng radio, "
+                "gaya": "Bacakan dalam bahasa Indonesia baku dengan artikulasi sangat jelas dan natural seperti pendongeng radio profesional, "
+                        "dekat mikrofon, volume stabil, "
                         "suara hangat dan dalam, intonasi bercerita yang hidup dengan sedikit nuansa misteri, tempo sedang, "
                         "tidak berbisik dan tidak datar, jeda singkat saja pada tanda titik-titik"},
     "laras": {"voice": os.environ.get("GEMINI_VOICE_LARAS") or "Leda",
