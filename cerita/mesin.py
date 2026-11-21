@@ -237,7 +237,7 @@ def kartu_akhir(part, terakhir):
 .ka span{{font-size:46px;margin-top:20px;opacity:0;animation:tampil .8s .7s forwards}}
 .ka em{{font-style:normal;font-size:40px;margin-top:70px;background:#fff;color:#1E3A6B;padding:18px 40px;border-radius:60px;opacity:0;
   animation:tampil .8s 1.2s forwards}}</style>
-<div class="adegan">{L.latar_polos()}<div class="ka"><b>{atas}</b><span>{bawah}</span><em>🔔 Follow {AKUN}</em></div></div>"""
+<div class="adegan">{L.latar_polos()}<div class="ka"><b>{atas}</b><span>{bawah}</span><em>🔔 Follow untuk part selanjutnya</em></div></div>"""
 
 
 # ------------------------------------------------------------------ timeline

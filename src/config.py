@@ -43,22 +43,21 @@ HASHTAG = "#annafiatk #atkmenganti #alattulis #atkmurah #perlengkapansekolah"
 
 
 def caption_cerita(p) -> str:
-    """Caption reel cerita: ajak follow & tunggu part berikutnya (bukan promosi)."""
-    ig = TOKO["ig"] if TOKO["ig"].startswith("@") else "@" + TOKO["ig"]
+    """Caption reel cerita: ajak follow & tunggu part berikutnya (bukan promosi, TANPA menyebut lokasi toko)."""
     hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
     b = p.get("berikut")  # waktu tayang part berikutnya (dari jadwal), kalau ada
     if p.get("terakhir"):
-        ajak = f"Ini part TERAKHIR musim 1 🎉 Terima kasih sudah mengikuti! Follow {ig} untuk cerita berikutnya 🔔"
+        ajak = "Ini part TERAKHIR musim 1 🎉 Terima kasih sudah mengikuti! Follow untuk cerita berikutnya 🔔"
     elif b:
         kapan = "besok" if (b.date() - p["waktu"].date()).days == 1 else hari[b.weekday()]
-        ajak = f"Part {p['part'] + 1} tayang {kapan} jam {b:%H.%M}. Follow {ig} supaya tidak ketinggalan 🔔"
+        ajak = f"Part {p['part'] + 1} tayang {kapan} jam {b:%H.%M}. Follow supaya tidak ketinggalan 🔔"
     else:
-        ajak = f"Part {p['part'] + 1} segera tayang. Follow {ig} supaya tidak ketinggalan kelanjutannya 🔔"
+        ajak = f"Part {p['part'] + 1} segera tayang. Follow supaya tidak ketinggalan kelanjutannya 🔔"
     return "\n\n".join([
         f"✉️ {p['nama']}",
         "Surat itu datang tanpa nama pengirim... siapa yang menulisnya? 🤔\nTulis tebakanmu di komentar 👇",
         ajak,
-        "#misterisurattanpanama #ceritabersambung #ceritamisteri #animasi #menganti #gresik"])
+        "#misterisurattanpanama #ceritabersambung #ceritamisteri #animasi #ceritaanimasi"])
 
 
 def caption_otomatis(p) -> str:
