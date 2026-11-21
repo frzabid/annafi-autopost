@@ -106,6 +106,20 @@ TOKOH = {
                  kulit="#D49A70", kacamata=True, kumis=True, skala=1.03),
     "rani": dict(nama="Rani", jk="p", rambut="#231815", gaya_rambut="panjang", baju="#1f2024", baju2="#0e0e10", jaket=True,
                  bawah="#2b2b33", bawah_jenis="celana", sepatu="#141414", kulit="#E2AD86", skala=1.0),
+    # baju bebas (pulang sekolah, malam, hari Minggu)
+    "raka_bebas": dict(nama="Raka (bebas)", jk="l", rambut="#1d1716", gaya_rambut="klimis", kulit="#D9A47A", skala=1.0,
+                       baju="#d9622b", baju2="#b24c1e", kaos=True, lengan_pendek=True,
+                       sablon='<rect x="-90" y="-22" width="180" height="14" fill="#f3e3c8"/><rect x="-90" y="2" width="180" height="14" fill="#1E3A6B"/>',
+                       bawah="#35557f", bawah_jenis="celana", sneakers=True),
+    "dinda_bebas": dict(nama="Dinda (bebas)", jk="p", rambut="#2a1d18", gaya_rambut="bob", kulit="#EDBE98", skala=0.95,
+                        baju="#e9b949", baju2="#c99a2e", kaos=True,
+                        sablon='<path d="M0 -28 l8 17 19 3 -14 13 3 19 -16 -9 -16 9 3 -19 -14 -13 19 -3z" fill="#fff"/>',
+                        bawah="#e8dcc4", bawah_jenis="rok", sneakers=True),
+    "bima_bebas": dict(nama="Bima (bebas)", jk="l", rambut="#151212", gaya_rambut="poni", kulit="#C98E64", skala=1.0,
+                       baju="#8a9097", baju2="#6c7279", hoodie=True, bawah="#24262b", bawah_jenis="celana", sneakers=True),
+    "hadi_bebas": dict(nama="Hadi (bebas)", jk="l", rambut="#1d1716", gaya_rambut="rapi", kulit="#D49A70", kacamata=True, kumis=True,
+                       skala=1.03, baju="#d8c7a3", baju2="#b9a67e", kerah=True, kerah_warna="#d8c7a3", lengan_pendek=True,
+                       bawah="#5a4a3a", bawah_jenis="celana", sepatu="#3b2b25"),
     # kilas balik / foto lama (SMA, ±2011)
     "laras_sma": dict(nama="Laras (SMA)", jk="p", kulit=KULIT, skala=0.97, **_KERUDUNG_SEKOLAH, **_SMA_P),
     "hadi_sma": dict(nama="Hadi (SMA)", jk="l", rambut="#1d1716", gaya_rambut="rapi", kulit="#D49A70", kacamata=True,
@@ -220,6 +234,13 @@ def _atasan(t: dict, y1: int = 290) -> str:
                 f'<circle cx="200" cy="400" r="4" fill="{b2}"/><circle cx="200" cy="460" r="4" fill="{b2}"/>')
         if t.get("osis"):
             out += _osis(236, 420 if t.get("hijab") else 380)
+    elif t.get("kaos"):
+        out += (f'<path d="M168 {y1 + 2} C176 312 224 312 232 {y1 + 2}" stroke="{b2}" stroke-width="8" fill="none"/>'
+                + (f'<g transform="translate(200 420)">{t["sablon"]}</g>' if t.get("sablon") else ""))
+    elif t.get("hoodie"):
+        out += (f'<path d="M140 {y1 + 6} C150 340 250 340 260 {y1 + 6} C250 316 150 316 140 {y1 + 6}Z" fill="{b2}"/>'
+                f'<path d="M184 330 L180 400 M216 330 L220 400" stroke="#ddd" stroke-width="5" stroke-linecap="round"/>'
+                f'<path d="M140 470 L260 470 L250 530 L150 530Z" fill="{b2}" opacity=".6"/>')
     elif t.get("kancing"):
         out += (f'<path d="M200 300 L200 630" stroke="{b2}" stroke-width="4"/>'
                 f'<circle cx="200" cy="380" r="5" fill="{b2}"/><circle cx="200" cy="450" r="5" fill="{b2}"/><circle cx="200" cy="520" r="5" fill="{b2}"/>')
@@ -246,17 +267,22 @@ def badan(id_: str, ekspresi: str = "senang") -> str:
         tunik = '<rect x="108" y="518" width="184" height="16" fill="#1b1b1d"/><rect x="190" y="516" width="22" height="20" fill="#9aa"/>'
     lengan = "url(#batik)" if t.get("batik") else b
     sp = t.get("sepatu", "#3b2b25")
+    pendek = t.get("lengan_pendek", False)
+    if t.get("sneakers"):
+        sp = "#f4f4f4"
     kilap = ('<path d="M124 852 h40" stroke="#ffffff66" stroke-width="4" stroke-linecap="round"/>'
              '<path d="M226 852 h40" stroke="#ffffff66" stroke-width="4" stroke-linecap="round"/>') if t.get("pantofel") else ""
     rb = RAMBUT_BELAKANG.get(t.get("gaya_rambut", ""), "").format(r=t.get("rambut", ""))
     return f'''<svg viewBox="0 0 400 900" xmlns="http://www.w3.org/2000/svg">
     <ellipse cx="200" cy="872" rx="120" ry="16" fill="#000" opacity=".12"/>
     {bawah}
-    <rect x="110" y="846" width="78" height="22" rx="10" fill="{sp}"/><rect x="212" y="846" width="78" height="22" rx="10" fill="{sp}"/>{kilap}
+    <rect x="110" y="846" width="78" height="22" rx="10" fill="{sp}"/><rect x="212" y="846" width="78" height="22" rx="10" fill="{sp}"/>{kilap}{'<rect x="110" y="862" width="78" height="8" rx="4" fill="#9aa"/><rect x="212" y="862" width="78" height="8" rx="4" fill="#9aa"/>' if t.get("sneakers") else ""}
     {rb}
-    <g class="lengan-kiri"><path d="M118 330 C88 380 80 460 92 {ujung}" stroke="{lengan}" stroke-width="46" fill="none" stroke-linecap="round"/>
+    <g class="lengan-kiri"><path d="M118 330 C88 380 80 460 92 {ujung}" stroke="{k if pendek else lengan}" stroke-width="{38 if pendek else 46}" fill="none" stroke-linecap="round"/>
+      {f'<path d="M118 330 C104 352 98 380 97 404" stroke="{lengan}" stroke-width="52" fill="none" stroke-linecap="round"/>' if pendek else ""}
       <circle cx="94" cy="{ujung + 10}" r="22" fill="{k}"/></g>
-    <g class="lengan-kanan"><path d="M282 330 C312 380 320 460 308 {ujung}" stroke="{lengan}" stroke-width="46" fill="none" stroke-linecap="round"/>
+    <g class="lengan-kanan"><path d="M282 330 C312 380 320 460 308 {ujung}" stroke="{k if pendek else lengan}" stroke-width="{38 if pendek else 46}" fill="none" stroke-linecap="round"/>
+      {f'<path d="M282 330 C296 352 302 380 303 404" stroke="{lengan}" stroke-width="52" fill="none" stroke-linecap="round"/>' if pendek else ""}
       <circle cx="306" cy="{ujung + 10}" r="22" fill="{k}"/></g>
     {_atasan(t)}{tunik}
     <g class="kepala">{kepala(t, ekspresi)}</g>
