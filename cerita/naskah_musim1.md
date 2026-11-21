@@ -4,7 +4,7 @@ Tokoh: Mbak Ana (±32, penjaga toko; pakaian biasa, tanpa logo). Latar toko dibu
 Kostum: pagi/jam sekolah = seragam SMA; sore setelah pulang, malam, hari Minggu = baju bebas (raka_bebas, dinda_bebas, bima_bebas, hadi_bebas); Bima berjaket gelap = bima_jaket (Part 2–3); kilas balik = laras_sma, hadi_sma, rani_sma.
 Sosok/siluet berjaket hitam yang belum terungkap = tokoh "siluet" (wajah tidak terlihat); jangan pakai bima_jaket atau rani untuk sosok ini sebelum Part 8.
 Lokasi: JANGAN menyebut nama daerah/kota (Menganti, Gresik, dll.) di dialog, narasi, teks layar, maupun caption; cukup "toko" / "toko Annafi".
-Format: reel 9:16, ±80–95 dtk (±1,5 menit) per part, kilas balik 3 dtk di awal, akhir menggantung. Jadwal Selasa & Jumat 19.00.
+Format: reel 9:16, ±80–95 dtk (±1,5 menit) per part, kilas balik 3 dtk di awal, akhir menggantung. Jadwal tiap hari 17.00.
 
 ## PART 1 · Amplop di Bawah Pintu
 A1 depan toko pagi — NARATOR: Jam enam pagi. Seperti biasa, Mbak Ana membuka toko.
