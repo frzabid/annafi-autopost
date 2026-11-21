@@ -310,18 +310,17 @@ def part_siap(p):
 
 
 def langkah_reel(p, st, now):
-    """Pengingat reel cerita yang perlu dikirim sekarang (tanpa efek samping): render1/render2/upload1/upload2/lewat/None."""
+    """Pengingat reel cerita yang perlu dikirim sekarang (tanpa efek samping): render1/render2/upload1 (2 jam sebelum)/lewat/None."""
     if st.get("hash") != p["hash_isi"]:
         st = {"status": "baru"}
     status = st.get("status", "baru")
     mulai = p["waktu"] - timedelta(days=config.REEL_INGAT_HARI)
-    if status in ("baru", "menunggu_render", "dirender") and now >= p["waktu"]:
+    # upload manual: pengingat (+ caption & sampul) dikirim 2 jam sebelum jadwal
+    if status in ("baru", "menunggu_render", "dirender") and now >= p["waktu"] - timedelta(hours=config.REEL_INGAT_UPLOAD_JAM):
         return "upload1"
     if status == "menunggu_upload":
         if now - p["waktu"] > timedelta(hours=24):
             return "lewat"
-        if not st.get("ingat_upload2") and now >= p["waktu"] + timedelta(minutes=60):
-            return "upload2"
         return None
     if status == "baru" and now >= mulai:
         return "render1"
@@ -377,9 +376,12 @@ def urus_reel(p, st, now):
             if sampul.exists():
                 notify.foto(str(sampul), "🖼️ Sampul reel: saat upload pilih <b>Edit sampul → Tambahkan dari galeri</b>")
             notify.pesan(f"<pre>{html.escape(caption)}</pre>")
-        notify.pesan(f"⏰ {'Pengingat lagi: ' if langkah == 'upload2' else ''}Saatnya upload <b>{nama}</b> ke Reels Instagram!{belum}\n\n"
-                     "1. Instagram → + → Reel → pilih videonya\n2. Salin caption di atas (ketuk kotaknya) → tempel → Bagikan\n"
-                     "3. Bagikan juga ke Story/Status WA\nSudah? Tekan <b>Sudah upload</b>.",
+        belum = ("\n⚠️ <b>Video belum ditandai sudah dirender</b> — minta Claude <i>render part "
+                 f"{p['part']}</i> sekarang (±10 menit).") if not siap else "\n✅ Video sudah dirender."
+        notify.pesan(f"⏰ <b>2 jam lagi</b> jadwal upload <b>{nama}</b> ke Reels Instagram ({jam}).{belum}\n\n"
+                     "Saat upload: Instagram → + → Reel → pilih videonya → <b>Edit sampul → Tambahkan dari galeri</b> (gambar di atas) "
+                     "→ salin caption di atas (ketuk kotaknya) → Bagikan. Bagikan juga ke Story/Status WA.\n"
+                     "Sudah? Tekan <b>Sudah upload</b>.",
                      tombol=[("✅ Sudah upload", f"ok:U{pid}:{h}")])
         if langkah == "upload1":
             st["status"] = "menunggu_upload"
