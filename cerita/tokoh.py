@@ -95,7 +95,7 @@ _SMA_L = dict(baju="#f6f6f4", baju2="#d6d6d2", kerah=True, osis=True, bawah="#7d
 _SMA_P = dict(baju="#f6f6f4", baju2="#d6d6d2", kerah=True, osis=True, bawah="#7d7f86", bawah_jenis="rok", sepatu="#1b1b1d")
 _KERUDUNG_SEKOLAH = dict(hijab="#fbfbfb", hijab2="#e4e4e4")
 TOKOH = {
-    "laras": dict(nama="Mbak Laras", jk="p", hijab=HIJAB, hijab2=HIJAB_TERANG, baju=BAJU, baju2=BAJU_GELAP,
+    "laras": dict(nama="Mbak Ana", jk="p", hijab=HIJAB, hijab2=HIJAB_TERANG, baju=BAJU, baju2=BAJU_GELAP,
                   bawah=ROK, bawah_jenis="rok", kulit=KULIT, skala=1.0, kancing=True, tunik=True),
     "raka": dict(nama="Raka", jk="l", rambut="#1d1716", gaya_rambut="klimis", kulit="#D9A47A", skala=1.0, **_SMA_L),
     "dinda": dict(nama="Dinda", jk="p", rambut="#2a1d18", gaya_rambut="bob", kulit="#EDBE98", skala=0.95, **_SMA_P),
@@ -125,7 +125,7 @@ TOKOH = {
     # sosok misterius berjaket hitam bertudung: wajah tidak terlihat (identitas dirahasiakan sampai Part 8)
     "siluet": dict(nama="Sosok misterius", jk="", siluet=True, skala=1.0),
     # kilas balik / foto lama (SMA, ±2011)
-    "laras_sma": dict(nama="Laras (SMA)", jk="p", kulit=KULIT, skala=0.97, **_KERUDUNG_SEKOLAH, **_SMA_P),
+    "laras_sma": dict(nama="Ana (SMA)", jk="p", kulit=KULIT, skala=0.97, **_KERUDUNG_SEKOLAH, **_SMA_P),
     "hadi_sma": dict(nama="Hadi (SMA)", jk="l", rambut="#1d1716", gaya_rambut="rapi", kulit="#D49A70", kacamata=True,
                      skala=1.0, **_SMA_L),
     "rani_sma": dict(nama="Rani (SMA)", jk="p", rambut="#231815", gaya_rambut="panjang", kulit="#E2AD86", skala=0.97, **_SMA_P),
