@@ -217,3 +217,40 @@ def latar_pintu_bawah() -> str:
 <div class="tk-kacab"><div class="tk-intip">{latar_dalam(1.0)}</div></div>
 <div class="tk-relb"></div><div class="tk-terasb"></div>
 <div class="tk-keset">{"".join(daun)}</div>"""
+
+
+# ---------------------------------------------------------------- close-up lain
+def latar_meja() -> str:
+    """Close-up di meja layanan: toko kabur di belakang, meja kayu di bawah (untuk membaca surat/amplop)."""
+    return f"""<style>
+.tk-mejab{{position:absolute;inset:0;overflow:hidden}}
+.tk-mejab .tk-intip{{position:absolute;left:-200px;top:-300px;width:1080px;height:1920px;transform:scale(1.5);filter:blur(14px) brightness(.9)}}
+.tk-papan-meja{{position:absolute;left:-40px;right:-40px;top:1240px;bottom:-40px;background:
+  repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 3px,transparent 3px 60px),linear-gradient(#c9a274,#a87d4f);
+  border-top:26px solid #dcbc8f;box-shadow:0 -10px 30px rgba(0,0,0,.25)}}
+.tk-cahaya{{position:absolute;inset:0;background:radial-gradient(circle at 50% 38%,rgba(255,236,190,.55),rgba(0,0,0,0) 60%)}}
+</style>
+<div class="tk-mejab"><div class="tk-intip">{latar_dalam(1.0)}</div><div class="tk-cahaya"></div><div class="tk-papan-meja"></div></div>"""
+
+
+def latar_bawah_mesin() -> str:
+    """Close-up sejajar lantai: bagian bawah mesin fotokopi, celah gelap, lantai keramik krem."""
+    return """<style>
+.tk-mesinb{position:absolute;left:-60px;right:-60px;top:0;height:1080px;background:linear-gradient(90deg,#e9e6dd,#f4f2ec 40%,#dcd8ce);
+  border-bottom:30px solid #c9c4b8}
+.tk-mesinb:before{content:'';position:absolute;left:140px;top:260px;width:520px;height:150px;background:#d9d5cb;border-radius:14px;
+  box-shadow:inset 0 -12px #c4bfb3}
+.tk-mesinb:after{content:'';position:absolute;left:760px;top:300px;width:220px;height:40px;background:#9aa4ad;border-radius:8px}
+.tk-celah{position:absolute;left:-60px;right:-60px;top:1110px;height:110px;background:linear-gradient(#0b0b0d,#2a2a2e)}
+.tk-roda{position:absolute;top:1150px;width:120px;height:120px;border-radius:50%;background:#2b2b2b;border:18px solid #444}
+.tk-lantaib{position:absolute;left:0;right:0;top:1220px;bottom:0;background:
+  linear-gradient(rgba(255,255,255,.3),rgba(255,255,255,0) 50%),repeating-linear-gradient(90deg,#e3d9c6 0 300px,#d2c6b0 300px 306px),#e3d9c6}
+.tk-debu{position:absolute;left:0;right:0;top:1100px;height:260px;background:radial-gradient(ellipse at 50% 20%,rgba(255,240,200,.25),transparent 60%)}
+</style>
+<div class="tk-mesinb"></div><div class="tk-celah"></div>
+<div class="tk-roda" style="left:60px"></div><div class="tk-roda" style="left:900px"></div>
+<div class="tk-lantaib"></div><div class="tk-debu"></div>"""
+
+
+def latar_polos(warna: str = "#14141c") -> str:
+    return f'<div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,#2c2c3a,{warna})"></div>'

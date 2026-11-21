@@ -41,12 +41,27 @@ GEMINI = {
               "gaya": "Ucapkan dalam bahasa Indonesia sebagai perempuan sekitar 30 tahun yang ramah dan tenang, "
                       "dengan nada kaget dan penasaran"},
 }
+GEMINI.update({
+    "raka": {"voice": "Puck", "gaya": "Ucapkan dalam bahasa Indonesia logat Jawa Timur santai sebagai remaja laki-laki SMA 17 tahun "
+                                      "yang spontan dan bersemangat"},
+    "dinda": {"voice": "Laomedeia", "gaya": "Ucapkan dalam bahasa Indonesia sebagai anak perempuan 8 tahun yang polos, "
+                                            "suara kecil dan riang"},
+    "bima": {"voice": "Iapetus", "gaya": "Ucapkan dalam bahasa Indonesia sebagai remaja laki-laki 17 tahun yang pendiam dan pelan"},
+    "hadi": {"voice": "Algenib", "gaya": "Ucapkan dalam bahasa Indonesia sebagai laki-laki 32 tahun, guru yang tegas dan berwibawa"},
+    "rani": {"voice": "Kore", "gaya": "Ucapkan dalam bahasa Indonesia sebagai perempuan 32 tahun yang lembut dan menahan haru"},
+})
+PEREMPUAN = {"laras", "dinda", "rani"}
 MESIN = (os.environ.get("TTS_MESIN") or "").strip().lower() or (
     "eleven" if ELEVEN_KEY else "gemini" if GEMINI_KEY else "edge")
 
 SUARA = {
     "narator": {"voice": "id-ID-ArdiNeural", "rate": "-4%", "pitch": "-6Hz"},
     "laras": {"voice": "id-ID-GadisNeural", "rate": "+6%", "pitch": "+0Hz"},
+    "raka": {"voice": "id-ID-ArdiNeural", "rate": "+12%", "pitch": "+14Hz"},
+    "bima": {"voice": "id-ID-ArdiNeural", "rate": "-2%", "pitch": "+8Hz"},
+    "hadi": {"voice": "id-ID-ArdiNeural", "rate": "+0%", "pitch": "-10Hz"},
+    "dinda": {"voice": "id-ID-GadisNeural", "rate": "+8%", "pitch": "+30Hz"},
+    "rani": {"voice": "id-ID-GadisNeural", "rate": "-4%", "pitch": "-6Hz"},
 }
 
 # (mulai detik, slot maksimal detik, tokoh, teks)
@@ -65,7 +80,7 @@ def _durasi(path: str) -> float:
 
 
 def _eleven(teks: str, tokoh: str, out: str) -> None:
-    c = ELEVEN[tokoh]
+    c = ELEVEN.get(tokoh) or ELEVEN["laras" if tokoh in PEREMPUAN else "narator"]
     r = requests.post(f"https://api.elevenlabs.io/v1/text-to-speech/{c['voice']}",
                       params={"output_format": "mp3_44100_128"}, timeout=120,
                       headers={"xi-api-key": ELEVEN_KEY, "Content-Type": "application/json"},
@@ -80,9 +95,10 @@ def _eleven(teks: str, tokoh: str, out: str) -> None:
     Path(out).write_bytes(r.content)
 
 
-def _gemini(teks: str, tokoh: str, out: str) -> None:
-    c = GEMINI[tokoh]
-    body = {"contents": [{"parts": [{"text": f"{c['gaya']}: {teks}"}]}],
+def _gemini(teks: str, tokoh: str, out: str, emosi: str = "") -> None:
+    c = GEMINI.get(tokoh, GEMINI["narator"])
+    gaya = c["gaya"] + (f", dengan emosi {emosi}" if emosi else "")
+    body = {"contents": [{"parts": [{"text": f"{gaya}: {teks}"}]}],
             "generationConfig": {"responseModalities": ["AUDIO"],
                                  "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": c["voice"]}}}}}
     import time
@@ -91,7 +107,7 @@ def _gemini(teks: str, tokoh: str, out: str) -> None:
     urutan = [m for m in GEMINI_TTS_MODEL for _ in range(3)]
     for i, model in enumerate(urutan):
         if i:
-            time.sleep(min(20, 4 * i))
+            time.sleep(35 if " 429:" in err else min(20, 4 * i))  # 429 = batas per menit
         r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
                           headers={"x-goog-api-key": GEMINI_KEY}, json=body, timeout=180)
         if r.status_code == 200:
@@ -122,19 +138,24 @@ def _rapikan(path: str) -> None:
     Path(tmp).replace(path)
 
 
-def _tts(teks: str, tokoh: str, out: str) -> None:
-    _tts_mentah(teks, tokoh, out)
-    if out.endswith(".wav"):
+def _tts(teks: str, tokoh: str, out: str, emosi: str = "") -> None:
+    _tts_mentah(teks, tokoh, out, emosi)
+    if out.endswith(".wav") and MESIN != "diam":
         _rapikan(out)
 
 
-def _tts_mentah(teks: str, tokoh: str, out: str) -> None:
+def _tts_mentah(teks: str, tokoh: str, out: str, emosi: str = "") -> None:
+    if MESIN == "diam":  # uji tanpa internet: hening sepanjang perkiraan durasi bicara
+        d = 0.35 + 0.36 * len(teks.split())
+        subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "lavfi", "-i", f"anullsrc=r=24000:cl=mono",
+                        "-t", f"{d:.2f}", out], check=True)
+        return
     if MESIN == "eleven" and ELEVEN_KEY:
         return _eleven(teks, tokoh, out)
     if MESIN == "gemini" and GEMINI_KEY:
-        return _gemini(teks, tokoh, out)
+        return _gemini(teks, tokoh, out, emosi)
     import edge_tts
-    s = SUARA[tokoh]
+    s = SUARA.get(tokoh, SUARA["narator"])
     asyncio.run(edge_tts.Communicate(teks, s["voice"], rate=s["rate"], pitch=s["pitch"]).save(out))
 
 

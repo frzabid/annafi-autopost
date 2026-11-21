@@ -1,6 +1,6 @@
 # Misteri Surat Tanpa Nama · Musim 1
 
-Tokoh: Mbak Laras (±32, penjaga toko; pakaian biasa, tanpa logo). Latar toko dibuat mirip toko Annafi asli. Laras, Hadi, Rani = sahabat SMA, kini ±32 th (lulus 2011). Bima (17) = keponakan Rani. Raka (17), Dinda (8) adik Raka.
+Tokoh: Mbak Laras (±32, penjaga toko; pakaian biasa, tanpa logo). Latar toko dibuat mirip toko Annafi asli. Laras, Hadi, Rani = sahabat SMA, kini ±32 th (lulus 2011). Bima (17) = keponakan Rani. Raka (17, SMA kelas 12), Dinda (16, adik Raka, SMA, berkerudung sekolah). Pak Hadi = guru (batik hijau). Rani tanpa kerudung. Kilas balik / foto lama: Laras, Hadi, Rani berseragam SMA.
 Format: reel 9:16, 45–60 dtk per part, kilas balik 3 dtk di awal, akhir menggantung. Jadwal Selasa & Jumat 19.00.
 
 ## PART 1 · Amplop di Bawah Pintu

@@ -85,3 +85,194 @@ def amplop(lebar: int = 360, tua: bool = False, depan: bool = False) -> str:
 
 # nama lama (kompatibilitas)
 nafi_badan, nafi_dada, kepala_nafi = laras_badan, laras_dada, kepala_laras
+
+
+# =============================================================================== semua tokoh (dipakai mesin.py)
+# jk: p/l · hijab (warna) atau rambut + gaya_rambut · bawah_jenis: rok / celana / rok_pendek · skala tinggi badan
+_SMA_L = dict(baju="#f6f6f4", baju2="#d6d6d2", kerah=True, osis=True, bawah="#7d7f86", bawah_jenis="celana", sepatu="#1b1b1d")
+_SMA_P = dict(baju="#f6f6f4", baju2="#d6d6d2", kerah=True, osis=True, bawah="#7d7f86", bawah_jenis="rok", sepatu="#1b1b1d")
+_KERUDUNG_SEKOLAH = dict(hijab="#fbfbfb", hijab2="#e4e4e4")
+TOKOH = {
+    "laras": dict(nama="Mbak Laras", jk="p", hijab=HIJAB, hijab2=HIJAB_TERANG, baju=BAJU, baju2=BAJU_GELAP,
+                  bawah=ROK, bawah_jenis="rok", kulit=KULIT, skala=1.0, kancing=True, tunik=True),
+    "raka": dict(nama="Raka", jk="l", rambut="#1d1716", gaya_rambut="jabrik", kulit="#D9A47A", skala=1.0, **_SMA_L),
+    "dinda": dict(nama="Dinda", jk="p", kulit="#E7B48C", skala=0.95, **_KERUDUNG_SEKOLAH, **_SMA_P),
+    "bima": dict(nama="Bima", jk="l", rambut="#151212", gaya_rambut="poni", kulit="#C98E64", skala=1.0, **_SMA_L),
+    # Bima memakai jaket gelap di luar seragam (petunjuk palsu di Part 2-3)
+    "bima_jaket": dict(nama="Bima", jk="l", rambut="#151212", gaya_rambut="poni", kulit="#C98E64", skala=1.0,
+                       **dict(_SMA_L, baju="#2b2d33", baju2="#17181c", kerah=False, osis=False, jaket=True)),
+    "hadi": dict(nama="Pak Hadi", jk="l", rambut="#1d1716", gaya_rambut="rapi", batik=True, baju="#2f7a4f", baju2="#1f5a37",
+                 kerah=True, kerah_warna="#2f7a4f", bawah="#18181b", bawah_jenis="celana", sepatu="#0d0d0f", pantofel=True,
+                 kulit="#D49A70", kacamata=True, kumis=True, skala=1.03),
+    "rani": dict(nama="Rani", jk="p", rambut="#231815", gaya_rambut="panjang", baju="#1f2024", baju2="#0e0e10", jaket=True,
+                 bawah="#2b2b33", bawah_jenis="celana", sepatu="#141414", kulit="#E2AD86", skala=1.0),
+    # kilas balik / foto lama (SMA, ±2011)
+    "laras_sma": dict(nama="Laras (SMA)", jk="p", kulit=KULIT, skala=0.97, **_KERUDUNG_SEKOLAH, **_SMA_P),
+    "hadi_sma": dict(nama="Hadi (SMA)", jk="l", rambut="#1d1716", gaya_rambut="rapi", kulit="#D49A70", kacamata=True,
+                     skala=1.0, **_SMA_L),
+    "rani_sma": dict(nama="Rani (SMA)", jk="p", rambut="#231815", gaya_rambut="panjang", kulit="#E2AD86", skala=0.97, **_SMA_P),
+}
+EKSPRESI = ["senang", "kaget", "bingung", "sedih", "serius", "takut"]
+
+
+def _wajah(ekspresi: str) -> str:
+    """Alis, mata, mulut (+ mulut terbuka .mb untuk animasi bicara) di koordinat kepala 0..400."""
+    garis = 'stroke="#3a2a22" fill="none" stroke-linecap="round"'
+    mata_biasa = ('<g class="kedip"><ellipse cx="175" cy="205" rx="9" ry="11" fill="#2b2220"/>'
+                  '<ellipse cx="225" cy="205" rx="9" ry="11" fill="#2b2220"/>'
+                  '<circle cx="178" cy="201" r="3.5" fill="#fff"/><circle cx="228" cy="201" r="3.5" fill="#fff"/></g>')
+    if ekspresi in ("kaget", "takut"):
+        return _mata("kaget") + '<ellipse class="mb" cx="200" cy="254" rx="13" ry="15" fill="#7a2e2e" opacity="0"/>'
+    if ekspresi == "bingung":
+        alis = f'<path d="M156 176 q20 -6 36 2" {garis} stroke-width="6"/><path d="M208 166 q18 -12 36 -2" {garis} stroke-width="6"/>'
+        mulut = f'<path d="M184 252 q8 -6 16 0 t16 0" {garis} stroke="#7a2e2e" stroke-width="6"/>'
+    elif ekspresi == "sedih":
+        alis = f'<path d="M158 176 q16 -2 32 -12" {garis} stroke-width="6"/><path d="M210 164 q16 10 32 12" {garis} stroke-width="6"/>'
+        mulut = f'<path d="M184 258 q16 -12 32 0" {garis} stroke="#7a2e2e" stroke-width="6"/>'
+    elif ekspresi == "serius":
+        alis = f'<path d="M156 180 l36 6" {garis} stroke-width="7"/><path d="M244 180 l-36 6" {garis} stroke-width="7"/>'
+        mulut = f'<path d="M186 252 h28" {garis} stroke="#7a2e2e" stroke-width="6"/>'
+    else:
+        return _mata("senang") + '<ellipse class="mb" cx="200" cy="252" rx="14" ry="12" fill="#7a2e2e" opacity="0"/>'
+    return alis + mata_biasa + mulut + '<ellipse class="mb" cx="200" cy="252" rx="13" ry="12" fill="#7a2e2e" opacity="0"/>'
+
+
+_RAMBUT = {
+    "jabrik": ('<path d="M124 210 C110 150 118 112 140 100 L136 62 L166 86 L178 48 L202 80 L222 46 L236 84 L266 60 L262 100 '
+               'C284 116 292 150 276 210 C272 178 266 160 258 150 L246 166 L236 144 L222 162 L210 140 L196 160 L182 140 '
+               'L168 162 L156 146 L146 168 C136 176 128 190 124 210Z" fill="{r}"/>'),
+    "poni": ('<path d="M124 215 C104 112 156 80 202 80 C250 80 296 112 276 215 C270 170 254 140 210 136 C180 132 150 160 124 215Z" fill="{r}"/>'
+             '<path d="M126 198 C128 128 170 108 216 112 C256 118 280 150 274 200 C262 172 240 152 212 150 C188 172 160 188 126 198Z" fill="{r}"/>'),
+    "rapi": ('<path d="M126 196 C114 112 160 88 204 88 C250 88 288 116 274 196 C264 152 238 136 198 140 L182 128 '
+             'C162 140 140 160 126 196Z" fill="{r}"/>'),
+    "panjang": ('<path d="M128 214 C112 120 156 82 202 82 C250 82 292 118 274 214 C268 170 246 140 214 134 '
+                'C196 156 160 176 128 214Z" fill="{r}"/>'),
+    "kuncir": ('<circle cx="104" cy="196" r="34" fill="{r}"/><circle cx="296" cy="196" r="34" fill="{r}"/>'
+               '<rect x="122" y="182" width="14" height="26" rx="5" fill="#e74c3c"/><rect x="264" y="182" width="14" height="26" rx="5" fill="#e74c3c"/>'
+               '<path d="M126 210 C110 112 158 84 200 84 C242 84 290 112 274 210 C270 170 250 150 200 150 C150 150 130 170 126 210Z" fill="{r}"/>'
+               '<path d="M134 176 C150 136 250 136 266 176 L262 156 C240 140 160 140 138 156Z" fill="{r}"/>'),
+}
+
+
+def kepala(t: dict, ekspresi: str = "senang") -> str:
+    k = t["kulit"]
+    if t.get("hijab"):
+        h, h2 = t["hijab"], t["hijab2"]
+        return f'''
+    <path d="M200 70 C120 70 82 130 82 205 C82 260 100 300 70 380 L330 380 C300 300 318 260 318 205 C318 130 280 70 200 70Z" fill="{h}"/>
+    <path d="M118 160 C130 110 170 92 200 92 C230 92 270 110 282 160" stroke="{h2}" stroke-width="10" fill="none"/>
+    <ellipse cx="200" cy="215" rx="72" ry="84" fill="{k}"/>
+    <path d="M130 170 C140 118 170 104 200 104 C230 104 260 118 270 170 C250 150 230 142 200 142 C170 142 150 150 130 170Z" fill="{h}"/>
+    <circle cx="160" cy="236" r="13" fill="#f08a8a" opacity=".35"/><circle cx="240" cy="236" r="13" fill="#f08a8a" opacity=".35"/>
+    <path d="M197 218 q5 10 -2 14" stroke="#00000033" stroke-width="4" fill="none" stroke-linecap="round"/>
+    {_wajah(ekspresi)}'''
+    kaca = ('<g fill="none" stroke="#2b2b2b" stroke-width="5"><rect x="152" y="186" width="46" height="36" rx="12"/>'
+            '<rect x="202" y="186" width="46" height="36" rx="12"/><path d="M198 200 h4"/></g>') if t.get("kacamata") else ""
+    kumis = '<path d="M180 238 q20 -8 40 0" stroke="#2b1d18" stroke-width="7" fill="none" stroke-linecap="round"/>' if t.get("kumis") else ""
+    leher = f'<rect x="172" y="270" width="56" height="34" fill="{k}"/><rect x="172" y="284" width="56" height="12" fill="#00000018"/>'
+    return f'''{leher}
+    <circle cx="128" cy="222" r="17" fill="{k}"/><circle cx="272" cy="222" r="17" fill="{k}"/>
+    <ellipse cx="200" cy="215" rx="72" ry="84" fill="{k}"/>
+    {_RAMBUT[t["gaya_rambut"]].format(r=t["rambut"])}
+    <circle cx="160" cy="236" r="12" fill="#f08a8a" opacity=".3"/><circle cx="240" cy="236" r="12" fill="#f08a8a" opacity=".3"/>
+    <path d="M197 218 q5 10 -2 14" stroke="#00000033" stroke-width="4" fill="none" stroke-linecap="round"/>
+    {_wajah(ekspresi)}{kaca}{kumis}'''
+
+
+RAMBUT_BELAKANG = {
+    "panjang": '<path d="M112 200 C96 120 150 76 202 76 C256 76 306 120 290 200 L306 430 C260 450 140 450 96 430Z" fill="{r}"/>',
+}
+
+_BATIK = ('<defs><pattern id="batik" width="56" height="56" patternUnits="userSpaceOnUse">'
+          '<rect width="56" height="56" fill="#2f7a4f"/>'
+          '<g fill="#e9d79a" opacity=".85"><ellipse cx="28" cy="14" rx="7" ry="12"/><ellipse cx="28" cy="42" rx="7" ry="12"/>'
+          '<ellipse cx="14" cy="28" rx="12" ry="7"/><ellipse cx="42" cy="28" rx="12" ry="7"/></g>'
+          '<circle cx="28" cy="28" r="4" fill="#1f5a37"/><circle cx="0" cy="0" r="5" fill="#a5c98f"/>'
+          '<circle cx="56" cy="0" r="5" fill="#a5c98f"/><circle cx="0" cy="56" r="5" fill="#a5c98f"/><circle cx="56" cy="56" r="5" fill="#a5c98f"/>'
+          '</pattern></defs>')
+
+
+def _osis(x: int = 236, y: int = 380) -> str:
+    """Badge OSIS di saku kiri seragam."""
+    return (f'<rect x="{x - 6}" y="{y - 8}" width="56" height="44" rx="4" fill="none" stroke="#d6d6d2" stroke-width="3"/>'
+            f'<path d="M{x + 22} {y} l14 6 v12 c0 10 -8 16 -14 18 c-6 -2 -14 -8 -14 -18 v-12z" fill="#c9a227" stroke="#8a6d12" stroke-width="2"/>')
+
+
+def _atasan(t: dict, y1: int = 290) -> str:
+    b, b2 = t["baju"], t["baju2"]
+    isi = "url(#batik)" if t.get("batik") else b
+    out = (_BATIK if t.get("batik") else "") + \
+        f'<path d="M110 330 C110 300 150 {y1} 200 {y1} C250 {y1} 290 300 290 330 L296 540 L104 540Z" fill="{isi}"/>'
+    if t.get("jaket"):
+        out += (f'<path d="M200 {y1 + 6} L200 640" stroke="{b2}" stroke-width="6"/>'
+                f'<path d="M150 {y1 + 4} C160 330 180 350 200 360 C220 350 240 330 250 {y1 + 4}" stroke="{b2}" stroke-width="16" fill="none"/>'
+                f'<rect x="136" y="460" width="40" height="8" rx="4" fill="{b2}"/><rect x="224" y="460" width="40" height="8" rx="4" fill="{b2}"/>')
+    elif t.get("kerah"):
+        kw = t.get("kerah_warna", "#ffffff")
+        out += (f'<path d="M160 {y1 + 2} L200 345 L184 365Z M240 {y1 + 2} L200 345 L216 365Z" fill="{kw}" stroke="{b2}" stroke-width="3"/>'
+                f'<path d="M200 345 L200 540" stroke="{b2}" stroke-width="3"/>'
+                f'<circle cx="200" cy="400" r="4" fill="{b2}"/><circle cx="200" cy="460" r="4" fill="{b2}"/>')
+        if t.get("osis"):
+            out += _osis(236, 420 if t.get("hijab") else 380)
+    elif t.get("kancing"):
+        out += (f'<path d="M200 300 L200 630" stroke="{b2}" stroke-width="4"/>'
+                f'<circle cx="200" cy="380" r="5" fill="{b2}"/><circle cx="200" cy="450" r="5" fill="{b2}"/><circle cx="200" cy="520" r="5" fill="{b2}"/>')
+    return out
+
+
+def badan(id_: str, ekspresi: str = "senang") -> str:
+    """Tokoh seluruh badan, viewBox 0 0 400 900 (kaki di y=868)."""
+    t = TOKOH[id_]
+    b, k, bw = t["baju"], t["kulit"], t["bawah"]
+    if t["bawah_jenis"] == "rok":
+        bawah = f'<path d="M120 520 L280 520 L318 850 L82 850Z" fill="{bw}"/>'
+        ujung = 540
+    elif t["bawah_jenis"] == "celana":
+        bawah = (f'<path d="M112 520 L288 520 L284 850 L210 850 L200 640 L190 850 L116 850Z" fill="{bw}"/>')
+        ujung = 560
+    else:  # rok pendek anak + kaki
+        bawah = (f'<rect x="140" y="640" width="40" height="190" fill="{k}"/><rect x="220" y="640" width="40" height="190" fill="{k}"/>'
+                 '<rect x="138" y="770" width="44" height="70" fill="#fff"/><rect x="218" y="770" width="44" height="70" fill="#fff"/>'
+                 f'<path d="M108 520 L292 520 L316 680 L84 680Z" fill="{bw}"/>')
+        ujung = 520
+    tunik = f'<path d="M104 520 L296 520 L304 640 L96 640Z" fill="{b}"/>' if t.get("tunik") else ""
+    if t.get("osis"):  # seragam dimasukkan + ikat pinggang hitam
+        tunik = '<rect x="108" y="518" width="184" height="16" fill="#1b1b1d"/><rect x="190" y="516" width="22" height="20" fill="#9aa"/>'
+    lengan = "url(#batik)" if t.get("batik") else b
+    sp = t.get("sepatu", "#3b2b25")
+    kilap = ('<path d="M124 852 h40" stroke="#ffffff66" stroke-width="4" stroke-linecap="round"/>'
+             '<path d="M226 852 h40" stroke="#ffffff66" stroke-width="4" stroke-linecap="round"/>') if t.get("pantofel") else ""
+    rb = RAMBUT_BELAKANG.get(t.get("gaya_rambut", ""), "").format(r=t.get("rambut", ""))
+    return f'''<svg viewBox="0 0 400 900" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="200" cy="872" rx="120" ry="16" fill="#000" opacity=".12"/>
+    {bawah}
+    <rect x="110" y="846" width="78" height="22" rx="10" fill="{sp}"/><rect x="212" y="846" width="78" height="22" rx="10" fill="{sp}"/>{kilap}
+    {rb}
+    <g class="lengan-kiri"><path d="M118 330 C88 380 80 460 92 {ujung}" stroke="{lengan}" stroke-width="46" fill="none" stroke-linecap="round"/>
+      <circle cx="94" cy="{ujung + 10}" r="22" fill="{k}"/></g>
+    <g class="lengan-kanan"><path d="M282 330 C312 380 320 460 308 {ujung}" stroke="{lengan}" stroke-width="46" fill="none" stroke-linecap="round"/>
+      <circle cx="306" cy="{ujung + 10}" r="22" fill="{k}"/></g>
+    {_atasan(t)}{tunik}
+    <g class="kepala">{kepala(t, ekspresi)}</g>
+    </svg>'''
+
+
+def dada(id_: str, ekspresi: str = "senang") -> str:
+    """Tokoh setengah badan untuk close-up, viewBox 0 0 400 520."""
+    t = TOKOH[id_]
+    b, b2 = t["baju"], t["baju2"]
+    if t.get("batik"):
+        b = "url(#batik)"
+    hiasan = _BATIK if t.get("batik") else ""
+    if t.get("jaket"):
+        hiasan += f'<path d="M200 372 L200 520" stroke="{b2}" stroke-width="6"/><path d="M150 364 C170 400 190 410 200 414 C210 410 230 400 250 364" stroke="{b2}" stroke-width="14" fill="none"/>'
+    elif t.get("kerah"):
+        hiasan += (f'<path d="M160 362 L200 410 L184 430Z M240 362 L200 410 L216 430Z" fill="{t.get("kerah_warna", "#fff")}" '
+                   f'stroke="{b2}" stroke-width="3"/>' + (_osis(236, 470 if t.get("hijab") else 450) if t.get("osis") else ""))
+    elif t.get("kancing"):
+        hiasan += f'<path d="M200 370 L200 520" stroke="{b2}" stroke-width="4"/><circle cx="200" cy="440" r="5" fill="{b2}"/>'
+    return f'''<svg viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg">
+    {RAMBUT_BELAKANG.get(t.get("gaya_rambut", ""), "").format(r=t.get("rambut", "")).replace('<path', '<path transform="translate(0,58)"', 1)}
+    <path d="M60 520 C60 400 120 360 200 360 C280 360 340 400 340 520Z" fill="{b}"/>{hiasan}
+    <g class="kepala" transform="translate(0,{0 if t.get("hijab") else 58})">{kepala(t, ekspresi)}</g>
+    </svg>'''
