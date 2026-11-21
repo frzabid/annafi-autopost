@@ -155,11 +155,17 @@ def adegan_html(a, idx, info_part):
             h = w * 900 / 400
             top = BASIS[a["latar"]] - h * 868 / 900
             vb = "badan"
+        elif a["latar"] in ("pintu_bawah", "bawah_mesin"):  # sudut pandang lantai: tokoh mengintip kecil di pojok
+            w, h = 420, 546
+            top = H - h + 30
+            vb = "dada"
         else:
             w, h = 600, 780
             top = H - h + 20
             vb = "dada"
         left = pos_tabel[t["posisi"]] - w / 2
+        if a["latar"] in ("pintu_bawah", "bawah_mesin"):
+            left = (840 if i == 0 else 240) - w / 2
         flip = "scaleX(-1)" if (t["posisi"] == "kanan" and len(a["tokoh"]) > 1) else "none"
         lapisan = ""
         for j, (ek, interval) in enumerate(t["_ekspresi"].items()):
@@ -196,14 +202,15 @@ def adegan_html(a, idx, info_part):
                 kertas = T.amplop(860, tua=ob["jenis"] == "amplop_tua", depan=True)
             warna = "#6b4a1f" if ob["jenis"] == "amplop_tua" else "#1E3A6B"
             redup = '<div class="lapis" style="background:rgba(0,0,0,.35)"></div>' if lebar else ""
-            css.append(f"#ob{{position:absolute;left:110px;top:{'560' if lebar else '470'}px;width:860px;"
-                       f"animation:obm .9s .15s cubic-bezier(.2,1.2,.4,1) both}}@keyframes obm{{from{{transform:scale(.7) rotate(6deg);opacity:0}}"
+            css.append(f"#obw{{position:absolute;left:{'222' if lebar else '110'}px;top:{'420' if lebar else '470'}px;width:860px;"
+                       f"transform:scale({'.74' if lebar else '1'});transform-origin:0 0}}"
+                       f"#ob{{position:relative;width:860px;animation:obm .9s .15s cubic-bezier(.2,1.2,.4,1) both}}@keyframes obm{{from{{transform:scale(.7) rotate(6deg);opacity:0}}"
                        f"to{{transform:rotate(-2deg)}}}}"
                        f"#ob .tl{{position:absolute;left:70px;right:70px;top:{'120' if ob['jenis'] == 'surat' else '150'}px;font-family:Caveat;"
                        f"font-size:{'66' if len(tulisan) < 70 else '54'}px;line-height:1.15;color:{warna};text-align:center;"
                        f"clip-path:inset(0 100% 0 0);animation:tulis {min(2.4, 0.6 + len(tulisan) / 40):.2f}s {tulis_mulai:.2f}s steps(40,end) forwards}}"
                        "@keyframes tulis{to{clip-path:inset(0 0 0 0)}}")
-            isi.append(f'{redup}<div id="ob">{kertas}<div class="tl">{tulisan}</div></div>')
+            isi.append(f'{redup}<div id="obw"><div id="ob">{kertas}<div class="tl">{tulisan}</div></div></div>')
     # ---- overlay di luar kamera
     luar = []
     for k, it in enumerate(a["urutan"]):

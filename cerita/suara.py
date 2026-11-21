@@ -95,6 +95,9 @@ def _eleven(teks: str, tokoh: str, out: str) -> None:
     Path(out).write_bytes(r.content)
 
 
+_MODEL_OK = 0
+
+
 def _gemini(teks: str, tokoh: str, out: str, emosi: str = "") -> None:
     c = GEMINI.get(tokoh, GEMINI["narator"])
     gaya = c["gaya"] + (f", dengan emosi {emosi}" if emosi else "")
@@ -104,7 +107,9 @@ def _gemini(teks: str, tokoh: str, out: str, emosi: str = "") -> None:
     import time
     err = ""
     # model utama dicoba ulang dulu (kadang balasannya kosong / kena batas per menit), baru model cadangan
-    urutan = [m for m in GEMINI_TTS_MODEL for _ in range(3)]
+    global _MODEL_OK
+    # mulai dari model yang terakhir berhasil, supaya suara satu episode konsisten
+    urutan = [m for m in GEMINI_TTS_MODEL[_MODEL_OK:] for _ in range(3)]
     for i, model in enumerate(urutan):
         if i:
             time.sleep(35 if " 429:" in err else min(20, 4 * i))  # 429 = batas per menit
@@ -123,6 +128,7 @@ def _gemini(teks: str, tokoh: str, out: str, emosi: str = "") -> None:
                 rate = int(part["mimeType"].split("rate=")[1].split(";")[0])
             subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "s16le", "-ar", str(rate), "-ac", "1",
                             "-i", str(pcm), out], check=True)
+            _MODEL_OK = GEMINI_TTS_MODEL.index(model)
             print(f"    (gemini {model}, suara {c['voice']})")
             return
         err = f"{model} {r.status_code}: {r.text[:200]}"
