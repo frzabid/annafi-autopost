@@ -85,12 +85,22 @@ def _gemini(prompt):
     if not GEMINI_KEY:
         raise RuntimeError("GEMINI_API_KEY belum diisi")
     body = {"contents": [{"role": "user", "parts": [{"text": prompt}]}],
-            "generationConfig": {"responseMimeType": "application/json", "temperature": 0.6}}
+            "generationConfig": {"responseMimeType": "application/json", "temperature": 0.6, "maxOutputTokens": 12000}}
     err = ""
     for model in MODEL:
         for coba in range(3):
-            r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
-                              headers={"x-goog-api-key": GEMINI_KEY}, json=body, timeout=180)
+            b = dict(body)
+            if "2.5" in model:  # batasi "berpikir" supaya tidak terlalu lama
+                b["generationConfig"] = dict(body["generationConfig"], thinkingConfig={"thinkingBudget": 2048})
+            try:
+                r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+                                  headers={"x-goog-api-key": GEMINI_KEY}, json=b, timeout=300)
+            except requests.RequestException as e:
+                err = f"{model}: {e}"
+                print("  gemini:", err)
+                time.sleep(5)
+                continue
+            print(f"  gemini {model}: {r.status_code}")
             if r.status_code == 200:
                 try:
                     teks = "".join(p.get("text", "") for p in r.json()["candidates"][0]["content"]["parts"] if not p.get("thought"))
