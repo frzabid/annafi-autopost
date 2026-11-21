@@ -57,6 +57,8 @@ def caption_cerita(p) -> str:
         f"✉️ {p['nama']}",
         "Surat itu datang tanpa nama pengirim... siapa yang menulisnya? 🤔\nTulis tebakanmu di komentar 👇",
         ajak,
+        "⚠️ Cerita ini hanya fiktif. Apabila terdapat kesamaan nama tokoh, tempat, atau kejadian, "
+        "hal tersebut merupakan unsur ketidaksengajaan.",
         "#misterisurattanpanama #ceritabersambung #ceritamisteri #animasi #ceritaanimasi"])
 
 
