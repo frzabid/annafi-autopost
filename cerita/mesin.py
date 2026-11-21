@@ -388,6 +388,6 @@ def render(papan, out_mp4, terakhir=False):
                     f"afade=t=out:st={total - 0.8:.2f}:d=0.8,alimiter=limit=0.95[a]")
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", *inputs, "-filter_complex", ";".join(filt),
                         "-map", vlab, "-map", "[a]", "-t", f"{total:.2f}", "-c:v", "libx264", "-preset", "veryfast", "-crf", "21",
-                        "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "160k", "-movflags", "+faststart", out_mp4], check=True)
+                        "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", out_mp4], check=True)
     print(f"  selesai: {total:.1f} detik -> {out_mp4}")
     return out_mp4
