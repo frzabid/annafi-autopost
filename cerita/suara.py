@@ -144,10 +144,32 @@ def _rapikan(path: str) -> None:
     Path(tmp).replace(path)
 
 
+CACHE = Path(__file__).parent / "suara_cache"
+
+
 def _tts(teks: str, tokoh: str, out: str, emosi: str = "") -> None:
-    _tts_mentah(teks, tokoh, out, emosi)
+    """Suara satu baris. Hasil disimpan di cerita/suara_cache supaya render ulang tidak memakai kuota TTS lagi.
+    Kalau kuota Gemini habis (429), otomatis pakai suara cadangan edge-tts."""
+    global MESIN
+    import hashlib
+    import shutil
+    kunci = hashlib.sha1(f"{MESIN}|{tokoh}|{emosi}|{teks}".encode()).hexdigest()[:12]
+    simpan = CACHE / f"{tokoh}-{kunci}.wav"
+    if simpan.exists() and MESIN != "diam":
+        shutil.copy(simpan, out)
+        return
+    try:
+        _tts_mentah(teks, tokoh, out, emosi)
+    except RuntimeError as e:
+        if MESIN != "gemini" or "429" not in str(e):
+            raise
+        print("    kuota Gemini TTS habis -> suara cadangan edge-tts untuk sisa episode")
+        MESIN = "edge"
+        return _tts(teks, tokoh, out, emosi)
     if out.endswith(".wav") and MESIN != "diam":
         _rapikan(out)
+        CACHE.mkdir(exist_ok=True)
+        shutil.copy(out, simpan)
 
 
 def _tts_mentah(teks: str, tokoh: str, out: str, emosi: str = "") -> None:

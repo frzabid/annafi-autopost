@@ -52,6 +52,6 @@ jobs:
         run: |
           git config user.name "annafi-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add cerita/contoh/ cerita/papan/ 2>/dev/null || true
+          git add cerita/contoh/ cerita/papan/ cerita/suara_cache/ 2>/dev/null || true
           git commit -q -m "cerita part ${{ inputs.part }} [skip ci]" || echo "tidak ada perubahan"
           git pull --rebase -q origin main && git push -q origin main
