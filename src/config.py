@@ -29,6 +29,7 @@ PREVIEW_JAM = float(_env("PREVIEW_JAM", "2"))
 # Jam ramai (WIB) dipakai kalau kolom jam di sheet dikosongkan
 JAM_STORY = ["07:00", "12:00", "16:00", "19:00"]  # story katalog disebar sepanjang hari
 JAM_FEED = ["19:00"]                               # postingan feed: malam hari
+REEL_INGAT_HARI = 2                                # pengingat render reel cerita: H-2
 JAM_CERITA = ["20:00"]                             # reel cerita bersambung
 # Pratinjau konten feed (edukasi/promo/...) dikirim malam sebelumnya jam segini, dengan tombol setuju
 JAM_PRATINJAU_FEED = _env("JAM_PRATINJAU_FEED", "20:00")

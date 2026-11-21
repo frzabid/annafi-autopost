@@ -154,8 +154,10 @@ function tanganiTombol_(cq) {
   if (bagian.length !== 3 || ['ok', 'no'].indexOf(bagian[0]) < 0) return;
   const aksi = bagian[0] === 'ok' ? 'setuju' : 'batal';
   sheet_(TAB_SETUJU).appendRow([sekarang_(), bagian[1], bagian[2], aksi]);
-  const status = aksi === 'setuju'
-    ? '✅ Disetujui — akan tayang sesuai jadwal.'
+  const jenis = bagian[1].charAt(0);  // R<id> = reel sudah dirender, U<id> = reel sudah diupload
+  const status = jenis === 'U' && aksi === 'setuju' ? '✅ Sudah upload, tercatat. Terima kasih!'
+    : jenis === 'R' && aksi === 'setuju' ? '✅ Video siap. Di jam tayang aku ingatkan upload + kirim captionnya.'
+    : aksi === 'setuju' ? '✅ Disetujui — akan tayang sesuai jadwal.'
     : '❌ Dibatalkan — tidak akan diposting. Ubah isinya di sheet kalau mau dijadwalkan ulang.';
   tg_('answerCallbackQuery', { callback_query_id: cq.id, text: status });
   tg_('editMessageText', { chat_id: msg.chat.id, message_id: msg.message_id,

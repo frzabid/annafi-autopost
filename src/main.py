@@ -5,8 +5,9 @@ Jenis konten (kolom `jenis` di sheet):
                                    kecuali kolom tunda = YA. Setelah tayang: pengingat Sorotan.
   edukasi / promo / info / momen -> Postingan feed Instagram + Facebook. Pratinjau malam sebelumnya
                                    (20.00) dengan tombol ✅/❌ di Telegram; HANYA tayang kalau disetujui.
-  cerita (nama memuat "Part N")  -> Reel Instagram cerita bersambung (animasi + suara dari folder cerita/).
-                                   Video dirender & dikirim ke Telegram malam sebelumnya; HANYA tayang kalau disetujui.
+  cerita (nama memuat "Part N")  -> Reel cerita bersambung, SEMI-MANUAL: video dirender oleh Claude (workflow cerita.yml).
+                                   Bot mengingatkan render (H-2, tombol "Sudah dirender"), lalu di jam tayang mengingatkan
+                                   upload + mengirim caption siap salin (tombol "Sudah upload").
 
   python src/main.py cek       -> cek ringan (tanpa Chrome), apakah ada yang perlu dikerjakan
   python src/main.py prepare   -> proses tombol Telegram, kirim pratinjau, siapkan antrian tayang
@@ -74,6 +75,17 @@ def terapkan_persetujuan(s, daftar):
     """Terapkan keputusan dari tab Persetujuan (Manajer AI). Kembalikan jumlah perubahan."""
     berubah = 0
     for pid, h, aksi in daftar:
+        if pid[:1] in ("R", "U") and pid[1:] in s["produk"]:  # tombol reel cerita
+            st = s["produk"][pid[1:]]
+            if st.get("hash") != h or st.get("status") in SELESAI:
+                continue
+            if aksi == "setuju" and pid[0] == "R" and st.get("status") == "menunggu_render":
+                st.update(status="dirender", dirender=True); berubah += 1
+            elif aksi == "setuju" and pid[0] == "U":
+                st.update(status="terposting", cara="manual", waktu_posting=datetime.now(TZ).isoformat()); berubah += 1
+            elif aksi == "batal" and st.get("status") != "dibatalkan":
+                st["status"] = "dibatalkan"; berubah += 1
+            continue
         st = s["produk"].get(pid)
         if not st or st.get("hash") != h or st.get("status") in SELESAI:
             continue  # pratinjau lama (isi sudah berubah) atau sudah selesai
@@ -91,6 +103,11 @@ def proses_tombol(s):
         try:
             aksi, pid, h = data.split(":")
         except ValueError:
+            continue
+        if pid[:1] in ("R", "U"):
+            if terapkan_persetujuan(s, [(pid, h, "setuju" if aksi == "ok" else "batal")]):
+                notify.jawab_tombol(cq, "✅ Sudah upload, tercatat." if pid[0] == "U" else
+                                    "✅ Video siap. Nanti di jam tayang aku ingatkan upload." if aksi == "ok" else "❌ Dibatalkan.")
             continue
         st = s["produk"].get(pid)
         if not st:
@@ -289,6 +306,64 @@ def part_siap(p):
     return p["part"] in episode.PART and bool(config.GEMINI_API_KEY)
 
 
+def langkah_reel(p, st, now):
+    """Pengingat reel cerita yang perlu dikirim sekarang (tanpa efek samping): render1/render2/upload1/upload2/lewat/None."""
+    if st.get("hash") != p["hash_isi"]:
+        st = {"status": "baru"}
+    status = st.get("status", "baru")
+    mulai = p["waktu"] - timedelta(days=config.REEL_INGAT_HARI)
+    if status in ("baru", "menunggu_render", "dirender") and now >= p["waktu"]:
+        return "upload1"
+    if status == "menunggu_upload":
+        if now - p["waktu"] > timedelta(hours=24):
+            return "lewat"
+        if not st.get("ingat_upload2") and now >= p["waktu"] + timedelta(minutes=60):
+            return "upload2"
+        return None
+    if status == "baru" and now >= mulai:
+        return "render1"
+    if (status == "menunggu_render" and not st.get("ingat_render2") and now >= mulai_pratinjau(p)
+            and st.get("ingat_render", "") < mulai_pratinjau(p).isoformat()):
+        return "render2"
+    return None
+
+
+def urus_reel(p, st, now):
+    """Reel cerita semi-manual: pengingat render (Claude yang merender) & pengingat upload + caption siap salin."""
+    if st.get("hash") != p["hash_isi"]:  # baris baru / isinya berubah -> mulai dari awal
+        for k in ("ingat_render", "ingat_render2", "ingat_upload2", "setuju_hash", "poster", "slides", "dirender"):
+            st.pop(k, None)
+        st.update(hash=p["hash_isi"], status="baru")
+    langkah = langkah_reel(p, st, now)
+    nama, jam = html.escape(p["nama"]), fmt(p["waktu"])
+    h, pid = p["hash_isi"], p["id"]
+    if langkah in ("render1", "render2"):
+        ulang = "🔁 Pengingat lagi: " if langkah == "render2" else ""
+        notify.pesan(f"🎬 {ulang}<b>{nama}</b> dijadwalkan tayang di Reels Instagram <b>{jam}</b>.\n\n"
+                     f"Saatnya render videonya: minta Claude <i>render part {p['part']}</i> (±10 menit, videonya masuk ke sini).\n"
+                     "Kalau videonya sudah siap, tekan <b>Sudah dirender</b>.",
+                     tombol=[("✅ Sudah dirender", f"ok:R{pid}:{h}"), ("❌ Batalkan", f"no:R{pid}:{h}")])
+        st["status"] = "menunggu_render"
+        st["ingat_render2" if langkah == "render2" else "ingat_render"] = now.isoformat()
+    elif langkah in ("upload1", "upload2"):
+        caption = p["caption"] or config.caption_otomatis(p)
+        belum = "" if st.get("dirender") else "\n⚠️ Video belum ditandai <i>sudah dirender</i>."
+        if langkah == "upload1":
+            notify.pesan(f"<pre>{html.escape(caption)}</pre>")
+        notify.pesan(f"⏰ {'Pengingat lagi: ' if langkah == 'upload2' else ''}Saatnya upload <b>{nama}</b> ke Reels Instagram!{belum}\n\n"
+                     "1. Instagram → + → Reel → pilih videonya\n2. Salin caption di atas (ketuk kotaknya) → tempel → Bagikan\n"
+                     "3. Bagikan juga ke Story/Status WA\nSudah? Tekan <b>Sudah upload</b>.",
+                     tombol=[("✅ Sudah upload", f"ok:U{pid}:{h}")])
+        if langkah == "upload1":
+            st["status"] = "menunggu_upload"
+        else:
+            st["ingat_upload2"] = now.isoformat()
+    elif langkah == "lewat":
+        st["status"] = "terlewat"
+        notify.pesan(f"⏭️ <b>{nama}</b> ({jam}) belum ditandai sudah upload setelah 24 jam, pengingat dihentikan. "
+                     "Ubah tanggal di sheet kalau mau dijadwalkan ulang.")
+
+
 HARI = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
 
 
@@ -371,21 +446,16 @@ def prepare(now=None):
     for p in sorted(rows, key=lambda r: r["waktu"]):
         st = s["produk"].setdefault(p["id"], {"nama": p["nama"], "status": "baru", "gagal": 0})
         st["waktu_tayang"] = fmt(p["waktu"])
+        if p["format"] == "reel":
+            if not p["tunda"] and (st.get("hash") != p["hash_isi"] or st.get("status") not in SELESAI + ("dibatalkan",)):
+                urus_reel(p, st, now)
+            continue
         if not aktif(p, st) or now < mulai_pratinjau(p):
             continue
         if now - p["waktu"] > timedelta(hours=config.BATAS_TELAT_JAM):
             st["status"] = "terlewat"
             notify.pesan(f"⏭️ <b>{html.escape(p['nama'])}</b> ({fmt(p['waktu'])}) terlewat lebih dari "
                          f"{config.BATAS_TELAT_JAM:g} jam, tidak diposting. Ubah tanggal/jam di sheet kalau mau dijadwalkan ulang.")
-            continue
-        if not part_siap(p):
-            if now >= p["waktu"]:
-                st["status"] = "terlewat"
-                notify.pesan(f"⏹️ <b>{html.escape(p['nama'])}</b> tidak diposting: animasinya belum dibuat.")
-            elif st.get("info_part") != p["hash_isi"]:
-                st["info_part"] = p["hash_isi"]
-                notify.pesan(f"🎬 <b>{html.escape(p['nama'])}</b> terjadwal {fmt(p['waktu'])}, tapi animasi Part {p['part']} "
-                             "belum dibuat. Video akan dirender otomatis begitu animasinya ditambahkan.")
             continue
         if st.get("hash") != p["hash_isi"] or not st.get("poster") or not (POSTERS / st["poster"]).exists():
             diperbarui = st["status"] in ("pratinjau", "menunggu", "disetujui", "dibatalkan")
@@ -529,10 +599,11 @@ def cek(now=None):
         perlu = perlu or any(pid not in s.get("permintaan", []) for pid, _ in sheet.load_permintaan(config.SHEET_CSV_URL))
     for p in rows:
         st = s["produk"].get(p["id"], {})
-        if not aktif(p, st) or now < mulai_pratinjau(p):
+        if p["format"] == "reel":
+            if not p["tunda"] and (st.get("hash") != p["hash_isi"] or st.get("status") not in SELESAI + ("dibatalkan",)):
+                perlu = perlu or bool(langkah_reel(p, st, now))
             continue
-        if not part_siap(p):
-            perlu = perlu or (st.get("info_part") != p["hash_isi"] or now >= p["waktu"])
+        if not aktif(p, st) or now < mulai_pratinjau(p):
             continue
         if st.get("hash") != p["hash_isi"] or now >= p["waktu"] or st.get("error"):
             perlu = True
