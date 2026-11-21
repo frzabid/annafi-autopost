@@ -69,8 +69,10 @@ def laras_dada(ekspresi: str = "kaget") -> str:
 
 def amplop(lebar: int = 360, tua: bool = False, depan: bool = False) -> str:
     """depan=True: sisi depan (tanpa lipatan) dengan bintang di pojok, untuk close-up tulisan."""
-    kertas = "#E9D7A6" if tua else "#F4E7C8"
-    garis = "#CDB47A" if tua else "#E2CFA4"
+    kertas = "#D6BC82" if tua else "#F4E7C8"
+    garis = "#A88A4E" if tua else "#E2CFA4"
+    noda = ('<circle cx="70" cy="190" r="34" fill="#a07a3a" opacity=".18"/><circle cx="300" cy="60" r="22" fill="#a07a3a" opacity=".15"/>'
+            '<path d="M4 120 L30 112 L22 140Z" fill="#00000014"/>') if tua else ""
     if depan:
         isi = (f'<rect x="18" y="18" width="324" height="204" rx="6" fill="none" stroke="{garis}" stroke-width="2" stroke-dasharray="8 6"/>'
                '<path d="M318 30 l6 13 14 2 -10 10 3 14 -13 -7 -13 7 3 -14 -10 -10 14 -2z" fill="#1E3A6B"/>')
@@ -79,7 +81,7 @@ def amplop(lebar: int = 360, tua: bool = False, depan: bool = False) -> str:
                '<path d="M180 150 l9 19 21 3 -15 15 4 21 -19 -10 -19 10 4 -21 -15 -15 21 -3z" fill="#1E3A6B"/>')
     return f'''<svg viewBox="0 0 360 240" width="{lebar}" xmlns="http://www.w3.org/2000/svg">
     <rect x="4" y="4" width="352" height="232" rx="10" fill="{kertas}" stroke="{garis}" stroke-width="4"/>
-    {isi}
+    {noda}{isi}
     </svg>'''
 
 

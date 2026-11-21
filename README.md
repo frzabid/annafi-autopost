@@ -146,10 +146,13 @@ posters/         poster jadi (otomatis, URL publik untuk Instagram)
 
 ## Reel cerita bersambung (Misteri Surat Tanpa Nama)
 
-- Baris sheet: `jenis` = **cerita**, `nama` = "Misteri Surat Tanpa Nama Part N", jam kosong = 20.00.
-  Bisa lewat chat bot: *jadwalkan cerita part 1 hari Selasa*. Rencana mingguan otomatis menambah part berikutnya
-  tiap Selasa & Jumat, **hanya** part yang animasinya sudah ada di `cerita/episode.py`.
-- H-1 jam 20.00 GitHub merender video (animasi + suara Gemini) → dikirim ke Telegram dengan ✅/❌.
-- Jam tayang: kalau variabel `MAKE_REEL` = 1 (skenario Make punya rute Reel), reel diposting otomatis;
-  kalau belum, videonya dikirim ke Telegram untuk diunggah manual.
-- Tambah part baru: buat `cerita/partN.py` (fungsi `render(out_mp4)`), daftarkan di `cerita/episode.py`.
+Alur: **naskah** (`cerita/naskah_musim1.md`) → **sutradara AI** (`cerita/sutradara.py`, Gemini menyusun papan cerita JSON:
+latar, tokoh & kostum, ekspresi, dialog, kamera, efek; disimpan di `cerita/papan/`) → **mesin animasi** (`cerita/mesin.py`,
+tokoh SVG `tokoh.py` + latar toko `latar.py`, suara Gemini TTS, panjang adegan mengikuti suara) → video reel.
+
+- Lewat bot Telegram: *buat part 1* / *ulang part 1, Raka lebih panik* → video contoh masuk ke Telegram (tidak diposting).
+  *jadwalkan yang tadi hari Selasa* → masuk tab Jadwal (`jenis` = cerita, jam kosong = 20.00).
+- Rencana mingguan otomatis menambah part berikutnya tiap Selasa & Jumat (sesuai part yang ada di naskah).
+- H-1 jam 20.00 video dirender → Telegram ✅/❌. Jam tayang: `MAKE_REEL` = 1 → diposting lewat Make; kalau belum,
+  videonya dikirim ke Telegram untuk diunggah manual.
+- Manual: Actions → *Render cerita* → Run workflow (part, arahan).

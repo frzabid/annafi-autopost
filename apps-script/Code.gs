@@ -27,12 +27,12 @@ const CONFIG = {
   HARI_FEED: [1, 2, 3, 5, 6],                      // hari favorit feed (1=Senin … 7=Minggu); AI memilih 4-5 di antaranya
   FEED_PER_MINGGU: '4-5',                          // jumlah feed seminggu; idenya diatur AI, tiap feed tetap menunggu ✅ darimu
   JAM_FEED: '19:00',
-  // cerita bersambung (reel animasi). Part berikutnya otomatis masuk rencana mingguan di hari ini,
-  // tapi hanya part yang animasinya SUDAH dibuat (dicek dari cerita/episode.py di GitHub).
+  // cerita bersambung (reel animasi). Naskahnya di GitHub (cerita/naskah_musim1.md); tiap part dibuatkan animasinya
+  // oleh AI (sutradara Gemini + mesin animasi). Part berikutnya otomatis masuk rencana mingguan di HARI_CERITA.
   JUDUL_CERITA: 'Misteri Surat Tanpa Nama',
   HARI_CERITA: [2, 5],                             // Selasa & Jumat
   JAM_CERITA: '20:00',
-  EPISODE_URL: 'https://raw.githubusercontent.com/frzabid/annafi-autopost/main/cerita/episode.py',
+  NASKAH_URL: 'https://raw.githubusercontent.com/frzabid/annafi-autopost/main/cerita/naskah_musim1.md',
   // kategori yang fotonya jarang ada di internet: hanya masuk rencana story kalau sudah ada foto sendiri
   KATEGORI_WAJIB_FOTO: ['AKSESORIS & FASHION', 'MAINAN', 'BUKU BACAAN & ISLAMI', 'KOSMETIK & PERAWATAN',
     'PESTA & ULANG TAHUN', 'SERAGAM SEKOLAH', 'RUMAH TANGGA & LAINNYA', 'MINUMAN & JAJANAN', 'PRAMUKA'],
@@ -298,7 +298,13 @@ function manajer_(instruksi) {
       : '- jenis hanya: katalog (story produk), edukasi, info, momen (postingan feed). Konten promo SEDANG DIMATIKAN: ' +
         'feed harus informatif/umum, tanpa harga dan tanpa kata promo/diskon/murah/beli sekarang. Kalau diminta promo, jelaskan di balasan.'),
     '- jenis "cerita" = reel animasi cerita bersambung "' + CONFIG.JUDUL_CERITA + '" (bukan feed). nama WAJIB "' + CONFIG.JUDUL_CERITA +
-      ' Part N", jam ' + CONFIG.JAM_CERITA + ', tanpa poin/gambar. Part yang animasinya sudah jadi: ' + partSiap_().join(', ') + '.',
+      ' Part N", jam ' + CONFIG.JAM_CERITA + ', tanpa poin/gambar; "detail" = arahan untuk sutradara AI (opsional). Part di naskah: ' +
+      partSiap_().join(', ') + '.',
+    '- Pemilik bisa brainstorm cerita denganmu (ide part, dialog, tokoh, twist): jawab di "balasan" berdasarkan NASKAH CERITA di bawah.',
+    '  Minta video part dibuat/dibuat ulang ("buat part 1", "ulang part 2, Raka lebih panik") = aksi "contoh" dengan data',
+    '  {format:"cerita", jenis:"cerita", nama:"' + CONFIG.JUDUL_CERITA + ' Part N", detail: arahan}. Untuk "ulang", detail WAJIB diisi',
+    '  (rangkum arahannya; kalau tidak ada, tulis "versi baru, variasikan adegan & kamera"). Hasil video masuk ±5-10 menit.',
+    '  Menjadwalkan part = aksi "tambah" jenis cerita. Ide perubahan naskah: tulis jadi arahan (naskah aslinya diubah di GitHub).',
     '- Untuk katalog, "nama" HARUS persis salah satu nama di PRODUK; harga diisi sistem, jangan tulis harga.',
     '- Jangan mengarang harga. Ubah harga hanya kalau pemilik menyebut angkanya di instruksi.',
     '- tanggal format dd/MM/yyyy, jam format HH:mm. Sebaiknya jam DIKOSONGKAN: sistem otomatis menyebar story di jam ramai',
@@ -312,6 +318,8 @@ function manajer_(instruksi) {
     '  lebih panjang bila perlu, tapi tetap ringkas (maks ~12 kalimat). Jangan pakai format Markdown (*, #); boleh emoji secukupnya.',
     '- Aksi "contoh": data.format "feed" (carousel: jenis, nama judul maks 6 kata, detail 1 kalimat, poin 3-4 "Judul: isi",',
     '  tema, produk opsional) atau "story" (nama PERSIS dari PRODUK; harga diisi sistem).',
+    '',
+    'NASKAH CERITA (tokoh, kostum, isi tiap part): ' + naskahCerita_(),
     '',
     'KATEGORI PRODUK: ' + JSON.stringify(uniq_(semuaProduk.map(p => p.kategori))),
     'PRODUK yang relevan dengan instruksi (sebagian dari ' + semuaProduk.length + '): ' + JSON.stringify(produk.map(p => ({ baris: p._row, nama: p.nama, kategori: p.kategori,
@@ -365,6 +373,9 @@ function mintaContoh_(baris) {
       headers: { Authorization: 'Bearer ' + CONFIG.GITHUB_TOKEN, Accept: 'application/vnd.github+json' } });
     cepat = r.getResponseCode() === 204;
   }
+  if (baris.jenis === 'cerita')
+    return '🎬 <b>' + esc_(baris.nama) + '</b> sedang dibuat AI (adegan → animasi → suara). Videonya masuk ke sini ' +
+      (cepat ? '±8 menit lagi.' : 'dalam ±15-25 menit.') + '\nSudah oke? Balas: <i>jadwalkan yang tadi hari Selasa</i>.';
   return '🎨 Contoh <b>' + esc_(baris.nama) + '</b> sedang dibuat, masuk ke sini ' + (cepat ? '±3 menit lagi.' : 'dalam ±15 menit.') +
     '\nMau dijadwalkan? Balas misalnya: <i>jadwalkan yang tadi hari Sabtu</i>.';
 }
@@ -425,7 +436,8 @@ function jalankanAksi_(a, instruksi, produk) {
   if (a.tipe === 'contoh') {
     const d = Object.assign({}, a.data || {});
     const story = String(d.format || '').toLowerCase() === 'story' || String(d.jenis || '').toLowerCase() === 'katalog';
-    d.jenis = story ? 'katalog' : (d.jenis && d.jenis !== 'katalog' ? d.jenis : 'edukasi');
+    const cerita = String(d.format || '').toLowerCase() === 'cerita' || String(d.jenis || '').toLowerCase() === 'cerita';
+    d.jenis = cerita ? 'cerita' : story ? 'katalog' : (d.jenis && d.jenis !== 'katalog' ? d.jenis : 'edukasi');
     d.tanggal = fmtTgl_(new Date());
     return mintaContoh_(barisKonten_(d, produk));
   }
@@ -474,7 +486,8 @@ function barisKonten_(d, produk) {
     const m = String(d.nama || '').match(/part\s*(\d+)/i);
     if (!m) throw new Error('Cerita harus menyebut nomor part, misal "' + CONFIG.JUDUL_CERITA + ' Part 1".');
     return { tanggal: fmtTgl_(keDate_(d.tanggal)), jam: rapikanJam_(d.jam || CONFIG.JAM_CERITA), jenis: 'cerita',
-      nama: CONFIG.JUDUL_CERITA + ' Part ' + (+m[1]), kategori: '', detail: '', poin: '', gambar: '', caption: d.caption || '',
+      nama: CONFIG.JUDUL_CERITA + ' Part ' + (+m[1]), kategori: '', detail: String(d.detail || '').slice(0, 300), poin: '',
+      gambar: '', caption: d.caption || '',
       tunda: '', tema: '', produk: '' };
   }
   const poin = Array.isArray(d.poin) ? d.poin.join('; ') : String(d.poin || '');
@@ -633,19 +646,23 @@ function buatRencanaMingguan_(paksa) {
   return teks;
 }
 
-/** Nomor part cerita yang animasinya sudah dibuat (dibaca dari cerita/episode.py di GitHub, disimpan 1 jam). */
-function partSiap_() {
+/** Isi naskah cerita dari GitHub (disimpan 1 jam). */
+function naskahCerita_() {
   const cache = CacheService.getScriptCache();
-  const simpan = cache.get('partSiap');
-  if (simpan) return JSON.parse(simpan);
-  let hasil = [];
+  const simpan = cache.get('naskah');
+  if (simpan) return simpan;
+  let teks = '';
   try {
-    const teks = UrlFetchApp.fetch(CONFIG.EPISODE_URL, { muteHttpExceptions: true }).getContentText();
-    const blok = (teks.match(/PART\s*=\s*\{([\s\S]*?)\}/) || [])[1] || '';
-    hasil = (blok.match(/^\s*(\d+)\s*:/gm) || []).map(x => parseInt(x, 10)).sort((a, b) => a - b);
-  } catch (e) { /* GitHub tidak terjangkau: anggap belum ada */ }
-  cache.put('partSiap', JSON.stringify(hasil), 3600);
-  return hasil;
+    const r = UrlFetchApp.fetch(CONFIG.NASKAH_URL, { muteHttpExceptions: true });
+    if (r.getResponseCode() === 200) teks = r.getContentText().slice(0, 9000);
+  } catch (e) { /* GitHub tidak terjangkau */ }
+  if (teks) cache.put('naskah', teks, 3600);
+  return teks || '(naskah tidak terbaca)';
+}
+
+/** Nomor part yang ada di naskah (judul "## PART n"). */
+function partSiap_() {
+  return (naskahCerita_().match(/^## PART (\d+)/gm) || []).map(x => parseInt(x.replace(/\D/g, ''), 10));
 }
 
 function ringkasJadwal_(nHari) {

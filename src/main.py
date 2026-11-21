@@ -150,7 +150,8 @@ def buat_video(p, st):
     import episode
     POSTERS.mkdir(exist_ok=True)
     out = POSTERS / f"{p['id']}-{p['hash_isi']}.mp4"
-    episode.render(p["part"], str(out))
+    info = episode.render(p["part"], str(out), arahan=p.get("detail", ""))
+    st["adegan"] = info["ringkas"]
     if st.get("poster") and st["poster"] != out.name:
         (POSTERS / st["poster"]).unlink(missing_ok=True)  # buang versi lama
     st.update(poster=out.name, sumber_gambar="", hash=p["hash_isi"])
@@ -200,7 +201,8 @@ def kirim_pratinjau(p, st, poster, diperbarui):
     else:
         sumber = "tanpa foto"
     if p["format"] == "reel":
-        sumber = f"video animasi Part {p['part']} (suara AI)"
+        sumber = (f"video animasi Part {p['part']} (dibuat AI dari naskah)"
+                  + (f"\n<i>{html.escape(st.get('adegan', ''))}</i>" if st.get("adegan") else ""))
     if st.get("slides"):
         import tema
         sumber = (f"carousel {len(st['slides'])} slide, tema <b>{tema.TEMA[tema.pilih(p)]['nama']}</b>"
@@ -284,7 +286,7 @@ def part_siap(p):
         return True
     sys.path.insert(0, str(ROOT / "cerita"))
     import episode
-    return p["part"] in episode.PART
+    return p["part"] in episode.PART and bool(config.GEMINI_API_KEY)
 
 
 HARI = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
@@ -315,9 +317,22 @@ def proses_permintaan(s):
 
 def kirim_contoh(p, judul, penutup=""):
     """Render poster/carousel ke folder kerja dan kirim ke Telegram (tanpa mengubah status jadwal)."""
-    import images, render
     WORK.mkdir(exist_ok=True)
     caption = p["caption"] or config.caption_otomatis(p)
+    if p["format"] == "reel":
+        sys.path.insert(0, str(ROOT / "cerita"))
+        import episode
+        out = WORK / f"contoh-{p['id']}.mp4"
+        notify.pesan(f"🎬 Mulai membuat <b>{html.escape(p['nama'])}</b>: AI menyusun adegan dari naskah, lalu animasi & suara "
+                     "dirender (±5-8 menit)…")
+        info = episode.render(p["part"], str(out), arahan=p.get("detail", ""))
+        notify.video(str(out), html.escape(caption))
+        notify.pesan(f"{judul}: {html.escape(p['nama'])}\nAdegan:\n<i>{html.escape(info['ringkas'])}</i>"
+                     + (f"\nArahan: {html.escape(p['detail'])}" if p.get("detail") else "")
+                     + "\n\nKurang pas? Balas misalnya: <i>ulang part 1, Raka lebih panik dan adegan surat lebih lama</i>."
+                     + (f"\n{penutup}" if penutup else ""))
+        return
+    import images, render
     if pakai_carousel(p):
         import carousel, tema
         slides = carousel.render(p, str(WORK / f"contoh-{p['id']}"), foto_kolase(p, f"contoh-{p['id']}"))

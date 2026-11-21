@@ -44,7 +44,7 @@ HASHTAG = "#annafiatk #atkmenganti #alattulis #atkmurah #perlengkapansekolah"
 def caption_cerita(p) -> str:
     """Caption reel cerita: ajak follow & tunggu part berikutnya (bukan promosi)."""
     ig = TOKO["ig"] if TOKO["ig"].startswith("@") else "@" + TOKO["ig"]
-    judul = p["nama"] + (f"\n{p['detail']}" if p.get("detail") and "part" not in p["detail"].lower() else "")
+    judul = p["nama"]
     return "\n\n".join([
         f"✉️ {judul}",
         "Surat itu datang tanpa nama pengirim... siapa yang menulisnya? 🤔\nTulis tebakanmu di komentar 👇",
@@ -83,6 +83,7 @@ GRAPH_VERSION = _env("GRAPH_VERSION", "v25.0")
 SERPER_API_KEY = _env("SERPER_API_KEY", "")
 # Make.com (posting feed IG+FB tanpa akun developer Meta)
 MAKE_WEBHOOK_URL = _env("MAKE_WEBHOOK_URL", "")
+GEMINI_API_KEY = _env("GEMINI_API_KEY", "")  # sutradara AI & suara cerita
 MAKE_REEL = _env("MAKE_REEL", "0") == "1"  # 1 = skenario Make sudah punya rute Reel; 0 = reel dikirim ke Telegram untuk diunggah manual
 MAKE_KUNCI = _env("MAKE_KUNCI", "")  # kode rahasia, dicek oleh filter di skenario Make  # opsional, cadangan pencarian gambar
 

@@ -1,24 +1,34 @@
-"""Daftar part cerita yang animasinya sudah dibuat. Dipakai autopost (src/main.py) untuk merender reel.
+"""Render satu part cerita: naskah -> papan cerita (Gemini, sutradara.py) -> video (mesin.py).
 
-Tambah part baru: buat cerita/partN.py yang punya fungsi render(out_mp4) -> path, lalu daftarkan di PART.
+Dipakai autopost (jadwal & permintaan dari bot Telegram) dan workflow cerita.yml.
+  python cerita/episode.py <part> <out.mp4> [arahan...]
 """
-import importlib
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
+import sutradara  # noqa: E402
 
-# nomor part -> nama modul di folder cerita/
-PART = {
-    1: "part1_pembuka",  # sementara: pembuka ±16 detik (versi lengkap menyusul)
-}
+PART = {n: "naskah" for n in sutradara.daftar_part()}  # part yang bisa dibuat (ada di naskah)
 
 
 class BelumDibuat(Exception):
     pass
 
 
-def render(part: int, out_mp4: str) -> str:
+def render(part: int, out_mp4: str, arahan: str = "", baru: bool = False) -> dict:
+    """Kembalikan info: papan (dict), path papan, apakah papan baru dibuat AI."""
     if part not in PART:
-        raise BelumDibuat(f"Animasi Part {part} belum dibuat (yang sudah ada: Part {', '.join(map(str, sorted(PART)))}).")
-    return importlib.import_module(PART[part]).render(out_mp4)
+        raise BelumDibuat(f"Part {part} belum ada di naskah (ada: Part {', '.join(map(str, sorted(PART)))}).")
+    import mesin
+    papan, path, dibuat = sutradara.papan(part, arahan, baru)
+    mesin.render(papan, out_mp4, terakhir=part == max(PART))
+    return {"papan": papan, "path": str(path), "baru": dibuat, "ringkas": sutradara.ringkas(papan)}
+
+
+if __name__ == "__main__":
+    n = int(sys.argv[1])
+    out = sys.argv[2]
+    info = render(n, out, " ".join(sys.argv[3:]))
+    print(info["path"], "(papan baru dari AI)" if info["baru"] else "(papan lama)")
+    print(info["ringkas"])

@@ -3,26 +3,30 @@ name: Render cerita (motion comic)
 on:
   workflow_dispatch:
     inputs:
+      part:
+        description: "Nomor part (dari cerita/naskah_musim1.md)"
+        required: true
+        default: "1"
+      arahan:
+        description: "Arahan tambahan untuk sutradara AI (opsional)"
+        required: false
+        default: ""
       mesin:
         description: "Mesin suara: gemini / eleven / edge (kosong = otomatis)"
         required: false
         default: ""
-  push:
-    branches: [main]
-    paths:
-      - "cerita/**.py"
-      - ".github/workflows/cerita.yml"
 
 permissions:
   contents: write
 
 concurrency:
   group: cerita
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   render:
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -30,24 +34,24 @@ jobs:
           python-version: "3.12"
       - name: Pasang alat
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null
+          command -v ffmpeg > /dev/null || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg > /dev/null)
           pip install -q playwright edge-tts requests
           python -m playwright install --with-deps chromium > /dev/null
-      - name: Render video + suara
+      - name: Sutradara AI + render video
         env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
-          ELEVEN_VOICE_NARATOR: ${{ vars.ELEVEN_VOICE_NARATOR }}
-          ELEVEN_VOICE_NAFI: ${{ vars.ELEVEN_VOICE_NAFI }}
-          ELEVEN_MODEL: ${{ vars.ELEVEN_MODEL }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TTS_MESIN: ${{ inputs.mesin || vars.TTS_MESIN }}
-        run: |
-          M="${TTS_MESIN:-auto}"
-          python cerita/part1_pembuka.py "cerita/contoh/misteri_part1_pembuka_${M}_tokoannafi.mp4"
+          PART: ${{ inputs.part }}
+          ARAHAN: ${{ inputs.arahan }}
+        run: python cerita/kirim.py "$PART" "$ARAHAN"
       - name: Simpan hasil
+        if: always()
         run: |
           git config user.name "annafi-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add cerita/contoh/
-          git commit -m "contoh cerita bersuara [skip ci]" || echo "tidak ada perubahan"
+          git add cerita/contoh/ cerita/papan/ 2>/dev/null || true
+          git commit -q -m "cerita part ${{ inputs.part }} [skip ci]" || echo "tidak ada perubahan"
           git pull --rebase -q origin main && git push -q origin main

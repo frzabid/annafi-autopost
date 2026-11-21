@@ -93,7 +93,7 @@ jobs:
         run: |
           git config user.name "annafi-bot"
           git config user.email "annafi-bot@users.noreply.github.com"
-          git add posters state
+          git add posters state cerita/papan 2>/dev/null || git add posters state
           git diff --cached --quiet || (git commit -q -m "poster & status [skip ci]" && git push -q)
           sleep 5
 
