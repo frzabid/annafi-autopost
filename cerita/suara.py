@@ -85,12 +85,21 @@ def _gemini(teks: str, tokoh: str, out: str) -> None:
     body = {"contents": [{"parts": [{"text": f"{c['gaya']}: {teks}"}]}],
             "generationConfig": {"responseModalities": ["AUDIO"],
                                  "speechConfig": {"voiceConfig": {"prebuiltVoiceConfig": {"voiceName": c["voice"]}}}}}
+    import time
     err = ""
-    for model in GEMINI_TTS_MODEL:
+    # model utama dicoba ulang dulu (kadang balasannya kosong / kena batas per menit), baru model cadangan
+    urutan = [m for m in GEMINI_TTS_MODEL for _ in range(3)]
+    for i, model in enumerate(urutan):
+        if i:
+            time.sleep(min(20, 4 * i))
         r = requests.post(f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
                           headers={"x-goog-api-key": GEMINI_KEY}, json=body, timeout=180)
         if r.status_code == 200:
-            part = r.json()["candidates"][0]["content"]["parts"][0]["inlineData"]
+            try:
+                part = r.json()["candidates"][0]["content"]["parts"][0]["inlineData"]
+            except (KeyError, IndexError, ValueError):
+                err = f"{model} balasan kosong: {r.text[:200]}"
+                continue
             pcm = Path(out).with_suffix(".pcm")
             pcm.write_bytes(base64.b64decode(part["data"]))
             rate = 24000

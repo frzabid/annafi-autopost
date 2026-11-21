@@ -87,7 +87,7 @@ def adegan_b(d: float) -> str:
 .celah{{position:absolute;left:0;right:0;top:640px;height:26px;background:#3b3f47}}
 .sinar{{position:absolute;left:0;right:0;top:666px;height:500px;background:linear-gradient(rgba(255,226,160,.55),rgba(255,226,160,0))}}
 #amplopB{{position:absolute;left:330px;top:1100px;filter:drop-shadow(0 18px 14px rgba(0,0,0,.25));animation:geser 1.2s .1s ease-out both}}
-@keyframes geser{{from{{transform:translateY(-330px) rotate(-2deg)}}to{{transform:translateY(0) rotate(-8deg)}}}}
+@keyframes geser{{from{{transform:translateY(-420px) rotate(-2deg)}}to{{transform:translateY(0) rotate(-8deg)}}}}
 .kilau{{position:absolute;left:640px;top:1060px;width:60px;height:60px;opacity:0;animation:kilau 1s 1.1s ease-out forwards}}
 @keyframes kilau{{0%{{opacity:0;transform:scale(.3) rotate(0)}}50%{{opacity:1}}100%{{opacity:0;transform:scale(1.4) rotate(90deg)}}}}
 .c2{{animation:cap .45s .3s forwards}}
