@@ -35,7 +35,7 @@ jobs:
       SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
       MAKE_WEBHOOK_URL: ${{ secrets.MAKE_WEBHOOK_URL }}
       MAKE_KUNCI: ${{ secrets.MAKE_KUNCI }}
-      MAKE_REEL: ${{ vars.MAKE_REEL || '0' }}
+      MAKE_REEL: ${{ vars.MAKE_REEL || '1' }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
       TTS_MESIN: ${{ vars.TTS_MESIN }}
