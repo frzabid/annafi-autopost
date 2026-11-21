@@ -15,7 +15,7 @@ Jenis konten (kolom `jenis` di sheet):
   python src/main.py tes       -> tes koneksi Telegram & sheet
   python src/main.py contoh    -> kirim contoh poster (1 story + 1 feed terdekat) ke Telegram, tanpa posting
 """
-import html, json, os, pathlib, sys, traceback
+import html, json, os, pathlib, re, sys, traceback
 from datetime import datetime, timedelta
 import config, meta, notify, sheet
 from config import TZ
@@ -81,6 +81,9 @@ def terapkan_persetujuan(s, daftar):
                 continue
             if aksi == "setuju" and pid[0] == "R" and st.get("status") == "menunggu_render":
                 st.update(status="dirender", dirender=True); berubah += 1
+                m = re.search(r"part\s*(\d+)", st.get("nama", ""), re.I)
+                if m:  # disimpan per part, supaya tetap berlaku kalau jam tayangnya diubah di sheet
+                    s.setdefault("reel_dirender", {})[m[1]] = True
             elif aksi == "setuju" and pid[0] == "U":
                 st.update(status="terposting", cara="manual", waktu_posting=datetime.now(TZ).isoformat()); berubah += 1
             elif aksi == "batal" and st.get("status") != "dibatalkan":
@@ -328,12 +331,17 @@ def langkah_reel(p, st, now):
     return None
 
 
+s_global = {}
+
+
 def urus_reel(p, st, now):
     """Reel cerita semi-manual: pengingat render (Claude yang merender) & pengingat upload + caption siap salin."""
     if st.get("hash") != p["hash_isi"]:  # baris baru / isinya berubah -> mulai dari awal
         for k in ("ingat_render", "ingat_render2", "ingat_upload2", "setuju_hash", "poster", "slides", "dirender"):
             st.pop(k, None)
         st.update(hash=p["hash_isi"], status="baru")
+    if st.get("status") in ("baru", "menunggu_render") and s_global.get("reel_dirender", {}).get(str(p["part"])):
+        st.update(status="dirender", dirender=True)  # video part ini sudah ditandai siap (mis. jamnya baru diubah)
     langkah = langkah_reel(p, st, now)
     nama, jam = html.escape(p["nama"]), fmt(p["waktu"])
     h, pid = p["hash_isi"], p["id"]
@@ -347,7 +355,20 @@ def urus_reel(p, st, now):
         st["ingat_render2" if langkah == "render2" else "ingat_render"] = now.isoformat()
     elif langkah in ("upload1", "upload2"):
         caption = p["caption"] or config.caption_otomatis(p)
-        belum = "" if st.get("dirender") else "\n⚠️ Video belum ditandai <i>sudah dirender</i>."
+        siap = st.get("dirender") or s_global.get("reel_dirender", {}).get(str(p["part"]))
+        video = ROOT / "cerita" / "contoh" / f"misteri_part{p['part']}.mp4"
+        if langkah == "upload1" and siap and config.MAKE_REEL and config.MAKE_WEBHOOK_URL and video.exists():
+            url = f"{config.PUBLIC_BASE_URL.rstrip('/')}/cerita/contoh/{video.name}"
+            try:
+                meta.post_make_reel(url, caption)
+                st.update(status="terposting", cara="make", waktu_posting=now.isoformat())
+                notify.pesan(f"✅ Reel <b>{nama}</b> dikirim ke Instagram lewat Make (video diproses IG, tayang beberapa menit lagi).\n"
+                             "📲 Bagikan juga ke Story/Status WA supaya pengikut tahu part baru sudah keluar.")
+                return
+            except Exception as e:
+                traceback.print_exc()
+                notify.pesan(f"⚠️ Upload otomatis <b>{nama}</b> lewat Make gagal: {html.escape(str(e))[:200]}\nUpload manual ya 👇")
+        belum = "" if siap else "\n⚠️ Video belum ditandai <i>sudah dirender</i>."
         if langkah == "upload1":
             notify.pesan(f"<pre>{html.escape(caption)}</pre>")
         notify.pesan(f"⏰ {'Pengingat lagi: ' if langkah == 'upload2' else ''}Saatnya upload <b>{nama}</b> ke Reels Instagram!{belum}\n\n"
@@ -443,6 +464,7 @@ def prepare(now=None):
             notify.pesan(f"⚠️ Cek sheet: {e}")
             s["error_terkirim"].append(e)
     antrian = []
+    s_global.clear(); s_global.update(reel_dirender=s.setdefault("reel_dirender", {}))
     cerita = {r["part"]: r for r in rows if r["format"] == "reel" and not r["tunda"]}
     for r in cerita.values():  # untuk caption: kapan part berikutnya tayang / part terakhir
         nxt = cerita.get(r["part"] + 1)
