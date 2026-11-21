@@ -35,8 +35,8 @@ GEMINI_TTS_MODEL = [m for m in (os.environ.get("GEMINI_TTS_MODEL"), "gemini-3.1-
                                 "gemini-2.5-flash-preview-tts") if m]
 GEMINI = {
     "narator": {"voice": os.environ.get("GEMINI_VOICE_NARATOR") or "Charon",
-                "gaya": "Bacakan dalam bahasa Indonesia dengan suara narator cerita misteri: pelan, hangat, "
-                        "sedikit menegangkan, beri jeda dramatis pada tanda titik-titik"},
+                "gaya": "Bacakan dalam bahasa Indonesia dengan suara narator cerita misteri yang hangat dan sedikit menegangkan, "
+                        "tempo sedang (tidak lambat), jeda singkat saja pada tanda titik-titik"},
     "nafi": {"voice": os.environ.get("GEMINI_VOICE_NAFI") or "Leda",
              "gaya": "Ucapkan dalam bahasa Indonesia sebagai perempuan muda yang ramah, "
                      "dengan nada kaget dan penasaran"},
@@ -104,7 +104,22 @@ def _gemini(teks: str, tokoh: str, out: str) -> None:
     raise RuntimeError(f"Gemini TTS gagal: {err}")
 
 
+def _rapikan(path: str) -> None:
+    """Buang hening di awal & akhir klip suara (Gemini sering menambah jeda panjang)."""
+    tmp = path + ".rapi.wav"
+    trim = "silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05"
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", path, "-af",
+                    f"{trim},areverse,{trim},areverse", tmp], check=True)
+    Path(tmp).replace(path)
+
+
 def _tts(teks: str, tokoh: str, out: str) -> None:
+    _tts_mentah(teks, tokoh, out)
+    if out.endswith(".wav"):
+        _rapikan(out)
+
+
+def _tts_mentah(teks: str, tokoh: str, out: str) -> None:
     if MESIN == "eleven" and ELEVEN_KEY:
         return _eleven(teks, tokoh, out)
     if MESIN == "gemini" and GEMINI_KEY:
