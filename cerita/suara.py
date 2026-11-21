@@ -1,4 +1,4 @@
-"""Tambah suara narator + dialog (TTS bahasa Indonesia) ke video motion comic.
+"""Tambah suara narator + dialog (TTS bahasa Indonesia) ke video motion comic (uji Gemini TTS).
 
 Suara dibuat dengan ElevenLabs bila secret ELEVENLABS_API_KEY tersedia (model eleven_multilingual_v2,
 mendukung bahasa Indonesia); kalau tidak, cadangan edge-tts (gratis, tidak resmi). Butuh internet -> GitHub Actions.
