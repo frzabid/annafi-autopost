@@ -30,8 +30,8 @@ const CONFIG = {
   // cerita bersambung (reel animasi). Naskahnya di GitHub (cerita/naskah_musim1.md); tiap part dibuatkan animasinya
   // oleh AI (sutradara Gemini + mesin animasi). Part berikutnya otomatis masuk rencana mingguan di HARI_CERITA.
   JUDUL_CERITA: 'Misteri Surat Tanpa Nama',
-  HARI_CERITA: [2, 5],                             // Selasa & Jumat
-  JAM_CERITA: '20:00',
+  HARI_CERITA: [1, 2, 3, 4, 5, 6, 7],              // tiap hari 1 part
+  JAM_CERITA: '17:00',
   NASKAH_URL: 'https://raw.githubusercontent.com/frzabid/annafi-autopost/main/cerita/naskah_musim1.md',
   // kategori yang fotonya jarang ada di internet: hanya masuk rencana story kalau sudah ada foto sendiri
   KATEGORI_WAJIB_FOTO: ['AKSESORIS & FASHION', 'MAINAN', 'BUKU BACAAN & ISLAMI', 'KOSMETIK & PERAWATAN',

@@ -443,6 +443,11 @@ def prepare(now=None):
             notify.pesan(f"⚠️ Cek sheet: {e}")
             s["error_terkirim"].append(e)
     antrian = []
+    cerita = {r["part"]: r for r in rows if r["format"] == "reel" and not r["tunda"]}
+    for r in cerita.values():  # untuk caption: kapan part berikutnya tayang / part terakhir
+        nxt = cerita.get(r["part"] + 1)
+        r["berikut"] = nxt["waktu"] if nxt and nxt["waktu"] > r["waktu"] else None
+        r["terakhir"] = r["part"] == 8
     for p in sorted(rows, key=lambda r: r["waktu"]):
         st = s["produk"].setdefault(p["id"], {"nama": p["nama"], "status": "baru", "gagal": 0})
         st["waktu_tayang"] = fmt(p["waktu"])

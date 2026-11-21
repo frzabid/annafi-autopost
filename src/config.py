@@ -30,7 +30,7 @@ PREVIEW_JAM = float(_env("PREVIEW_JAM", "2"))
 JAM_STORY = ["07:00", "12:00", "16:00", "19:00"]  # story katalog disebar sepanjang hari
 JAM_FEED = ["19:00"]                               # postingan feed: malam hari
 REEL_INGAT_HARI = 2                                # pengingat render reel cerita: H-2
-JAM_CERITA = ["20:00"]                             # reel cerita bersambung
+JAM_CERITA = ["17:00"]                             # reel cerita bersambung (tiap hari 1 part)
 # Pratinjau konten feed (edukasi/promo/...) dikirim malam sebelumnya jam segini, dengan tombol setuju
 JAM_PRATINJAU_FEED = _env("JAM_PRATINJAU_FEED", "20:00")
 # jam pengingat foto story katalog untuk besok (produk yang belum punya foto)
@@ -45,11 +45,19 @@ HASHTAG = "#annafiatk #atkmenganti #alattulis #atkmurah #perlengkapansekolah"
 def caption_cerita(p) -> str:
     """Caption reel cerita: ajak follow & tunggu part berikutnya (bukan promosi)."""
     ig = TOKO["ig"] if TOKO["ig"].startswith("@") else "@" + TOKO["ig"]
-    judul = p["nama"]
+    hari = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
+    b = p.get("berikut")  # waktu tayang part berikutnya (dari jadwal), kalau ada
+    if p.get("terakhir"):
+        ajak = f"Ini part TERAKHIR musim 1 🎉 Terima kasih sudah mengikuti! Follow {ig} untuk cerita berikutnya 🔔"
+    elif b:
+        kapan = "besok" if (b.date() - p["waktu"].date()).days == 1 else hari[b.weekday()]
+        ajak = f"Part {p['part'] + 1} tayang {kapan} jam {b:%H.%M}. Follow {ig} supaya tidak ketinggalan 🔔"
+    else:
+        ajak = f"Part {p['part'] + 1} segera tayang. Follow {ig} supaya tidak ketinggalan kelanjutannya 🔔"
     return "\n\n".join([
-        f"✉️ {judul}",
+        f"✉️ {p['nama']}",
         "Surat itu datang tanpa nama pengirim... siapa yang menulisnya? 🤔\nTulis tebakanmu di komentar 👇",
-        f"Part {p['part'] + 1} segera tayang. Follow {ig} supaya tidak ketinggalan kelanjutannya 🔔",
+        ajak,
         "#misterisurattanpanama #ceritabersambung #ceritamisteri #animasi #menganti #gresik"])
 
 
