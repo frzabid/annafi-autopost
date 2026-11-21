@@ -518,11 +518,12 @@
   },
   "f9d3598948": {
    "nama": "Misteri Surat Tanpa Nama Part 1",
-   "status": "menunggu_render",
+   "status": "dirender",
    "gagal": 0,
    "waktu_tayang": "Sabtu 21/11 17:00",
    "hash": "8770e841be",
-   "ingat_render": "2026-11-21T15:31:10.832973+07:00"
+   "ingat_render": "2026-11-21T15:31:10.832973+07:00",
+   "dirender": true
   },
   "ef8d4c2df8": {
    "nama": "Misteri Surat Tanpa Nama Part 2",
@@ -577,7 +578,8 @@
  },
  "error_terkirim": [
   "Baris 18 (Spesial Kado Hari Guru): konten promo sedang dimatikan, baris ini dilewati (ubah jenisnya ke edukasi/info/momen kalau tetap mau diposting)",
-  "Baris 35 (Spesial Kado Hari Guru): konten promo sedang dimatikan, baris ini dilewati (ubah jenisnya ke edukasi/info/momen kalau tetap mau diposting)"
+  "Baris 35 (Spesial Kado Hari Guru): konten promo sedang dimatikan, baris ini dilewati (ubah jenisnya ke edukasi/info/momen kalau tetap mau diposting)",
+  "Baris 4 (Spesial Kado Hari Guru): konten promo sedang dimatikan, baris ini dilewati (ubah jenisnya ke edukasi/info/momen kalau tetap mau diposting)"
  ],
  "tg_offset": 0,
  "permintaan": [
