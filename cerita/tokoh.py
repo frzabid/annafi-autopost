@@ -95,8 +95,8 @@ _KERUDUNG_SEKOLAH = dict(hijab="#fbfbfb", hijab2="#e4e4e4")
 TOKOH = {
     "laras": dict(nama="Mbak Laras", jk="p", hijab=HIJAB, hijab2=HIJAB_TERANG, baju=BAJU, baju2=BAJU_GELAP,
                   bawah=ROK, bawah_jenis="rok", kulit=KULIT, skala=1.0, kancing=True, tunik=True),
-    "raka": dict(nama="Raka", jk="l", rambut="#1d1716", gaya_rambut="jabrik", kulit="#D9A47A", skala=1.0, **_SMA_L),
-    "dinda": dict(nama="Dinda", jk="p", kulit="#E7B48C", skala=0.95, **_KERUDUNG_SEKOLAH, **_SMA_P),
+    "raka": dict(nama="Raka", jk="l", rambut="#1d1716", gaya_rambut="klimis", kulit="#D9A47A", skala=1.0, **_SMA_L),
+    "dinda": dict(nama="Dinda", jk="p", rambut="#2a1d18", gaya_rambut="bob", kulit="#EDBE98", skala=0.95, **_SMA_P),
     "bima": dict(nama="Bima", jk="l", rambut="#151212", gaya_rambut="poni", kulit="#C98E64", skala=1.0, **_SMA_L),
     # Bima memakai jaket gelap di luar seragam (petunjuk palsu di Part 2-3)
     "bima_jaket": dict(nama="Bima", jk="l", rambut="#151212", gaya_rambut="poni", kulit="#C98E64", skala=1.0,
@@ -145,6 +145,11 @@ _RAMBUT = {
              '<path d="M126 198 C128 128 170 108 216 112 C256 118 280 150 274 200 C262 172 240 152 212 150 C188 172 160 188 126 198Z" fill="{r}"/>'),
     "rapi": ('<path d="M126 196 C114 112 160 88 204 88 C250 88 288 116 274 196 C264 152 238 136 198 140 L182 128 '
              'C162 140 140 160 126 196Z" fill="{r}"/>'),
+    "klimis": ('<path d="M126 200 C116 118 158 86 204 86 C252 86 288 116 274 200 C268 160 252 140 222 136 '
+               'C206 128 186 126 168 134 C150 142 134 166 126 200Z" fill="{r}"/>'
+               '<path d="M160 104 C178 74 236 70 258 98 C236 90 208 92 186 106 C178 100 168 100 160 104Z" fill="{r}"/>'),
+    "bob": ('<path d="M128 204 C118 128 160 90 202 90 C246 90 286 128 276 204 C270 172 262 158 250 150 '
+            'C222 162 180 162 152 150 C140 160 132 180 128 204Z" fill="{r}"/>'),
     "panjang": ('<path d="M128 214 C112 120 156 82 202 82 C250 82 292 118 274 214 C268 170 246 140 214 134 '
                 'C196 156 160 176 128 214Z" fill="{r}"/>'),
     "kuncir": ('<circle cx="104" cy="196" r="34" fill="{r}"/><circle cx="296" cy="196" r="34" fill="{r}"/>'
@@ -180,6 +185,7 @@ def kepala(t: dict, ekspresi: str = "senang") -> str:
 
 
 RAMBUT_BELAKANG = {
+    "bob": '<path d="M112 210 C98 120 150 78 202 78 C256 78 306 120 292 210 L298 300 C276 314 250 312 238 300 L160 300 C150 312 124 314 106 300Z" fill="{r}"/>',
     "panjang": '<path d="M112 200 C96 120 150 76 202 76 C256 76 306 120 290 200 L306 430 C260 450 140 450 96 430Z" fill="{r}"/>',
 }
 
