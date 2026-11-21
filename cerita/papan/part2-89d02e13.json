@@ -4,7 +4,7 @@
  "adegan": [
   {
    "latar": "meja",
-   "waktu": "siang",
+   "waktu": "pagi",
    "kamera": "zoom_in",
    "kilas_balik": false,
    "tokoh": [
@@ -15,7 +15,7 @@
      "masuk": ""
     },
     {
-     "id": "raka_bebas",
+     "id": "raka",
      "ekspresi": "bingung",
      "posisi": "kanan",
      "masuk": ""
@@ -39,7 +39,7 @@
      "teks": "Di bawah yang tertua, kita pernah berjanji."
     },
     {
-     "tokoh": "raka_bebas",
+     "tokoh": "raka",
      "ucap": "Kita? Kita siapa, Kak?",
      "emosi": "penasaran",
      "ekspresi": "bingung"
@@ -197,6 +197,7 @@
  "_dibuat": {
   "model": "gemini-flash-lite-latest",
   "arahan": "",
-  "waktu": "2026-11-21 09:30"
+  "waktu": "2026-11-21 09:30",
+  "catatan": "adegan 1 lanjut dari Part 1 (pagi) -> Raka berseragam"
  }
 }
