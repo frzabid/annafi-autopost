@@ -26,7 +26,7 @@ ELEVEN = {
     # default: suara bawaan ElevenLabs; ganti dengan suara berlogat Indonesia dari Voice Library lewat variabel
     "narator": {"voice": os.environ.get("ELEVEN_VOICE_NARATOR") or "JBFqnCBsd6RMkjVDRZzb",
                 "settings": {"stability": 0.55, "similarity_boost": 0.8, "style": 0.35, "use_speaker_boost": True}},
-    "nafi": {"voice": os.environ.get("ELEVEN_VOICE_NAFI") or "EXAVITQu4vr4xnSDxMaL",
+    "laras": {"voice": os.environ.get("ELEVEN_VOICE_LARAS") or "EXAVITQu4vr4xnSDxMaL",
              "settings": {"stability": 0.4, "similarity_boost": 0.8, "style": 0.55, "use_speaker_boost": True}},
 }
 
@@ -37,23 +37,23 @@ GEMINI = {
     "narator": {"voice": os.environ.get("GEMINI_VOICE_NARATOR") or "Charon",
                 "gaya": "Bacakan dalam bahasa Indonesia dengan suara narator cerita misteri yang hangat dan sedikit menegangkan, "
                         "tempo sedang (tidak lambat), jeda singkat saja pada tanda titik-titik"},
-    "nafi": {"voice": os.environ.get("GEMINI_VOICE_NAFI") or "Leda",
-             "gaya": "Ucapkan dalam bahasa Indonesia sebagai perempuan muda yang ramah, "
-                     "dengan nada kaget dan penasaran"},
+    "laras": {"voice": os.environ.get("GEMINI_VOICE_LARAS") or "Leda",
+              "gaya": "Ucapkan dalam bahasa Indonesia sebagai perempuan sekitar 30 tahun yang ramah dan tenang, "
+                      "dengan nada kaget dan penasaran"},
 }
 MESIN = (os.environ.get("TTS_MESIN") or "").strip().lower() or (
     "eleven" if ELEVEN_KEY else "gemini" if GEMINI_KEY else "edge")
 
 SUARA = {
     "narator": {"voice": "id-ID-ArdiNeural", "rate": "-4%", "pitch": "-6Hz"},
-    "nafi": {"voice": "id-ID-GadisNeural", "rate": "+6%", "pitch": "+0Hz"},
+    "laras": {"voice": "id-ID-GadisNeural", "rate": "+6%", "pitch": "+0Hz"},
 }
 
 # (mulai detik, slot maksimal detik, tokoh, teks)
 BARIS_PEMBUKA = [
-    (0.4, 3.3, "narator", "Jam enam pagi. Seperti biasa, Kak Nafi membuka toko."),
+    (0.4, 3.3, "narator", "Jam enam pagi. Seperti biasa, Mbak Laras membuka toko."),
     (3.9, 2.9, "narator", "Tapi pagi ini... ada yang berbeda."),
-    (7.2, 1.6, "nafi", "Lho? Surat untuk siapa ini?"),
+    (7.2, 1.6, "laras", "Lho? Surat untuk siapa ini?"),
     (8.7, 1.25, "narator", "Misteri Surat Tanpa Nama."),
 ]
 

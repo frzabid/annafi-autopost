@@ -43,7 +43,7 @@ jobs:
           TTS_MESIN: ${{ inputs.mesin || vars.TTS_MESIN }}
         run: |
           M="${TTS_MESIN:-auto}"
-          python cerita/part1_pembuka.py "cerita/contoh/misteri_part1_pembuka_${M}_v3.mp4"
+          python cerita/part1_pembuka.py "cerita/contoh/misteri_part1_pembuka_${M}_laras.mp4"
       - name: Simpan hasil
         run: |
           git config user.name "annafi-bot"

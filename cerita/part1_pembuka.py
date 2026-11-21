@@ -12,7 +12,7 @@ from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 sys.path.insert(0, str(Path(__file__).parent))
-from tokoh import nafi_badan, nafi_dada, amplop  # noqa: E402
+from tokoh import laras_badan, laras_dada, amplop  # noqa: E402
 import suara  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -21,9 +21,9 @@ W, H, FPS = 1080, 1920, 30
 X = 0.35  # crossfade antar adegan (detik)
 
 BARIS = {
-    "a": ("narator", "Jam enam pagi. Seperti biasa, Kak Nafi membuka toko."),
+    "a": ("narator", "Jam enam pagi. Seperti biasa, Mbak Laras membuka toko."),
     "b": ("narator", "Tapi pagi ini... ada yang berbeda."),
-    "c1": ("nafi", "Lho? Surat untuk siapa ini?"),
+    "c1": ("laras", "Lho? Surat untuk siapa ini?"),
     "c2": ("narator", "Misteri Surat Tanpa Nama."),
 }
 
@@ -93,8 +93,8 @@ def adegan_a(d: float) -> str:
   <div class="trotoar"></div><div class="jalan"></div>
   <div class="marka" style="left:80px"></div><div class="marka" style="left:470px"></div><div class="marka" style="left:860px"></div>
   <div class="daun" style="left:95px;top:1360px"></div><div class="pot" style="left:115px"></div>
-  <div id="nafiA">{nafi_badan("senang")}</div>
-</div><div class="cap c1"><small>JAM 06.00 PAGI</small>Seperti biasa, Kak Nafi membuka toko…</div></div>"""
+  <div id="nafiA">{laras_badan("senang")}</div>
+</div><div class="cap c1"><small>JAM 06.00 PAGI</small>Seperti biasa, Mbak Laras membuka toko…</div></div>"""
 
 
 def adegan_b(d: float) -> str:
@@ -140,7 +140,7 @@ def adegan_c(d: float, t_nafi: float, t_judul: float) -> str:
 <div class="adegan"><div class="latarC"></div>
   <div id="amplopC">{amplop(900, depan=True)}</div>
   <div class="tulisan">Untuk siapa pun yang membuka toko ini paling pagi.</div>
-  <div class="vignette"></div><div id="nafiC">{nafi_dada("kaget")}</div><div class="tanya">?</div>
+  <div class="vignette"></div><div id="nafiC">{laras_dada("kaget")}</div><div class="tanya">?</div>
   <div class="judul"><b>MISTERI SURAT<br>TANPA NAMA</b><span>Part 1</span></div></div>"""
 
 

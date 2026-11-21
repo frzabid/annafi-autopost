@@ -2,11 +2,11 @@
 
 KULIT = "#E7B48C"
 KULIT_GELAP = "#D49A70"
-HIJAB = "#24539C"
-HIJAB_TERANG = "#3B6FC4"
-BAJU = "#F6EFE1"
-APRON = "#2F6FD1"
-ROK = "#26365E"
+HIJAB = "#8E5B6E"        # mauve, warna hijab sehari-hari (bukan warna brand)
+HIJAB_TERANG = "#A9758A"
+BAJU = "#7FA38A"         # tunik hijau sage
+BAJU_GELAP = "#6B8E76"
+ROK = "#4A4A58"          # celana/rok abu tua
 
 
 def _mata(ekspresi: str) -> str:
@@ -27,7 +27,7 @@ def _mata(ekspresi: str) -> str:
     return alis + mata + mulut
 
 
-def kepala_nafi(ekspresi: str = "senang") -> str:
+def kepala_laras(ekspresi: str = "senang") -> str:
     """Kepala + hijab dalam koordinat 0..400 (pusat wajah 200,210)."""
     return f'''
     <path d="M200 70 C120 70 82 130 82 205 C82 260 100 300 70 380 L330 380 C300 300 318 260 318 205 C318 130 280 70 200 70Z" fill="{HIJAB}"/>
@@ -40,8 +40,8 @@ def kepala_nafi(ekspresi: str = "senang") -> str:
     '''
 
 
-def nafi_badan(ekspresi: str = "senang") -> str:
-    """Kak Nafi seluruh badan, viewBox 0 0 400 900."""
+def laras_badan(ekspresi: str = "senang") -> str:
+    """Mbak Laras (±32 th, pemilik/penjaga toko) seluruh badan, viewBox 0 0 400 900. Pakaian biasa, tanpa logo."""
     return f'''<svg viewBox="0 0 400 900" xmlns="http://www.w3.org/2000/svg">
     <ellipse cx="200" cy="872" rx="120" ry="16" fill="#000" opacity=".12"/>
     <path d="M120 520 L280 520 L318 850 L82 850Z" fill="{ROK}"/>
@@ -51,19 +51,19 @@ def nafi_badan(ekspresi: str = "senang") -> str:
     <g class="lengan-kanan"><path d="M282 330 C312 380 320 460 308 540" stroke="{BAJU}" stroke-width="46" fill="none" stroke-linecap="round"/>
       <circle cx="306" cy="550" r="22" fill="{KULIT}"/></g>
     <path d="M110 330 C110 300 150 290 200 290 C250 290 290 300 290 330 L296 540 L104 540Z" fill="{BAJU}"/>
-    <path d="M140 360 L260 360 L270 600 L130 600Z" fill="{APRON}"/>
-    <rect x="165" y="470" width="70" height="52" rx="8" fill="#2558b4"/>
-    <text x="200" y="430" font-family="Poppins" font-weight="700" font-size="34" fill="#fff" text-anchor="middle">A</text>
-    <g class="kepala">{kepala_nafi(ekspresi)}</g>
+    <path d="M104 520 L296 520 L304 640 L96 640Z" fill="{BAJU}"/>
+    <path d="M200 300 L200 630" stroke="{BAJU_GELAP}" stroke-width="4"/>
+    <circle cx="200" cy="380" r="5" fill="{BAJU_GELAP}"/><circle cx="200" cy="450" r="5" fill="{BAJU_GELAP}"/><circle cx="200" cy="520" r="5" fill="{BAJU_GELAP}"/>
+    <g class="kepala">{kepala_laras(ekspresi)}</g>
     </svg>'''
 
 
-def nafi_dada(ekspresi: str = "kaget") -> str:
-    """Kak Nafi setengah badan (untuk close-up), viewBox 0 0 400 520."""
+def laras_dada(ekspresi: str = "kaget") -> str:
+    """Mbak Laras setengah badan (untuk close-up), viewBox 0 0 400 520."""
     return f'''<svg viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg">
     <path d="M60 520 C60 400 120 360 200 360 C280 360 340 400 340 520Z" fill="{BAJU}"/>
-    <path d="M140 400 L260 400 L268 520 L132 520Z" fill="{APRON}"/>
-    <g class="kepala">{kepala_nafi(ekspresi)}</g>
+    <path d="M200 370 L200 520" stroke="{BAJU_GELAP}" stroke-width="4"/><circle cx="200" cy="440" r="5" fill="{BAJU_GELAP}"/>
+    <g class="kepala">{kepala_laras(ekspresi)}</g>
     </svg>'''
 
 
@@ -81,3 +81,7 @@ def amplop(lebar: int = 360, tua: bool = False, depan: bool = False) -> str:
     <rect x="4" y="4" width="352" height="232" rx="10" fill="{kertas}" stroke="{garis}" stroke-width="4"/>
     {isi}
     </svg>'''
+
+
+# nama lama (kompatibilitas)
+nafi_badan, nafi_dada, kepala_nafi = laras_badan, laras_dada, kepala_laras
