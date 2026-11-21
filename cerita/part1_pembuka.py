@@ -13,6 +13,7 @@ from playwright.sync_api import sync_playwright
 
 sys.path.insert(0, str(Path(__file__).parent))
 from tokoh import laras_badan, laras_dada, amplop  # noqa: E402
+from latar import latar_depan, latar_pintu_bawah  # noqa: E402
 import suara  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -58,42 +59,21 @@ def _buku() -> str:
 
 
 def adegan_a(d: float) -> str:
+    """Depan toko (latar tetap dari latar.py): lampu dalam menyala, papan pintu berbalik TUTUP -> BUKA."""
     return f"""<style>
-.cam{{animation:zoom {d}s ease-in-out forwards}}@keyframes zoom{{from{{transform:scale(1)}}to{{transform:scale(1.12)}}}}
-.langit{{position:absolute;inset:0;background:linear-gradient(#8fc6ea 0%,#cfe6f2 40%,#ffe0b5 72%,#ffd19a 100%)}}
-.matahari{{position:absolute;width:190px;height:190px;border-radius:50%;background:#ffe9a8;box-shadow:0 0 120px 60px rgba(255,220,140,.7);
-  right:120px;top:520px;animation:naik {d}s ease-out forwards}}@keyframes naik{{from{{transform:translateY(60px)}}to{{transform:translateY(-20px)}}}}
-.awan{{position:absolute;height:70px;border-radius:40px;background:#fff;opacity:.85}}
-.gedung{{position:absolute;left:90px;width:900px;top:640px;height:900px;background:#f1e6d0;border-radius:6px}}
-.papan{{position:absolute;left:60px;width:960px;top:600px;height:150px;background:#1E3A6B;border-radius:16px;color:#fff;text-align:center;padding-top:18px}}
-.papan b{{font-size:66px;letter-spacing:6px;display:block;line-height:1.1}}.papan span{{font-size:30px;letter-spacing:4px;color:#ffd19a}}
-.tenda{{position:absolute;left:150px;width:780px;top:760px;height:80px;background:repeating-linear-gradient(90deg,#2F6FD1 0 78px,#fff 78px 156px);border-radius:0 0 40px 40px}}
-.pintu{{position:absolute;left:250px;width:580px;top:860px;height:680px;background:#ffe6ad;overflow:hidden;border:14px solid #c9b48c;border-bottom:none}}
-.rak{{position:absolute;left:30px;right:30px;height:16px;background:#a77b4f}}.buku{{position:absolute;width:40px;border-radius:4px}}
-.fotokopi{{position:absolute;right:40px;bottom:0;width:190px;height:230px;background:#dfe3ea;border-radius:12px;border:6px solid #9aa3b2}}
-.rolling{{position:absolute;left:0;right:0;top:0;height:100%;background:repeating-linear-gradient(#a9b0bb 0 26px,#8e96a3 26px 32px);
-  animation:buka 2.6s .35s cubic-bezier(.45,.05,.4,1) forwards}}@keyframes buka{{from{{transform:translateY(0)}}to{{transform:translateY(-78%)}}}}
-.trotoar{{position:absolute;left:0;right:0;top:1540px;height:150px;background:#d8ccb4}}
-.jalan{{position:absolute;left:0;right:0;top:1690px;bottom:0;background:#6d6f75}}
-.marka{{position:absolute;top:1800px;height:14px;width:140px;background:#f1f1f1;border-radius:6px}}
-.pot{{position:absolute;bottom:400px;width:90px;height:90px;background:#b5653b;border-radius:0 0 22px 22px}}
-.daun{{position:absolute;width:130px;height:150px;border-radius:50% 50% 46% 46%;background:#4f9a55}}
-#nafiA{{position:absolute;left:690px;top:1000px;width:300px;animation:goyang 1.6s ease-in-out infinite alternate}}
+.cam{{animation:zoom {d}s ease-in-out forwards}}@keyframes zoom{{from{{transform:scale(1)}}to{{transform:scale(1.1)}}}}
+.matahari{{position:absolute;width:170px;height:170px;border-radius:50%;background:#ffe9a8;box-shadow:0 0 120px 60px rgba(255,220,140,.7);
+  right:60px;top:330px;animation:naik {d}s ease-out forwards}}@keyframes naik{{from{{transform:translateY(60px)}}to{{transform:translateY(-20px)}}}}
+.tk-terang{{animation:nyala .5s 1.0s steps(3,end) forwards}}@keyframes nyala{{to{{opacity:0}}}}
+.tk-flip{{animation:balik .6s 1.7s ease-in-out forwards}}@keyframes balik{{to{{transform:rotateY(180deg)}}}}
+#larasA{{position:absolute;left:700px;top:1010px;width:290px;animation:goyang 1.6s ease-in-out infinite alternate}}
 @keyframes goyang{{from{{transform:rotate(-1.2deg)}}to{{transform:rotate(1.2deg)}}}}
 .c1{{animation:cap .45s .4s forwards}}
 </style>
 <div class="adegan"><div class="cam">
-  <div class="langit"></div><div class="matahari"></div>
-  <div class="awan" style="left:80px;top:300px;width:260px"></div><div class="awan" style="left:620px;top:220px;width:320px"></div>
-  <div class="gedung"></div>
-  <div class="pintu"><div class="rak" style="top:150px"></div><div class="rak" style="top:320px"></div><div class="rak" style="top:490px"></div>
-    {_buku()}<div class="fotokopi"></div><div class="rolling"></div></div>
-  <div class="tenda"></div>
-  <div class="papan"><b>ANNAFI ATK</b><span>FOTOKOPI · PRINT · ALAT TULIS</span></div>
-  <div class="trotoar"></div><div class="jalan"></div>
-  <div class="marka" style="left:80px"></div><div class="marka" style="left:470px"></div><div class="marka" style="left:860px"></div>
-  <div class="daun" style="left:95px;top:1360px"></div><div class="pot" style="left:115px"></div>
-  <div id="nafiA">{laras_badan("senang")}</div>
+  {latar_depan()}
+  <div class="matahari"></div>
+  <div id="larasA">{laras_badan("senang")}</div>
 </div><div class="cap c1"><small>JAM 06.00 PAGI</small>Seperti biasa, Mbak Laras membuka toko…</div></div>"""
 
 
@@ -106,14 +86,14 @@ def adegan_b(d: float) -> str:
 .bawahpintu{{position:absolute;left:0;right:0;top:0;height:640px;background:repeating-linear-gradient(#a9b0bb 0 26px,#8e96a3 26px 32px)}}
 .celah{{position:absolute;left:0;right:0;top:640px;height:26px;background:#3b3f47}}
 .sinar{{position:absolute;left:0;right:0;top:666px;height:500px;background:linear-gradient(rgba(255,226,160,.55),rgba(255,226,160,0))}}
-#amplopB{{position:absolute;left:330px;top:1080px;filter:drop-shadow(0 18px 14px rgba(0,0,0,.25));animation:geser 1.2s .1s ease-out both}}
+#amplopB{{position:absolute;left:330px;top:1100px;filter:drop-shadow(0 18px 14px rgba(0,0,0,.25));animation:geser 1.2s .1s ease-out both}}
 @keyframes geser{{from{{transform:translateY(-330px) rotate(-2deg)}}to{{transform:translateY(0) rotate(-8deg)}}}}
 .kilau{{position:absolute;left:640px;top:1060px;width:60px;height:60px;opacity:0;animation:kilau 1s 1.1s ease-out forwards}}
 @keyframes kilau{{0%{{opacity:0;transform:scale(.3) rotate(0)}}50%{{opacity:1}}100%{{opacity:0;transform:scale(1.4) rotate(90deg)}}}}
 .c2{{animation:cap .45s .3s forwards}}
 </style>
 <div class="adegan"><div class="cam">
-  <div class="lantai"></div><div class="bawahpintu"></div><div class="celah"></div><div class="sinar"></div>
+  {latar_pintu_bawah()}
   <div id="amplopB">{amplop(420)}</div>
   <svg class="kilau" viewBox="0 0 60 60"><path d="M30 0 L36 24 L60 30 L36 36 L30 60 L24 36 L0 30 L24 24Z" fill="#fff"/></svg>
 </div><div class="cap c2">…tapi pagi ini, ada yang <span style="color:#c26a1b">berbeda.</span></div></div>"""
@@ -166,7 +146,9 @@ def _klip(folder: Path, out: Path) -> None:
 def _efek(out_wav: str, total: float, sB: float, sC: float, t_judul: float) -> None:
     """Efek suara sintetis mengikuti timeline: suasana pagi, rolling door, denting, nada misteri, dentuman."""
     pad = f"(0.05*sin(2*PI*261.6*t)+0.04*sin(2*PI*392*t))*(1-exp(-t))*if(lt(t,{sC}),1,max(0,1-(t-{sC})/0.6))"
-    rolling = "if(between(t,0.35,2.95),0.22*sin(2*PI*55*t)*(0.5+0.5*sin(2*PI*17*t))*sin(PI*(t-0.35)/2.6),0)"
+    rolling = ("if(between(t,1.0,1.06),0.35*sin(2*PI*2200*t)*exp(-60*(t-1.0)),0)"
+               "+if(gte(t,1.75),(0.22*sin(2*PI*1046.5*t)+0.16*sin(2*PI*1568*t))*exp(-4*(t-1.75)),0)"
+               "+if(gte(t,1.95),(0.2*sin(2*PI*1318.5*t)+0.14*sin(2*PI*1975.5*t))*exp(-4*(t-1.95)),0)")
     ting = f"if(gte(t,{sB + 1.1}),(0.28*sin(2*PI*1318.5*t)+0.18*sin(2*PI*1975.5*t))*exp(-3*(t-{sB + 1.1})),0)"
     misteri = f"if(gte(t,{sC + 0.2}),(0.07*sin(2*PI*220*t)+0.06*sin(2*PI*261.6*t)+0.05*sin(2*PI*329.6*t))*min(1,(t-{sC + 0.2})/0.6),0)"
     tj = sC + t_judul
