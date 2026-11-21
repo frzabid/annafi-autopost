@@ -1,0 +1,246 @@
+{
+ "part": 1,
+ "judul": "Amplop di Bawah Pintu",
+ "adegan": [
+  {
+   "latar": "depan_buka",
+   "waktu": "pagi",
+   "kamera": "zoom_out",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "laras",
+     "ekspresi": "senang",
+     "posisi": "tengah",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "klik"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Jam enam pagi. Seperti biasa, Mbak Laras membuka toko.",
+     "emosi": "tenang, naratif",
+     "ekspresi": ""
+    }
+   ]
+  },
+  {
+   "latar": "pintu_bawah",
+   "waktu": "pagi",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "laras",
+     "ekspresi": "bingung",
+     "posisi": "tengah",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "amplop",
+    "tulisan": "Untuk siapa pun yang membuka toko ini paling pagi."
+   },
+   "efek": [
+    "deg"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Tapi pagi ini… ada yang berbeda.",
+     "emosi": "misterius, pelan",
+     "ekspresi": ""
+    }
+   ]
+  },
+  {
+   "latar": "meja",
+   "waktu": "pagi",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "laras",
+     "ekspresi": "bingung",
+     "posisi": "tengah",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "amplop",
+    "tulisan": "Untuk siapa pun yang membuka toko ini paling pagi."
+   },
+   "efek": [
+    "kertas"
+   ],
+   "urutan": [
+    {
+     "teks": "Untuk siapa pun yang membuka toko ini paling pagi."
+    },
+    {
+     "tokoh": "laras",
+     "ucap": "Lho? Surat untuk siapa ini?",
+     "emosi": "heran, berbisik",
+     "ekspresi": "bingung"
+    }
+   ]
+  },
+  {
+   "latar": "meja",
+   "waktu": "pagi",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "laras",
+     "ekspresi": "serius",
+     "posisi": "tengah",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "surat",
+    "tulisan": "Tempat ribuan halaman lahir setiap hari menyimpan jawabannya."
+   },
+   "efek": [
+    "kertas"
+   ],
+   "urutan": [
+    {
+     "teks": "Tempat ribuan halaman lahir setiap hari menyimpan jawabannya."
+    },
+    {
+     "tokoh": "laras",
+     "ucap": "Ribuan halaman…?",
+     "emosi": "heran, berpikir",
+     "ekspresi": "bingung"
+    }
+   ]
+  },
+  {
+   "latar": "dalam",
+   "waktu": "pagi",
+   "kamera": "geser",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "raka",
+     "ekspresi": "kaget",
+     "posisi": "kiri",
+     "masuk": "kiri"
+    },
+    {
+     "id": "laras",
+     "ekspresi": "serius",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "surat",
+    "tulisan": "Tempat ribuan halaman lahir setiap hari menyimpan jawabannya."
+   },
+   "efek": [
+    "bel",
+    "langkah"
+   ],
+   "urutan": [
+    {
+     "tokoh": "raka",
+     "ucap": "Kak! Fotokopi tugas, dua puluh lembar, cepet, Kak, telat aku!",
+     "emosi": "panik, terburu-buru",
+     "ekspresi": "kaget"
+    },
+    {
+     "tokoh": "laras",
+     "ucap": "Raka, sebentar. Coba baca ini.",
+     "emosi": "penasaran, menahan",
+     "ekspresi": "serius"
+    },
+    {
+     "tokoh": "raka",
+     "ucap": "Ribuan halaman lahir… Lho! Yo mesin fotokopi iki, Kak!",
+     "emosi": "antusias, tersadar",
+     "ekspresi": "kaget"
+    }
+   ]
+  },
+  {
+   "latar": "bawah_mesin",
+   "waktu": "pagi",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "raka",
+     "ekspresi": "serius",
+     "posisi": "tengah",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "amplop_tua",
+    "tulisan": ""
+   },
+   "efek": [
+    "deg"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Di bawah mesin itu, terselip amplop kedua.",
+     "emosi": "misterius, pelan",
+     "ekspresi": ""
+    }
+   ]
+  },
+  {
+   "latar": "dalam",
+   "waktu": "pagi",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "raka",
+     "ekspresi": "bingung",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "laras",
+     "ekspresi": "takut",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "amplop_tua",
+    "tulisan": "12-03-2011"
+   },
+   "efek": [
+    "kertas",
+    "deg"
+   ],
+   "urutan": [
+    {
+     "tokoh": "raka",
+     "ucap": "Kak… ini kok tanggalnya lima belas tahun lalu?",
+     "emosi": "heran, berbisik",
+     "ekspresi": "bingung"
+    },
+    {
+     "jeda": 1.2
+    }
+   ]
+  }
+ ],
+ "_dibuat": {
+  "model": "gemini-flash-latest",
+  "arahan": "",
+  "waktu": "2026-11-21 07:10"
+ }
+}
