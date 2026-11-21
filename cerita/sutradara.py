@@ -21,6 +21,7 @@ DIR = Path(__file__).parent
 NASKAH = DIR / "naskah_musim1.md"
 PAPAN = DIR / "papan"
 GEMINI_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
+DURASI = os.environ.get("CERITA_DURASI", "80-95")  # target durasi per part (detik)
 MODEL = [m for m in (os.environ.get("GEMINI_MODEL"), "gemini-3.5-flash", "gemini-flash-latest", "gemini-flash-lite-latest",
                       "gemini-3.5-flash-lite") if m]
 
@@ -54,7 +55,8 @@ def _prompt(n, arahan):
                     {"tokoh": "laras", "ucap": "Tulisan ini...", "ekspresi": "kaget", "emosi": "berbisik, terkejut"}]}]}
     return "\n".join([
         "Kamu sutradara animasi motion comic vertikal (reel Instagram 9:16) untuk cerita misteri bersambung.",
-        f"Ubah naskah PART {n} di bawah menjadi PAPAN CERITA JSON untuk mesin animasi. Durasi total 45-60 detik.",
+        f"Ubah naskah PART {n} di bawah menjadi PAPAN CERITA JSON untuk mesin animasi. Durasi total {DURASI} detik",
+        "(kira-kira 16-24 ucapan; tiap ucapan 1-2 kalimat pendek). Naskah hanya kerangka: PERKAYA supaya terasa seperti episode utuh.",
         "",
         "INFO SERI (tokoh, kostum, format):", kepala, "",
         f"NASKAH PART {n}:", part[n], "",
@@ -68,6 +70,10 @@ def _prompt(n, arahan):
         "  kilas balik/foto lama = laras_sma, hadi_sma, rani_sma dengan kilas_balik true.",
         "- emosi: 1-4 kata arahan suara (mis. 'panik, terburu-buru', 'berbisik', 'heran'). ekspresi wajah dari: " + ", ".join(T.EKSPRESI),
         "- Variasikan latar & kamera supaya tidak monoton; adegan pertama harus langsung menarik (hook 3 detik).",
+        "- Cara memperkaya: narasi suasana yang hidup (bunyi, cahaya, rasa penasaran), reaksi & pikiran tokoh, dialog pendek yang",
+        "  natural (boleh sedikit humor ringan Raka/Dinda), jeda dramatis sebelum kejutan, 1-3 adegan pendukung (mis. suasana toko,",
+        "  tokoh memperhatikan surat). TETAP ikut alur naskah: JANGAN menambah petunjuk/fakta baru dan jangan membocorkan part berikutnya.",
+        "- Pakai efek suara yang mendukung dramatisasi (pilih dari daftar efek) di adegan yang tegang/berpindah suasana.",
         "",
         "PILIHAN (pakai nilai PERSIS):",
         "latar: " + json.dumps(M.LATAR, ensure_ascii=False),
@@ -119,7 +125,7 @@ def _gemini(prompt):
 def rapikan(p, n):
     """Validasi & perbaiki papan dari AI supaya mesin tidak pernah gagal karena nilai aneh."""
     hasil = {"part": n, "judul": str(p.get("judul", ""))[:80], "adegan": []}
-    for a in p.get("adegan", [])[:14]:
+    for a in p.get("adegan", [])[:16]:
         a = dict(a)
         latar = a.get("latar") if a.get("latar") in M.LATAR else "dalam"
         tokoh, dipakai = [], set()
@@ -184,7 +190,7 @@ def papan(n, arahan="", baru=False):
     _, part = naskah()
     if n not in part:
         raise KeyError(f"Part {n} tidak ada di naskah")
-    kunci = hashlib.sha1((part[n] + "|" + arahan.strip()).encode()).hexdigest()[:8]
+    kunci = hashlib.sha1((part[n] + "|" + arahan.strip() + ("" if DURASI == "45-60" else "|" + DURASI)).encode()).hexdigest()[:8]
     path = PAPAN / f"part{n}-{kunci}.json"
     if path.exists() and not baru:
         return json.loads(path.read_text(encoding="utf-8")), path, False
