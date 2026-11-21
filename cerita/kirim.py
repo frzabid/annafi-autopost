@@ -29,7 +29,7 @@ p = {"nama": f"Misteri Surat Tanpa Nama Part {n}", "part": n, "jenis": "cerita"}
 notify.video(str(out), html.escape(config.caption_cerita(p)))
 sampul = out.with_name(out.stem + "-sampul.jpg")
 if sampul.exists():
-    notify.foto(str(sampul), f"🖼️ Sampul Part {n} (untuk upload manual: Edit sampul → Tambahkan dari galeri)")
+    notify.dokumen(str(sampul), f"🖼️ Sampul Part {n} (kualitas asli). Unduh, lalu saat upload: Edit sampul → Tambahkan dari galeri")
 notify.pesan(f"🎬 <b>Part {n}</b> selesai (contoh, belum diposting).\nAdegan:\n<i>{html.escape(info['ringkas'])}</i>"
              + (f"\nArahan: {html.escape(arahan)}" if arahan else "")
              + "\n\nKurang pas? Balas misalnya: <i>ulang part 1, Raka lebih panik</i>. "

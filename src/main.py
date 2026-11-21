@@ -374,7 +374,8 @@ def urus_reel(p, st, now):
         if langkah == "upload1":
             sampul = video.with_name(video.stem + "-sampul.jpg")
             if sampul.exists():
-                notify.foto(str(sampul), "🖼️ Sampul reel: saat upload pilih <b>Edit sampul → Tambahkan dari galeri</b>")
+                notify.dokumen(str(sampul), "🖼️ Sampul reel (kualitas asli). Unduh, lalu saat upload pilih "
+                                            "<b>Edit sampul → Tambahkan dari galeri</b>")
             notify.pesan(f"<pre>{html.escape(caption)}</pre>")
         belum = ("\n⚠️ <b>Video belum ditandai sudah dirender</b> — minta Claude <i>render part "
                  f"{p['part']}</i> sekarang (±10 menit).") if not siap else "\n✅ Video sudah dirender."

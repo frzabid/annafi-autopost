@@ -31,6 +31,17 @@ def foto(path: str, teks: str):
     r.raise_for_status()
 
 
+def dokumen(path: str, teks: str):
+    """Kirim sebagai file (tanpa dikompres Telegram) supaya bisa diunduh dengan kualitas asli."""
+    if not _AKTIF:
+        print(f"[TELEGRAM FILE {path}] {teks}")
+        return
+    with open(path, "rb") as f:
+        r = requests.post(f"{API}/sendDocument", timeout=120, files={"document": f},
+                          data={"chat_id": TELEGRAM_CHAT_ID, "caption": teks[:1024], "parse_mode": "HTML"})
+    r.raise_for_status()
+
+
 def video(path: str, teks: str):
     if not _AKTIF:
         print(f"[TELEGRAM VIDEO {path}] {teks}")
