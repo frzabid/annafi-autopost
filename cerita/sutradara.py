@@ -21,7 +21,8 @@ DIR = Path(__file__).parent
 NASKAH = DIR / "naskah_musim1.md"
 PAPAN = DIR / "papan"
 GEMINI_KEY = os.environ.get("GEMINI_API_KEY", "").strip()
-MODEL = [m for m in (os.environ.get("GEMINI_MODEL"), "gemini-2.5-flash", "gemini-flash-latest", "gemini-2.5-flash-lite") if m]
+MODEL = [m for m in (os.environ.get("GEMINI_MODEL"), "gemini-3.5-flash", "gemini-flash-latest", "gemini-flash-lite-latest",
+                      "gemini-3.5-flash-lite") if m]
 
 
 def naskah():
