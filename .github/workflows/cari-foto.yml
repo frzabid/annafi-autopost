@@ -27,8 +27,9 @@ jobs:
         run: |
           IFS=';' read -ra P <<< "$PRODUK"
           python tools/cari_foto.py "${P[@]}"
-      - name: Simpan
-        run: |
-          git config user.name "annafi-bot"
-          git config user.email "bot@users.noreply.github.com"
-          git add cek_foto && git commit -q -m "cek foto produk [skip ci]" && git pull --rebase -q && git push -q || true
+      - name: Simpan (artefak, tidak masuk repo)
+        uses: actions/upload-artifact@v4
+        with:
+          name: cek-foto
+          path: cek_foto/
+          retention-days: 3
