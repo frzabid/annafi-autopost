@@ -358,7 +358,10 @@ def urus_reel(p, st, now):
         siap = st.get("dirender") or s_global.get("reel_dirender", {}).get(str(p["part"]))
         video = ROOT / "cerita" / "contoh" / f"misteri_part{p['part']}.mp4"
         if langkah == "upload1" and siap and config.MAKE_REEL and config.MAKE_WEBHOOK_URL and video.exists():
-            url = f"{config.PUBLIC_BASE_URL.rstrip('/')}/cerita/contoh/{video.name}"
+            repo, sha = os.getenv("GITHUB_REPOSITORY"), os.getenv("GITHUB_SHA")
+            # jsDelivr menyajikan mp4 sebagai video/mp4 (raw GitHub = octet-stream); @sha supaya tidak kena cache lama
+            url = (f"https://cdn.jsdelivr.net/gh/{repo}@{sha}/cerita/contoh/{video.name}" if repo and sha
+                   else f"{config.PUBLIC_BASE_URL.rstrip('/')}/cerita/contoh/{video.name}")
             try:
                 meta.post_make_reel(url, caption)
                 st.update(status="terposting", cara="make", waktu_posting=now.isoformat())
