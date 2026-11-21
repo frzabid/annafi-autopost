@@ -1,0 +1,33 @@
+name: Kirim foto produk (PNG) ke Telegram
+
+on:
+  workflow_dispatch:
+    inputs:
+      foto:
+        description: 'Daftar "Nama produk|URL" dipisah ;'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  kirim:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q -r requirements.txt
+      - name: Kirim
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          FOTO: ${{ inputs.foto }}
+        run: |
+          IFS=';' read -ra P <<< "$FOTO"
+          python tools/kirim_foto.py "${P[@]}"
+      - name: Hapus cabang sementara cek-foto
+        continue-on-error: true
+        run: git push -q "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" --delete cek-foto
