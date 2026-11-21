@@ -29,6 +29,7 @@ ROOT = Path(__file__).resolve().parent.parent
 FONT = ROOT / "assets" / "fonts"
 W, H, FPS = 1080, 1920, 30
 X = 0.35  # crossfade antar adegan
+DURASI_SAMPUL = 3.0  # detik; cover Reel di Make = frame 2500 ms
 AKUN = "@annafi_atk_menganti"
 JUDUL_SERI = "MISTERI SURAT TANPA NAMA"
 
@@ -230,6 +231,86 @@ def adegan_html(a, idx, info_part):
             f"{''.join(isi)}{_cerah(a.get('waktu'), a.get('kilas_balik'))}</div>{''.join(luar)}</div>")
 
 
+def _tokoh_sampul(papan):
+    """Dua tokoh yang paling banyak bicara di part ini (untuk sampul)."""
+    hitung = {}
+    for a in papan.get("adegan", []):
+        for it in a.get("urutan", []):
+            if it.get("ucap") and it.get("tokoh") not in (None, "narator", "siluet"):
+                hitung[it["tokoh"]] = hitung.get(it["tokoh"], 0) + len(it["ucap"])
+    ids = sorted(hitung, key=hitung.get, reverse=True)[:2] or ["laras", "raka"]
+    if len(ids) == 1:
+        ids.append("raka" if ids[0] != "raka" else "laras")
+    ada_siluet = any(t["id"] == "siluet" for a in papan.get("adegan", []) for t in a.get("tokoh", []))
+    return ids, ada_siluet
+
+
+def sampul_html(papan, animasi=True):
+    """Sampul/cover seri (aman dipotong 4:5 di grid profil: isi penting di y 300-1620)."""
+    part = papan.get("part", 1)
+    judul = _esc(papan.get("judul", ""))
+    (kiri, kanan), siluet = _tokoh_sampul(papan)
+    an = animasi
+    return f"""<style>
+.sp{{position:absolute;inset:0;overflow:hidden;background:#0b0d1c}}
+.sp-bg{{position:absolute;inset:-40px;filter:blur(10px) brightness(.45) saturate(.8);{'animation:spz 3.2s ease-out both;' if an else ''}}}
+@keyframes spz{{from{{transform:scale(1.12)}}to{{transform:scale(1.02)}}}}
+.sp-vig{{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(255,190,90,.18),rgba(5,6,16,.2) 40%,rgba(5,6,16,.92) 85%)}}
+.sp-pill{{position:absolute;top:330px;left:0;right:0;text-align:center}}
+.sp-pill span{{display:inline-block;border:3px solid #ffb347;color:#ffb347;font:700 30px Poppins;letter-spacing:8px;padding:10px 30px;border-radius:50px}}
+.sp-j1{{position:absolute;top:400px;left:0;right:0;text-align:center;color:#fff;font:700 150px/1 Poppins;letter-spacing:6px;
+  text-shadow:0 8px 30px rgba(0,0,0,.6);{'animation:spin .7s .1s cubic-bezier(.2,1.3,.4,1) both;' if an else ''}}}
+.sp-j2{{position:absolute;top:555px;left:0;right:0;text-align:center;color:#ffcf6b;font:120px/1 Caveat;transform:rotate(-3deg);
+  text-shadow:0 6px 24px rgba(0,0,0,.6);{'animation:spin .7s .3s cubic-bezier(.2,1.3,.4,1) both;' if an else ''}}}
+@keyframes spin{{from{{opacity:0;transform:scale(1.4)}}}}
+.sp-amp{{position:absolute;left:270px;top:720px;width:540px;transform:rotate(-8deg);filter:drop-shadow(0 0 40px rgba(255,200,110,.55));
+  {'animation:spf 3s ease-in-out infinite alternate;' if an else ''}}}
+@keyframes spf{{from{{transform:rotate(-8deg) translateY(0)}}to{{transform:rotate(-5deg) translateY(-18px)}}}}
+.sp-q{{position:absolute;left:770px;top:690px;font:700 170px Poppins;color:#ffb347;text-shadow:0 0 30px rgba(255,170,60,.7)}}
+.sp-t{{position:absolute;top:1080px;width:560px;height:728px}}
+.sp-t svg{{width:100%;height:100%}}
+.sp-sil{{position:absolute;left:340px;top:1010px;width:400px;height:520px;opacity:.85;filter:blur(1px)}}
+.sp-sil svg{{width:100%;height:100%}}
+.sp-fade{{position:absolute;left:0;right:0;top:1380px;height:560px;background:linear-gradient(rgba(5,6,16,0),rgba(5,6,16,.95) 45%)}}
+.sp-part{{position:absolute;top:1420px;left:0;right:0;text-align:center;{'animation:spin .6s .55s cubic-bezier(.2,1.4,.4,1) both;' if an else ''}}}
+.sp-part b{{display:inline-block;background:#e4572e;color:#fff;font:700 96px/1 Poppins;padding:18px 54px;border-radius:24px;
+  box-shadow:0 10px 0 #a33a1c,0 20px 40px rgba(0,0,0,.5);transform:rotate(-2deg)}}
+.sp-sub{{position:absolute;top:1560px;left:60px;right:60px;text-align:center;color:#fff;font:700 46px/1.2 Poppins}}
+</style>
+<div class="sp">
+  <div class="sp-bg">{L.latar_depan()}<style>.tk-langit{{background:linear-gradient(#0b1030,#1d2350)!important}}</style></div>
+  <div class="sp-vig"></div>
+  {f'<div class="sp-sil">{T.dada("siluet")}</div>' if siluet else ''}
+  <div class="sp-t" style="left:-70px">{T.dada(kiri, "kaget")}</div>
+  <div class="sp-t" style="left:590px;transform:scaleX(-1)">{T.dada(kanan, "bingung")}</div>
+  <div class="sp-amp">{T.amplop(540, depan=True)}</div>
+  <div class="sp-q">?</div>
+  <div class="sp-pill"><span>CERITA BERSAMBUNG</span></div>
+  <div class="sp-j1">MISTERI</div>
+  <div class="sp-j2">Surat Tanpa Nama</div>
+  <div class="sp-fade"></div>
+  <div class="sp-part"><b>PART {part}</b></div>
+  <div class="sp-sub">{judul}</div>
+</div>"""
+
+
+def render_sampul(papan, out_jpg):
+    """Simpan sampul sebagai gambar JPG (untuk pilih sampul saat upload & grid profil)."""
+    with sync_playwright() as pw:
+        b = pw.chromium.launch()
+        page = b.new_page(viewport={"width": W, "height": H})
+        halaman = Path(out_jpg).with_suffix(".html")
+        halaman.write_text("<!doctype html><html><head><meta charset='utf-8'><style>" + CSS_DASAR.replace("__FONT__", FONT.as_uri())
+                           + "</style></head><body>" + sampul_html(papan, animasi=False) + "</body></html>", encoding="utf-8")
+        page.goto(halaman.as_uri())
+        page.evaluate("document.fonts.ready")
+        page.wait_for_timeout(300)
+        page.screenshot(path=str(out_jpg), type="jpeg", quality=92)
+        halaman.unlink()
+        b.close()
+    return out_jpg
+
+
 def kartu_akhir(part, terakhir):
     atas = "TAMAT" if terakhir else "Bersambung…"
     bawah = "Musim 1 selesai · terima kasih sudah mengikuti" if terakhir else f"Part {part + 1} segera tayang"
@@ -365,18 +446,22 @@ def render(papan, out_mp4, terakhir=False):
                     print(f"  {it['_durasi']:.2f}s {it['tokoh']}: {it['ucap']}")
             susun_waktu(a)
         # 2) render tiap adegan + kartu akhir
-        klip, mulai = [], []
-        t = 0.0
+        klip, mulai, off = [], [], [0.0]
         with sync_playwright() as pw:
             b = pw.chromium.launch()
             page = b.new_page(viewport={"width": W, "height": H})
+            # sampul di awal video (dipakai juga sebagai cover Reel: frame detik ke-2,5)
+            klip.append(_rekam(page, sampul_html(papan), DURASI_SAMPUL, tmp / "sampul"))
+            t = DURASI_SAMPUL - X
             for i, a in enumerate(adegan):
                 print(f"  adegan {i + 1}/{len(adegan)}: {a['latar']} {a['_durasi']:.1f}s")
                 mulai.append(t)
+                off.append(t)
                 klip.append(_rekam(page, adegan_html(a, i, part), a["_durasi"], tmp / f"a{i}"))
                 t += a["_durasi"] - X
             d_akhir = 3.2
             mulai.append(t)
+            off.append(t)
             klip.append(_rekam(page, kartu_akhir(part, terakhir), d_akhir, tmp / "akhir"))
             b.close()
         total = t + d_akhir
@@ -386,7 +471,7 @@ def render(papan, out_mp4, terakhir=False):
             inputs += ["-i", str(k)]
         vlab = "[0:v]"
         for i in range(1, len(klip)):
-            filt.append(f"{vlab}[{i}:v]xfade=transition=fade:duration={X}:offset={mulai[i]:.3f}[v{i}]")
+            filt.append(f"{vlab}[{i}:v]xfade=transition=fade:duration={X}:offset={off[i]:.3f}[v{i}]")
             vlab = f"[v{i}]"
         idx = len(klip)
         # musik latar misteri: drone rendah + pulsa pelan, naik sedikit menjelang akhir
@@ -417,8 +502,7 @@ def render(papan, out_mp4, terakhir=False):
 
         for i, a in enumerate(adegan):
             m = mulai[i]
-            if i:  # transisi antar adegan
-                taruh(efek("whoosh"), m - 0.35, 0.55, f"w{i}")
+            taruh(efek("whoosh"), m - 0.35, 0.55, f"w{i}")  # transisi antar adegan
             # suasana: burung di pagi hari (luar toko), jangkrik + angin di malam hari
             if a.get("waktu") == "malam":
                 taruh(efek("jangkrik", a["_durasi"]), m, 0.7, f"amb{i}")
@@ -440,6 +524,7 @@ def render(papan, out_mp4, terakhir=False):
                     taruh(efek("detik", min(2.0, it["_durasi"] + 0.4)), m + it["_mulai"], 0.6, f"dt{i}_{k}")
             if tegang and "jantung" not in a.get("efek", []):
                 taruh(efek("jantung"), m + 0.3, 0.6, f"j{i}")
+        taruh(efek("stinger"), 0.15, 0.9, "buka")  # hantaman pembuka di sampul
         # menjelang kartu "Bersambung": riser lalu hantaman
         taruh(efek("riser"), mulai[-1] - 3.0, 0.6, "riser")
         taruh(efek("stinger"), mulai[-1], 0.95, "hit")
@@ -456,5 +541,10 @@ def render(papan, out_mp4, terakhir=False):
         subprocess.run(["ffmpeg", "-y", "-loglevel", "error", *inputs, "-filter_complex", ";".join(filt),
                         "-map", vlab, "-map", "[a]", "-t", f"{total:.2f}", "-c:v", "libx264", "-preset", "veryfast", "-crf", "21",
                         "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", "-ar", "44100", "-movflags", "+faststart", out_mp4], check=True)
-    print(f"  selesai: {total:.1f} detik -> {out_mp4}")
+    render_sampul(papan, sampul_path(out_mp4))
+    print(f"  selesai: {total:.1f} detik -> {out_mp4} (+ sampul)")
     return out_mp4
+
+
+def sampul_path(out_mp4):
+    return str(Path(out_mp4).with_name(Path(out_mp4).stem + "-sampul.jpg"))

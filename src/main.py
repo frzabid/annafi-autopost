@@ -373,6 +373,9 @@ def urus_reel(p, st, now):
                 notify.pesan(f"⚠️ Upload otomatis <b>{nama}</b> lewat Make gagal: {html.escape(str(e))[:200]}\nUpload manual ya 👇")
         belum = "" if siap else "\n⚠️ Video belum ditandai <i>sudah dirender</i>."
         if langkah == "upload1":
+            sampul = video.with_name(video.stem + "-sampul.jpg")
+            if sampul.exists():
+                notify.foto(str(sampul), "🖼️ Sampul reel: saat upload pilih <b>Edit sampul → Tambahkan dari galeri</b>")
             notify.pesan(f"<pre>{html.escape(caption)}</pre>")
         notify.pesan(f"⏰ {'Pengingat lagi: ' if langkah == 'upload2' else ''}Saatnya upload <b>{nama}</b> ke Reels Instagram!{belum}\n\n"
                      "1. Instagram → + → Reel → pilih videonya\n2. Salin caption di atas (ketuk kotaknya) → tempel → Bagikan\n"
