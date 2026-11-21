@@ -5,6 +5,8 @@ Jenis konten (kolom `jenis` di sheet):
                                    kecuali kolom tunda = YA. Setelah tayang: pengingat Sorotan.
   edukasi / promo / info / momen -> Postingan feed Instagram + Facebook. Pratinjau malam sebelumnya
                                    (20.00) dengan tombol ✅/❌ di Telegram; HANYA tayang kalau disetujui.
+  cerita (nama memuat "Part N")  -> Reel Instagram cerita bersambung (animasi + suara dari folder cerita/).
+                                   Video dirender & dikirim ke Telegram malam sebelumnya; HANYA tayang kalau disetujui.
 
   python src/main.py cek       -> cek ringan (tanpa Chrome), apakah ada yang perlu dikerjakan
   python src/main.py prepare   -> proses tombol Telegram, kirim pratinjau, siapkan antrian tayang
@@ -57,7 +59,7 @@ def mulai_pratinjau(p):
 
 
 def tempat(p):
-    return "Story Instagram" if p["format"] == "story" else "Feed Instagram & Facebook"
+    return {"story": "Story Instagram", "reel": "Reels Instagram"}.get(p["format"], "Feed Instagram & Facebook")
 
 
 def aktif(p, st):
@@ -142,8 +144,24 @@ def buat_carousel(p, st):
     return POSTERS / nama[0]
 
 
+def buat_video(p, st):
+    """Reel cerita -> posters/<id>-<hash>.mp4 (animasi + suara, dirender dari folder cerita/)."""
+    sys.path.insert(0, str(ROOT / "cerita"))
+    import episode
+    POSTERS.mkdir(exist_ok=True)
+    out = POSTERS / f"{p['id']}-{p['hash_isi']}.mp4"
+    episode.render(p["part"], str(out))
+    if st.get("poster") and st["poster"] != out.name:
+        (POSTERS / st["poster"]).unlink(missing_ok=True)  # buang versi lama
+    st.update(poster=out.name, sumber_gambar="", hash=p["hash_isi"])
+    st.pop("slides", None)
+    return out
+
+
 def buat_poster(p, st):
     """Siapkan gambar + render poster. Nama file memuat hash isi supaya tidak kena cache lama."""
+    if p["format"] == "reel":
+        return buat_video(p, st)
     if pakai_carousel(p):
         return buat_carousel(p, st)
     import images, render  # impor berat hanya saat perlu
@@ -181,21 +199,26 @@ def kirim_pratinjau(p, st, poster, diperbarui):
         sumber = "link dari sheet"
     else:
         sumber = "tanpa foto"
+    if p["format"] == "reel":
+        sumber = f"video animasi Part {p['part']} (suara AI)"
     if st.get("slides"):
         import tema
         sumber = (f"carousel {len(st['slides'])} slide, tema <b>{tema.TEMA[tema.pilih(p)]['nama']}</b>"
                   + (f", {len(p['foto_produk'])} foto produk" if p.get("foto_produk") else ""))
     # 1) poster + caption persis seperti yang akan tayang -> siap diteruskan ke Saluran/Status WA
-    if st.get("slides"):
+    if p["format"] == "reel":
+        notify.video(str(poster), html.escape(caption))
+    elif st.get("slides"):
         notify.album([str(POSTERS / x) for x in st["slides"]], html.escape(caption))
     else:
         notify.foto(str(poster), html.escape(caption))
     judul = "🔄 Pratinjau diperbarui" if diperbarui else "👀 Pratinjau"
     info = (f"{judul}: <b>{html.escape(p['nama'])}</b>\n"
-            f"Tayang di {tempat(p)}: {jam} (baris {p['baris']})\nGambar: {sumber}\n\n")
+            f"Tayang di {tempat(p)}: {jam} (baris {p['baris']})\n{'Isi' if p['format'] == 'reel' else 'Gambar'}: {sumber}\n\n")
     if p["butuh_setuju"]:
         info += ("❗ Konten ini <b>hanya tayang kalau kamu setujui</b>. Mau ubah? Edit baris di sheet, "
-                 "pratinjau baru akan dikirim.\n📲 Untuk Saluran/Status WA: teruskan gambar di atas.")
+                 "pratinjau baru akan dikirim.\n📲 Untuk Saluran/Status WA: teruskan "
+                 + ("video" if p["format"] == "reel" else "gambar") + " di atas.")
         notify.pesan(info, tombol=[("✅ Setujui", f"ok:{p['id']}:{p['hash_isi']}"),
                                    ("❌ Batalkan", f"no:{p['id']}:{p['hash_isi']}")])
         st["status"] = "menunggu"
@@ -253,6 +276,15 @@ def cek_foto_besok(s, rows, now, paksa=False):
         teks += "\n\nSemua sudah punya foto sendiri 👍"
     notify.pesan(teks)
     save_state(s)
+
+
+def part_siap(p):
+    """Reel cerita: apakah animasi part ini sudah dibuat di folder cerita/? (konten lain selalu True)"""
+    if p["format"] != "reel":
+        return True
+    sys.path.insert(0, str(ROOT / "cerita"))
+    import episode
+    return p["part"] in episode.PART
 
 
 HARI = ["Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"]
@@ -331,6 +363,15 @@ def prepare(now=None):
             notify.pesan(f"⏭️ <b>{html.escape(p['nama'])}</b> ({fmt(p['waktu'])}) terlewat lebih dari "
                          f"{config.BATAS_TELAT_JAM:g} jam, tidak diposting. Ubah tanggal/jam di sheet kalau mau dijadwalkan ulang.")
             continue
+        if not part_siap(p):
+            if now >= p["waktu"]:
+                st["status"] = "terlewat"
+                notify.pesan(f"⏹️ <b>{html.escape(p['nama'])}</b> tidak diposting: animasinya belum dibuat.")
+            elif st.get("info_part") != p["hash_isi"]:
+                st["info_part"] = p["hash_isi"]
+                notify.pesan(f"🎬 <b>{html.escape(p['nama'])}</b> terjadwal {fmt(p['waktu'])}, tapi animasi Part {p['part']} "
+                             "belum dibuat. Video akan dirender otomatis begitu animasinya ditambahkan.")
+            continue
         if st.get("hash") != p["hash_isi"] or not st.get("poster") or not (POSTERS / st["poster"]).exists():
             diperbarui = st["status"] in ("pratinjau", "menunggu", "disetujui", "dibatalkan")
             try:
@@ -385,7 +426,19 @@ def publish():
         nama = html.escape(item["nama"])
         sorotan = item.get("kategori", "").title() or "Katalog"
         try:
-            if item["format"] == "story" and not (meta_siap or config.DRY_RUN):
+            if item["format"] == "reel" and make_siap and config.MAKE_REEL:
+                meta.post_make_reel(url_publik(item, st), item["caption"])
+                st.update(status="terposting", cara="make", waktu_posting=datetime.now(TZ).isoformat())
+                notify.pesan(f"✅ Reel <b>{nama}</b> dikirim ke Instagram (video diproses IG, tayang beberapa menit lagi).\n\n"
+                             f"📲 Bagikan juga ke Story/Status WA supaya pengikut tahu part baru sudah keluar.")
+            elif item["format"] == "reel":
+                # posting Reel lewat Make belum dinyalakan -> kirim videonya, kamu yang mengunggah
+                notify.video(str(POSTERS / item["poster"]),
+                             f"⏰ <b>Saatnya posting reel: {nama}</b>\n\n1. Tekan lama video ini → Simpan\n"
+                             f"2. Instagram → + → Reel → pilih video ini\n3. Tempel caption di bawah → Bagikan")
+                notify.pesan(html.escape(item["caption"]))
+                st.update(status="terposting", cara="manual", waktu_posting=datetime.now(TZ).isoformat())
+            elif item["format"] == "story" and not (meta_siap or config.DRY_RUN):
                 # semi-otomatis: kirim poster ke Telegram, kamu yang memposting ke Story IG
                 notify.foto(str(POSTERS / item["poster"]),
                             f"⏰ <b>Saatnya posting story: {nama}</b>\n\n1. Tekan lama foto ini → Simpan\n"
@@ -462,6 +515,9 @@ def cek(now=None):
     for p in rows:
         st = s["produk"].get(p["id"], {})
         if not aktif(p, st) or now < mulai_pratinjau(p):
+            continue
+        if not part_siap(p):
+            perlu = perlu or (st.get("info_part") != p["hash_isi"] or now >= p["waktu"])
             continue
         if st.get("hash") != p["hash_isi"] or now >= p["waktu"] or st.get("error"):
             perlu = True

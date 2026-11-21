@@ -117,10 +117,24 @@ def post_make(image_url: str, caption: str, semua: list[str] | None = None) -> s
         return "dikirim ke Make (DRY RUN)"
     semua = (semua or [image_url])[:10]
     r = requests.post(MAKE_WEBHOOK_URL, timeout=90, json={
-        "kunci": MAKE_KUNCI, "gambar": image_url, "caption": caption, "gambar_semua": semua, "jumlah": len(semua),
+        "kunci": MAKE_KUNCI, "jenis": "feed", "gambar": image_url, "caption": caption, "gambar_semua": semua, "jumlah": len(semua),
         # bentuk siap pakai untuk modul Make: Instagram "Create a carousel post" (Files) & Facebook Pages (Photos)
         "files": [{"media_type": "IMAGE", "image_url": u} for u in semua],
         "foto": [{"type": "url", "url": u} for u in semua]})
+    if r.status_code >= 400:
+        raise RuntimeError(f"Make menolak ({r.status_code}): {r.text[:200]}")
+    return r.text.strip()[:300] or "diterima Make"
+
+
+def post_make_reel(video_url: str, caption: str) -> str:
+    """Kirim reel cerita ke skenario Make (rute jenis = reel -> Instagram "Create a Reel Post")."""
+    from config import MAKE_WEBHOOK_URL, MAKE_KUNCI
+    if DRY_RUN:
+        print(f"[MAKE REEL] {video_url}")
+        return "dikirim ke Make (DRY RUN)"
+    r = requests.post(MAKE_WEBHOOK_URL, timeout=90, json={
+        "kunci": MAKE_KUNCI, "jenis": "reel", "video": video_url, "caption": caption,
+        "gambar": "", "gambar_semua": [], "jumlah": 0, "files": [], "foto": []})
     if r.status_code >= 400:
         raise RuntimeError(f"Make menolak ({r.status_code}): {r.text[:200]}")
     return r.text.strip()[:300] or "diterima Make"

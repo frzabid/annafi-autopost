@@ -3,7 +3,7 @@ import csv, hashlib, io, json, re
 from collections import defaultdict
 from datetime import datetime, timedelta
 import requests
-from config import TZ, JAM_STORY, JAM_FEED, MODE_PROMO
+from config import TZ, JAM_STORY, JAM_FEED, JAM_CERITA, MODE_PROMO
 
 KOLOM = ["tanggal", "jam", "jenis", "nama", "kategori", "detail", "poin", "tema", "produk",
          "label_harga_1", "harga_1", "label_harga_2", "harga_2",
@@ -12,7 +12,8 @@ KOLOM = ["tanggal", "jam", "jenis", "nama", "kategori", "detail", "poin", "tema"
 # jenis -> katalog tayang sebagai Story IG; lainnya jadi postingan feed IG + FB (wajib disetujui)
 JENIS = {"katalog": "katalog", "produk": "katalog", "story": "katalog", "": "katalog",
          "edukasi": "edukasi", "tips": "edukasi", "promo": "promo", "diskon": "promo",
-         "info": "info", "pengumuman": "info", "momen": "momen", "spesial": "momen", "ucapan": "momen"}
+         "info": "info", "pengumuman": "info", "momen": "momen", "spesial": "momen", "ucapan": "momen",
+         "cerita": "cerita", "reel": "cerita", "reels": "cerita"}
 
 
 def _harga(s: str):
@@ -55,9 +56,9 @@ def parse(text: str):
         jenis = JENIS.get(r.get("jenis", "").lower())
         if not jenis:
             errors.append(f"Baris {i} ({r['nama']}): jenis '{r.get('jenis')}' tidak dikenal "
-                          f"(pakai katalog/edukasi/promo/info/momen)")
+                          f"(pakai katalog/edukasi/promo/info/momen/cerita)")
             continue
-        fmt = "story" if jenis == "katalog" else "konten"
+        fmt = "story" if jenis == "katalog" else "reel" if jenis == "cerita" else "konten"
         jam_otomatis = not r.get("jam")
         ditunda = r.get("tunda", "").lower() in ("ya", "y", "tunda", "1", "true")
         if jam_otomatis and ditunda:  # baris ditunda tidak memakai jatah jam ramai
@@ -67,7 +68,7 @@ def parse(text: str):
             if not tgl:
                 errors.append(f"Baris {i} ({r['nama']}): tanggal tidak terbaca")
                 continue
-            daftar = JAM_STORY if fmt == "story" else JAM_FEED
+            daftar = JAM_STORY if fmt == "story" else JAM_CERITA if fmt == "reel" else JAM_FEED
             n = slot_terpakai[(tgl.date(), fmt)]
             slot_terpakai[(tgl.date(), fmt)] += 1
             hh, mm = map(int, daftar[n % len(daftar)].split(":"))
@@ -97,7 +98,7 @@ def parse(text: str):
             continue
         p = {
             "baris": i, "waktu": waktu, "jam_otomatis": jam_otomatis, "jenis": jenis, "format": fmt,
-            "butuh_setuju": fmt == "konten", "nama": r["nama"], "kategori": r.get("kategori", "").upper(),
+            "butuh_setuju": fmt != "story", "nama": r["nama"], "kategori": r.get("kategori", "").upper(),
             "detail": r.get("detail", ""), "poin": poin[:6], "harga": harga, "gambar": r.get("gambar", ""),
             "caption": r.get("caption", ""), "tunda": r.get("tunda", "").lower() in ("ya", "y", "tunda", "1", "true"),
             "tema": r.get("tema", "").strip(),
@@ -106,6 +107,13 @@ def parse(text: str):
         }
         # id tetap selama tanggal, jam & nama sama; hash isi untuk mendeteksi perubahan setelah pratinjau
         p["id"] = hashlib.sha1(f"{waktu.isoformat()}|{p['nama'].lower()}".encode()).hexdigest()[:10]
+        if fmt == "reel":
+            m = re.search(r"part\s*(\d+)", f"{p['nama']} {p['detail']}", re.I)
+            if not m:
+                errors.append(f"Baris {i} ({r['nama']}): cerita harus menyebut nomor part, misal 'Part 1'")
+                continue
+            p["part"] = int(m[1])
+            p["poin"], p["harga"] = [], []
         p["hash_isi"] = _hash(p)
         rows.append(p)
     return rows, errors

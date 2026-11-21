@@ -27,6 +27,12 @@ const CONFIG = {
   HARI_FEED: [1, 2, 3, 5, 6],                      // hari favorit feed (1=Senin … 7=Minggu); AI memilih 4-5 di antaranya
   FEED_PER_MINGGU: '4-5',                          // jumlah feed seminggu; idenya diatur AI, tiap feed tetap menunggu ✅ darimu
   JAM_FEED: '19:00',
+  // cerita bersambung (reel animasi). Part berikutnya otomatis masuk rencana mingguan di hari ini,
+  // tapi hanya part yang animasinya SUDAH dibuat (dicek dari cerita/episode.py di GitHub).
+  JUDUL_CERITA: 'Misteri Surat Tanpa Nama',
+  HARI_CERITA: [2, 5],                             // Selasa & Jumat
+  JAM_CERITA: '20:00',
+  EPISODE_URL: 'https://raw.githubusercontent.com/frzabid/annafi-autopost/main/cerita/episode.py',
   // kategori yang fotonya jarang ada di internet: hanya masuk rencana story kalau sudah ada foto sendiri
   KATEGORI_WAJIB_FOTO: ['AKSESORIS & FASHION', 'MAINAN', 'BUKU BACAAN & ISLAMI', 'KOSMETIK & PERAWATAN',
     'PESTA & ULANG TAHUN', 'SERAGAM SEKOLAH', 'RUMAH TANGGA & LAINNYA', 'MINUMAN & JAJANAN', 'PRAMUKA'],
@@ -47,7 +53,7 @@ const KOLOM_JADWAL = ['tanggal', 'jam', 'jenis', 'nama', 'kategori', 'detail', '
 // tema carousel feed (lihat src/tema.py di GitHub); kosong = ditebak otomatis dari judul
 const TEMA = ['umum', 'guru', 'maulid', 'ramadan', 'idulfitri', 'kemerdekaan', 'ujian', 'sekolah'];
 const KOLOM_PRODUK = ['nama', 'kategori', 'detail', 'label_harga_1', 'harga_1', 'label_harga_2', 'harga_2', 'gambar', 'aktif'];
-const JENIS = ['katalog', 'edukasi', 'promo', 'info', 'momen'];
+const JENIS = ['katalog', 'edukasi', 'promo', 'info', 'momen', 'cerita'];
 const KOLOM_HARGA = ['harga_1', 'harga_2'];
 
 // ============================== PEMASANGAN ==============================
@@ -291,6 +297,8 @@ function manajer_(instruksi) {
     (CONFIG.MODE_PROMO ? '- jenis hanya: katalog (story produk), edukasi, promo, info, momen (postingan feed).'
       : '- jenis hanya: katalog (story produk), edukasi, info, momen (postingan feed). Konten promo SEDANG DIMATIKAN: ' +
         'feed harus informatif/umum, tanpa harga dan tanpa kata promo/diskon/murah/beli sekarang. Kalau diminta promo, jelaskan di balasan.'),
+    '- jenis "cerita" = reel animasi cerita bersambung "' + CONFIG.JUDUL_CERITA + '" (bukan feed). nama WAJIB "' + CONFIG.JUDUL_CERITA +
+      ' Part N", jam ' + CONFIG.JAM_CERITA + ', tanpa poin/gambar. Part yang animasinya sudah jadi: ' + partSiap_().join(', ') + '.',
     '- Untuk katalog, "nama" HARUS persis salah satu nama di PRODUK; harga diisi sistem, jangan tulis harga.',
     '- Jangan mengarang harga. Ubah harga hanya kalau pemilik menyebut angkanya di instruksi.',
     '- tanggal format dd/MM/yyyy, jam format HH:mm. Sebaiknya jam DIKOSONGKAN: sistem otomatis menyebar story di jam ramai',
@@ -462,6 +470,13 @@ function barisKonten_(d, produk) {
   const jenis = String(d.jenis || 'katalog').toLowerCase();
   if (JENIS.indexOf(jenis) < 0) throw new Error('Jenis "' + jenis + '" tidak dikenal.');
   if (!keDate_(d.tanggal)) throw new Error('Tanggal "' + d.tanggal + '" tidak terbaca.');
+  if (jenis === 'cerita') {
+    const m = String(d.nama || '').match(/part\s*(\d+)/i);
+    if (!m) throw new Error('Cerita harus menyebut nomor part, misal "' + CONFIG.JUDUL_CERITA + ' Part 1".');
+    return { tanggal: fmtTgl_(keDate_(d.tanggal)), jam: rapikanJam_(d.jam || CONFIG.JAM_CERITA), jenis: 'cerita',
+      nama: CONFIG.JUDUL_CERITA + ' Part ' + (+m[1]), kategori: '', detail: '', poin: '', gambar: '', caption: d.caption || '',
+      tunda: '', tema: '', produk: '' };
+  }
   const poin = Array.isArray(d.poin) ? d.poin.join('; ') : String(d.poin || '');
   const baris = { tanggal: fmtTgl_(keDate_(d.tanggal)), jam: rapikanJam_(d.jam), jenis: jenis, nama: String(d.nama || '').trim(),
     kategori: String(d.kategori || '').toUpperCase(), detail: d.detail || '', poin: poin, gambar: d.gambar || '',
@@ -584,6 +599,23 @@ function buatRencanaMingguan_(paksa) {
       tambahBaris_(TAB_JADWAL, KOLOM_JADWAL, b); ditambah.push(b);
     } catch (e) { gagal.push('feed ' + (f.nama || '?') + ': ' + e.message); }
   });
+  // cerita bersambung: part berikutnya di hari cerita (diatur sistem, bukan AI), hanya part yang animasinya sudah jadi
+  try {
+    const nomor = r => { const m = String(r.nama).match(/part\s*(\d+)/i); return m ? +m[1] : 0; };
+    const cerita = jadwal.filter(r => String(r.jenis).toLowerCase() === 'cerita');
+    const siap = partSiap_();
+    let part = cerita.reduce((m, r) => Math.max(m, nomor(r)), 0);
+    const terisi = sudahAda.filter(r => String(r.jenis).toLowerCase() === 'cerita').map(r => r.tanggal);
+    CONFIG.HARI_CERITA.forEach(i => {
+      const tgl = fmtTgl_(tambahHari_(senin, i - 1));
+      if (terisi.indexOf(tgl) >= 0 || siap.indexOf(part + 1) < 0) return;
+      part++;
+      const b = barisKonten_({ tanggal: tgl, jenis: 'cerita', nama: CONFIG.JUDUL_CERITA + ' Part ' + part }, produk);
+      tambahBaris_(TAB_JADWAL, KOLOM_JADWAL, b); ditambah.push(b);
+    });
+    if (siap.indexOf(part + 1) < 0 && cerita.length)
+      gagal.push('cerita: Part ' + (part + 1) + ' belum dianimasikan, jadi belum dijadwalkan');
+  } catch (e) { gagal.push('cerita: ' + e.message); }
   props.setProperty(kunci, sekarang_());
 
   const urut = ditambah.slice().sort((a, b) => fmtKunci_(keDate_(a.tanggal)).localeCompare(fmtKunci_(keDate_(b.tanggal))));
@@ -593,12 +625,27 @@ function buatRencanaMingguan_(paksa) {
     const tgl = fmtTgl_(tambahHari_(senin, i));
     const isi = urut.filter(b => b.tanggal === tgl);
     if (!isi.length) return;
-    teks += '<b>' + esc_(h) + '</b>\n' + isi.map(b => (b.jenis === 'katalog' ? '  📱 story: ' : '  🖼️ ' + b.jenis + ': ') + esc_(b.nama)).join('\n') + '\n';
+    teks += '<b>' + esc_(h) + '</b>\n' + isi.map(b => (b.jenis === 'katalog' ? '  📱 story: ' : b.jenis === 'cerita' ? '  🎬 reel: ' : '  🖼️ ' + b.jenis + ': ') + esc_(b.nama)).join('\n') + '\n';
   });
   teks += '\nSemua sudah masuk tab Jadwal. Mau ubah? Edit sheet atau ketik perintah ke sini ' +
     '(mis. <i>ganti story Selasa dengan pulpen</i>). Feed tetap menunggu ✅ darimu sebelum tayang.';
   if (gagal.length) teks += '\n\n⚠️ Dilewati: ' + esc_(gagal.join('; '));
   return teks;
+}
+
+/** Nomor part cerita yang animasinya sudah dibuat (dibaca dari cerita/episode.py di GitHub, disimpan 1 jam). */
+function partSiap_() {
+  const cache = CacheService.getScriptCache();
+  const simpan = cache.get('partSiap');
+  if (simpan) return JSON.parse(simpan);
+  let hasil = [];
+  try {
+    const teks = UrlFetchApp.fetch(CONFIG.EPISODE_URL, { muteHttpExceptions: true }).getContentText();
+    const blok = (teks.match(/PART\s*=\s*\{([\s\S]*?)\}/) || [])[1] || '';
+    hasil = (blok.match(/^\s*(\d+)\s*:/gm) || []).map(x => parseInt(x, 10)).sort((a, b) => a - b);
+  } catch (e) { /* GitHub tidak terjangkau: anggap belum ada */ }
+  cache.put('partSiap', JSON.stringify(hasil), 3600);
+  return hasil;
 }
 
 function ringkasJadwal_(nHari) {

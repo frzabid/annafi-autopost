@@ -31,6 +31,17 @@ def foto(path: str, teks: str):
     r.raise_for_status()
 
 
+def video(path: str, teks: str):
+    if not _AKTIF:
+        print(f"[TELEGRAM VIDEO {path}] {teks}")
+        return
+    with open(path, "rb") as f:
+        r = requests.post(f"{API}/sendVideo", timeout=180, files={"video": f},
+                          data={"chat_id": TELEGRAM_CHAT_ID, "caption": teks[:1024], "parse_mode": "HTML",
+                                "supports_streaming": "true", "width": 1080, "height": 1920})
+    r.raise_for_status()
+
+
 def album(paths: list[str], teks: str):
     """Kirim beberapa gambar sebagai satu album (pratinjau carousel). Caption di gambar pertama."""
     if len(paths) == 1:

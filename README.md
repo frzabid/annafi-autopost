@@ -142,3 +142,14 @@ posters/         poster jadi (otomatis, URL publik untuk Instagram)
 - Gambar hasil pencarian otomatis bisa milik toko/orang lain atau salah produk — itulah gunanya pratinjau.
 - GitHub bisa menonaktifkan jadwal kalau repo tidak ada aktivitas 60 hari; tinggal aktifkan lagi di tab Actions.
 - Batas Instagram: 100 postingan API per 24 jam — jauh di atas kebutuhan toko.
+
+
+## Reel cerita bersambung (Misteri Surat Tanpa Nama)
+
+- Baris sheet: `jenis` = **cerita**, `nama` = "Misteri Surat Tanpa Nama Part N", jam kosong = 20.00.
+  Bisa lewat chat bot: *jadwalkan cerita part 1 hari Selasa*. Rencana mingguan otomatis menambah part berikutnya
+  tiap Selasa & Jumat, **hanya** part yang animasinya sudah ada di `cerita/episode.py`.
+- H-1 jam 20.00 GitHub merender video (animasi + suara Gemini) → dikirim ke Telegram dengan ✅/❌.
+- Jam tayang: kalau variabel `MAKE_REEL` = 1 (skenario Make punya rute Reel), reel diposting otomatis;
+  kalau belum, videonya dikirim ke Telegram untuk diunggah manual.
+- Tambah part baru: buat `cerita/partN.py` (fungsi `render(out_mp4)`), daftarkan di `cerita/episode.py`.

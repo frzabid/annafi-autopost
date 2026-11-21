@@ -29,6 +29,7 @@ PREVIEW_JAM = float(_env("PREVIEW_JAM", "2"))
 # Jam ramai (WIB) dipakai kalau kolom jam di sheet dikosongkan
 JAM_STORY = ["07:00", "12:00", "16:00", "19:00"]  # story katalog disebar sepanjang hari
 JAM_FEED = ["19:00"]                               # postingan feed: malam hari
+JAM_CERITA = ["20:00"]                             # reel cerita bersambung
 # Pratinjau konten feed (edukasi/promo/...) dikirim malam sebelumnya jam segini, dengan tombol setuju
 JAM_PRATINJAU_FEED = _env("JAM_PRATINJAU_FEED", "20:00")
 # jam pengingat foto story katalog untuk besok (produk yang belum punya foto)
@@ -40,7 +41,20 @@ BATAS_TELAT_JAM = float(_env("BATAS_TELAT_JAM", "3"))
 HASHTAG = "#annafiatk #atkmenganti #alattulis #atkmurah #perlengkapansekolah"
 
 
+def caption_cerita(p) -> str:
+    """Caption reel cerita: ajak follow & tunggu part berikutnya (bukan promosi)."""
+    ig = TOKO["ig"] if TOKO["ig"].startswith("@") else "@" + TOKO["ig"]
+    judul = p["nama"] + (f"\n{p['detail']}" if p.get("detail") and "part" not in p["detail"].lower() else "")
+    return "\n\n".join([
+        f"✉️ {judul}",
+        "Surat itu datang tanpa nama pengirim... siapa yang menulisnya? 🤔\nTulis tebakanmu di komentar 👇",
+        f"Part {p['part'] + 1} segera tayang. Follow {ig} supaya tidak ketinggalan kelanjutannya 🔔",
+        "#misterisurattanpanama #ceritabersambung #ceritamisteri #animasi #menganti #gresik"])
+
+
 def caption_otomatis(p) -> str:
+    if p.get("jenis") == "cerita":
+        return caption_cerita(p)
     kat = "".join(ch for ch in p.get("kategori", "").lower() if ch.isalnum())
     tag = HASHTAG if MODE_PROMO else HASHTAG.replace(" #atkmurah", "")  # tanpa kesan promo saat mode promo mati
     tag += f" #{kat}" if kat else ""
@@ -69,6 +83,7 @@ GRAPH_VERSION = _env("GRAPH_VERSION", "v25.0")
 SERPER_API_KEY = _env("SERPER_API_KEY", "")
 # Make.com (posting feed IG+FB tanpa akun developer Meta)
 MAKE_WEBHOOK_URL = _env("MAKE_WEBHOOK_URL", "")
+MAKE_REEL = _env("MAKE_REEL", "0") == "1"  # 1 = skenario Make sudah punya rute Reel; 0 = reel dikirim ke Telegram untuk diunggah manual
 MAKE_KUNCI = _env("MAKE_KUNCI", "")  # kode rahasia, dicek oleh filter di skenario Make  # opsional, cadangan pencarian gambar
 
 # URL publik folder posters/ (mode GitHub). Kosong = mode laptop: gambar di-host lewat foto Facebook
