@@ -9,7 +9,7 @@ A1 depan toko pagi — NARATOR: Jam enam pagi. Seperti biasa, Mbak Laras membuka
 A2 lantai — NARATOR: Tapi pagi ini… ada yang berbeda.
 A3 amplop bintang — TEKS: "Untuk siapa pun yang membuka toko ini paling pagi." / LARAS: Lho? Surat untuk siapa ini?
 A4 surat — TEKS: "Tempat ribuan halaman lahir setiap hari menyimpan jawabannya." / LARAS: Ribuan halaman…?
-A5 Raka masuk — RAKA: Kak! Fotokopi tugas, dua puluh lembar, cepet, Kak, telat aku! / LARAS: Raka, sebentar. Coba baca ini. / RAKA: Ribuan halaman lahir… Lho! Yo mesin fotokopi iki, Kak!
+A5 Raka masuk — RAKA: Kak! Fotokopi tugas, dua puluh lembar, cepat ya Kak, aku telat! / LARAS: Raka, sebentar. Coba baca ini. / RAKA: Ribuan halaman lahir… Lho! Itu mesin fotokopi, Kak!
 A6 bawah mesin — NARATOR: Di bawah mesin itu, terselip amplop kedua.
 A7 amplop tua 12-03-2011 — RAKA: Kak… ini kok tanggalnya lima belas tahun lalu? / LARAS: (terdiam) / TEKS: Bersambung · Part 2
 

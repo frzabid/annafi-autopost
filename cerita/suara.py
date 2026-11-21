@@ -35,15 +35,16 @@ GEMINI_TTS_MODEL = [m for m in (os.environ.get("GEMINI_TTS_MODEL"), "gemini-3.1-
                                 "gemini-2.5-flash-preview-tts") if m]
 GEMINI = {
     "narator": {"voice": os.environ.get("GEMINI_VOICE_NARATOR") or "Charon",
-                "gaya": "Bacakan dalam bahasa Indonesia dengan suara narator cerita misteri yang hangat dan sedikit menegangkan, "
-                        "tempo sedang (tidak lambat), jeda singkat saja pada tanda titik-titik"},
+                "gaya": "Bacakan dalam bahasa Indonesia baku dengan pelafalan yang jelas dan natural seperti pendongeng radio, "
+                        "suara hangat dan dalam, intonasi bercerita yang hidup dengan sedikit nuansa misteri, tempo sedang, "
+                        "tidak berbisik dan tidak datar, jeda singkat saja pada tanda titik-titik"},
     "laras": {"voice": os.environ.get("GEMINI_VOICE_LARAS") or "Leda",
               "gaya": "Ucapkan dalam bahasa Indonesia sebagai perempuan sekitar 30 tahun yang ramah dan tenang, "
                       "dengan nada kaget dan penasaran"},
 }
 GEMINI.update({
-    "raka": {"voice": "Puck", "gaya": "Ucapkan dalam bahasa Indonesia logat Jawa Timur santai sebagai remaja laki-laki SMA 17 tahun "
-                                      "yang spontan dan bersemangat"},
+    "raka": {"voice": "Puck", "gaya": "Ucapkan dalam bahasa Indonesia standar tanpa logat daerah sebagai remaja laki-laki SMA "
+                                      "17 tahun yang spontan dan bersemangat"},
     "dinda": {"voice": "Laomedeia", "gaya": "Ucapkan dalam bahasa Indonesia sebagai anak perempuan 8 tahun yang polos, "
                                             "suara kecil dan riang"},
     "bima": {"voice": "Iapetus", "gaya": "Ucapkan dalam bahasa Indonesia sebagai remaja laki-laki 17 tahun yang pendiam dan pelan"},
