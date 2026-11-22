@@ -68,6 +68,7 @@ body{width:1080px;height:1920px;overflow:hidden;background:#000;font-family:Popp
 @keyframes mangap{0%,49%{opacity:1}50%,100%{opacity:0}}
 @keyframes napas{from{transform:scaleY(1)}to{transform:scaleY(1.012)}}
 .tkh{position:absolute;transform-origin:50% 100%}
+.samar{position:absolute;left:17%;top:3%;width:66%;height:40%;border-radius:50%;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
 .tkh .badan{position:absolute;inset:0;animation:napas 2.2s ease-in-out infinite alternate;transform-origin:50% 100%}
 .ek{position:absolute;inset:0;opacity:0}.ek svg{width:100%;height:100%;display:block}
 .sub{position:absolute;left:60px;right:60px;top:150px;background:rgba(255,255,255,.95);border-radius:26px;padding:26px 36px;
@@ -183,7 +184,8 @@ def adegan_html(a, idx, info_part):
             css.append(f"@keyframes msk{i}{{from{{transform:translateX({dari}px) {flip}}}to{{transform:{flip}}}}}")
             masuk = f"animation:msk{i} .8s cubic-bezier(.2,.8,.3,1) {t['_masuk']:.2f}s both;"
         isi.append(f'<div class="tkh" id="t{i}" style="left:{left:.0f}px;top:{top:.0f}px;width:{w:.0f}px;height:{h:.0f}px;'
-                   f'transform:{flip};{masuk}"><div class="badan">{lapisan}</div></div>')
+                   f'transform:{flip};{masuk}"><div class="badan">{lapisan}</div>'
+                   + ('<div class="samar"></div>' if t.get("samar") else '') + '</div>')
     # ---- objek
     ob = a.get("objek")
     if ob:
@@ -428,10 +430,19 @@ def _wav(expr, d, out, af=""):
     return out
 
 
+# Tokoh yang wajahnya diblur sampai part tertentu (supaya misteri tidak bocor):
+# Pak Hadi baru muncul Part 4 & hubungannya dengan Ana terungkap Part 5; Rani terungkap Part 6.
+SAMAR_SAMPAI = {"hadi_sma": 5, "rani_sma": 6, "rani": 6}
+
+
 def render(papan, out_mp4, terakhir=False):
     """papan = dict papan cerita yang sudah lolos sutradara.rapikan(). Kembalikan path video."""
     part = papan.get("part", 1)
     adegan = papan["adegan"]
+    for a in adegan:  # wajah tokoh yang identitasnya belum terungkap di part ini dibuat blur
+        for t in a.get("tokoh", []):
+            if part < SAMAR_SAMPAI.get(t["id"], 0):
+                t["samar"] = True
     with tempfile.TemporaryDirectory() as tmp:
         tmp = Path(tmp)
         # 1) suara tiap ucapan (panjang adegan mengikuti suara)

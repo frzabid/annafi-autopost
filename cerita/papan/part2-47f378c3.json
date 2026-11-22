@@ -7,26 +7,7 @@
    "waktu": "pagi",
    "kamera": "zoom_in",
    "kilas_balik": true,
-   "tokoh": [
-    {
-     "id": "laras_sma",
-     "ekspresi": "senang",
-     "posisi": "kiri",
-     "masuk": ""
-    },
-    {
-     "id": "hadi_sma",
-     "ekspresi": "senang",
-     "posisi": "tengah",
-     "masuk": ""
-    },
-    {
-     "id": "rani_sma",
-     "ekspresi": "senang",
-     "posisi": "kanan",
-     "masuk": ""
-    }
-   ],
+   "tokoh": [],
    "objek": {
     "jenis": "amplop_tua",
     "tulisan": ""
