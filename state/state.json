@@ -344,9 +344,20 @@
   },
   "c5b522725a": {
    "nama": "Tips Memilih Krayon untuk Anak",
-   "status": "baru",
+   "status": "menunggu",
    "gagal": 0,
-   "waktu_tayang": "Senin 23/11 19:00"
+   "waktu_tayang": "Senin 23/11 19:00",
+   "poster": "c5b522725a-e08c6b12a8-1.jpg",
+   "slides": [
+    "c5b522725a-e08c6b12a8-1.jpg",
+    "c5b522725a-e08c6b12a8-2.jpg",
+    "c5b522725a-e08c6b12a8-3.jpg",
+    "c5b522725a-e08c6b12a8-4.jpg",
+    "c5b522725a-e08c6b12a8-5.jpg",
+    "c5b522725a-e08c6b12a8-6.jpg"
+   ],
+   "sumber_gambar": "",
+   "hash": "e08c6b12a8"
   },
   "20fc0b87a8": {
    "nama": "Buku Spiral A5 Fancy",
@@ -540,7 +551,8 @@
    "gagal": 0,
    "waktu_tayang": "Senin 23/11 17:00",
    "hash": "8770e841be",
-   "ingat_render": "2026-11-21T17:01:36.542989+07:00"
+   "ingat_render": "2026-11-21T17:01:36.542989+07:00",
+   "ingat_render2": "2026-11-22T20:01:25.035315+07:00"
   },
   "a312e51bd8": {
    "nama": "Misteri Surat Tanpa Nama Part 4",
