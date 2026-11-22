@@ -344,7 +344,7 @@
   },
   "c5b522725a": {
    "nama": "Tips Memilih Krayon untuk Anak",
-   "status": "menunggu",
+   "status": "disetujui",
    "gagal": 0,
    "waktu_tayang": "Senin 23/11 19:00",
    "poster": "c5b522725a-e08c6b12a8-1.jpg",
@@ -357,7 +357,8 @@
     "c5b522725a-e08c6b12a8-6.jpg"
    ],
    "sumber_gambar": "",
-   "hash": "e08c6b12a8"
+   "hash": "e08c6b12a8",
+   "setuju_hash": "e08c6b12a8"
   },
   "20fc0b87a8": {
    "nama": "Buku Spiral A5 Fancy",
