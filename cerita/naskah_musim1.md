@@ -1,9 +1,11 @@
 # Misteri Surat Tanpa Nama · Musim 1
 
-Tokoh: Mbak Ana (±32, penjaga toko; pakaian biasa, tanpa logo). Latar toko dibuat mirip toko Annafi asli. Ana, Hadi, Rani = sahabat SMA, kini ±32 th (lulus 2011). Bima (17) = keponakan Rani. Raka (17, SMA kelas 12), Dinda (16, adik Raka, SMA, rambut pendek tanpa kerudung). Pak Hadi = guru (batik hijau). Rani tanpa kerudung. Kilas balik / foto lama: Ana, Hadi, Rani berseragam SMA.
+Tokoh: Mbak Ana (±32, penjaga toko; pakaian biasa, tanpa logo). Latar toko dibuat mirip toko Annafi asli. Ana, Hadi, Rani = sahabat SMA, kini ±32 th (lulus 2011). Bima (17) = keponakan Rani. Raka (17, SMA kelas 12), Dinda (16, adik Raka, SMA, rambut pendek tanpa kerudung). Pak Hadi = guru (batik hijau). Rani tanpa kerudung. Kilas balik / foto lama: Ana, Hadi, Rani berseragam SMA (lihat PENGUNGKAPAN: sebelum waktunya, kilas balik cukup benda/suasana tanpa wajah).
 Kostum: pagi/jam sekolah = seragam SMA; sore setelah pulang, malam, hari Minggu = baju bebas (raka_bebas, dinda_bebas, bima_bebas, hadi_bebas); Bima berjaket gelap = bima_jaket (Part 2–3); kilas balik = laras_sma, hadi_sma, rani_sma.
 Sosok/siluet berjaket hitam yang belum terungkap = tokoh "siluet" (wajah tidak terlihat); jangan pakai bima_jaket atau rani untuk sosok ini sebelum Part 8.
 Lokasi: JANGAN menyebut nama daerah/kota (Menganti, Gresik, dll.) di dialog, narasi, teks layar, maupun caption; cukup "toko" / "toko Annafi".
+KONTINUITAS (fakta tetap, wajib sama di semua part): amplop pertama krem bergambar bintang biru; amplop kedua = amplop tua bertanggal 12-03-2011 ("lima belas tahun lalu"), ditemukan di bawah mesin fotokopi; amplop ketiga ditinggal sosok berjaket hitam di depan toko malam hari (Part 2). Isi amplop tua: potongan peta + kalimat "Di bawah yang tertua, kita pernah berjanji." Inisial di pohon beringin: A·H·R (R dicoret). Depan toko tanpa motor parkir.
+PENGUNGKAPAN (jangan tampilkan/menyebut sebelum part ini): Bima mulai Part 3. Pak Hadi (masa kini) mulai Part 4. Hadi SMA & bahwa Ana–Hadi bersahabat: Part 5 (foto: wajah orang ketiga ditutup bintang hitam). Nama & wajah Rani SMA: Part 6. Rani masa kini & bahwa ia pengirim surat: Part 8. Sebelum itu semua, cukup "seseorang" / siluet / benda.
 Format: reel 9:16, ±80–95 dtk (±1,5 menit) per part, kilas balik 3 dtk di awal, akhir menggantung. Jadwal tiap hari 17.00.
 
 ## PART 1 · Amplop di Bawah Pintu

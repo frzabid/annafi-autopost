@@ -59,10 +59,14 @@ def _prompt(n, arahan):
         "(kira-kira 16-24 ucapan; tiap ucapan 1-2 kalimat pendek). Naskah hanya kerangka: PERKAYA supaya terasa seperti episode utuh.",
         "",
         "INFO SERI (tokoh, kostum, format):", kepala, "",
+        ("PART SEBELUMNYA (sudah tayang; jaga kontinuitas benda, tanggal, kostum, siapa yang sudah tahu apa):\n"
+         + "\n".join(part[k] for k in sorted(part) if k < n) + "\n") if n > 1 else "",
         f"NASKAH PART {n}:", part[n], "",
         "ATURAN WAJIB:",
         "- Ikuti urutan adegan & dialog naskah. Setiap baris NARATOR/TOKOH jadi item {tokoh, ucap}. Boleh merapikan kalimat agar enak",
         "  diucapkan, tapi JANGAN menambah fakta/petunjuk baru dan jangan membocorkan misteri part berikutnya.",
+        "- Patuhi KONTINUITAS & PENGUNGKAPAN di INFO SERI: tokoh/wajah/nama yang belum waktunya JANGAN ditampilkan di adegan",
+        "  mana pun (termasuk kilas balik & adegan tambahan); benda yang sudah muncul harus sama (mis. amplop tua 12-03-2011).",
         "- TEKS: \"...\" jadi item {teks}. Kalau itu tulisan pada surat/amplop, isi juga objek.tulisan dengan teks yang SAMA PERSIS.",
         "- (terdiam) / jeda dramatis jadi item {jeda: detik 0.6-1.5}. Teks 'Bersambung'/'Part berikutnya' TIDAK perlu (kartu akhir otomatis).",
         "- Tiap adegan maksimal 3 tokoh, 1 objek. Tokoh yang bicara HARUS ada di daftar tokoh adegan itu (pakai id kostum yang sama).",
@@ -122,6 +126,10 @@ def _gemini(prompt):
     raise RuntimeError(f"Gemini gagal membuat papan cerita: {err}")
 
 
+# Part pertama tokoh boleh tampil (masa kini). Kilas balik Hadi/Rani SMA diblur oleh mesin.SAMAR_SAMPAI.
+MUNCUL_MULAI = {"bima": 3, "bima_jaket": 3, "bima_bebas": 3, "hadi": 4, "hadi_bebas": 4, "rani": 8}
+
+
 def rapikan(p, n):
     """Validasi & perbaiki papan dari AI supaya mesin tidak pernah gagal karena nilai aneh."""
     hasil = {"part": n, "judul": str(p.get("judul", ""))[:80], "adegan": []}
@@ -132,6 +140,8 @@ def rapikan(p, n):
         for t in (a.get("tokoh") or [])[:3]:
             tid = t.get("id") if t.get("id") in T.TOKOH else None
             if not tid or tid in dipakai:
+                continue
+            if n < MUNCUL_MULAI.get(tid, 0):  # belum waktunya muncul (lihat PENGUNGKAPAN di naskah)
                 continue
             dipakai.add(tid)
             tokoh.append({"id": tid, "ekspresi": t.get("ekspresi") if t.get("ekspresi") in T.EKSPRESI else "senang",
@@ -190,7 +200,11 @@ def papan(n, arahan="", baru=False):
     _, part = naskah()
     if n not in part:
         raise KeyError(f"Part {n} tidak ada di naskah")
-    kunci = hashlib.sha1((part[n] + "|" + arahan.strip() + ("" if DURASI == "45-60" else "|" + DURASI)).encode()).hexdigest()[:8]
+    kepala, _ = naskah()
+    dasar = part[n] + "|" + arahan.strip() + ("" if DURASI == "45-60" else "|" + DURASI)
+    if n >= 3:  # part 3 dst. ikut berubah kalau aturan kontinuitas di kepala naskah diubah
+        dasar += "|" + kepala
+    kunci = hashlib.sha1(dasar.encode()).hexdigest()[:8]
     path = PAPAN / f"part{n}-{kunci}.json"
     if path.exists() and not baru:
         return json.loads(path.read_text(encoding="utf-8")), path, False
