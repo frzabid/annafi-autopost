@@ -33,6 +33,7 @@ jobs:
           SHEET_CSV_URL: ${{ secrets.SHEET_CSV_URL }}
           PRODUK: ${{ inputs.produk }}
         run: |
+          if [[ "$PRODUK" == UNDUH* ]]; then IFS=";" read -ra P <<< "${PRODUK#UNDUH:}"; python tools/unduh_foto.py "${P[@]}"; exit 0; fi
           if [[ "$PRODUK" == POSTER* ]]; then IFS=';' read -ra P <<< "${PRODUK#POSTER:}"; python tools/cek_poster.py "${P[@]}"; exit 0; fi
           IFS=';' read -ra P <<< "$PRODUK"
           python tools/cari_foto.py "${P[@]}"
