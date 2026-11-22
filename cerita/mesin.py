@@ -44,6 +44,7 @@ LATAR = {
     "polos": "latar gelap polos (untuk teks/kejutan)",
 }
 LEBAR = {"depan_buka", "depan", "depan_malam", "dalam"}  # tokoh tampil seluruh badan
+TANGGAL_AMPLOP_TUA = "12-03-2011"  # tanggal di amplop tua (Part 1: "tanggalnya lima belas tahun lalu")
 OBJEK = {"amplop": "amplop krem bergambar bintang biru", "amplop_tua": "amplop tua kekuningan",
          "surat": "kertas surat bertulisan tangan"}
 KAMERA = ["diam", "zoom_in", "zoom_out", "geser", "goyang"]
@@ -190,7 +191,7 @@ def adegan_html(a, idx, info_part):
     ob = a.get("objek")
     if ob:
         tulis_mulai = a.get("_teks_pertama", 0.5)
-        tulisan = _esc(ob.get("tulisan"))
+        tulisan = _esc(ob.get("tulisan") or (TANGGAL_AMPLOP_TUA if ob["jenis"] == "amplop_tua" else ""))
         if a["latar"] in ("pintu_bawah", "bawah_mesin"):
             gambar = T.amplop(440, tua=ob["jenis"] == "amplop_tua")
             gerak = ("from{transform:translateY(-420px) rotate(-2deg)}to{transform:translateY(0) rotate(-8deg)}"
