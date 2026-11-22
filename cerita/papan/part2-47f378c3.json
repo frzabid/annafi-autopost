@@ -1,0 +1,295 @@
+{
+ "part": 2,
+ "judul": "Surat dari Masa Lalu",
+ "adegan": [
+  {
+   "latar": "meja",
+   "waktu": "pagi",
+   "kamera": "zoom_in",
+   "kilas_balik": true,
+   "tokoh": [
+    {
+     "id": "laras_sma",
+     "ekspresi": "senang",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "hadi_sma",
+     "ekspresi": "senang",
+     "posisi": "tengah",
+     "masuk": ""
+    },
+    {
+     "id": "rani_sma",
+     "ekspresi": "senang",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "amplop_tua",
+    "tulisan": ""
+   },
+   "efek": [
+    "detik"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Kenangan masa sekolah yang lama terpendam, mendadak kembali mengusik...",
+     "emosi": "berbisik, misterius",
+     "ekspresi": ""
+    },
+    {
+     "jeda": 0.8
+    }
+   ]
+  },
+  {
+   "latar": "meja",
+   "waktu": "siang",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "laras",
+     "ekspresi": "serius",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "raka",
+     "ekspresi": "bingung",
+     "posisi": "tengah",
+     "masuk": ""
+    },
+    {
+     "id": "dinda",
+     "ekspresi": "bingung",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "surat",
+    "tulisan": "Di bawah yang tertua, kita pernah berjanji."
+   },
+   "efek": [
+    "kertas"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Di dalam amplop tua itu, ada potongan peta kusam… dan satu kalimat.",
+     "emosi": "serius, perlahan",
+     "ekspresi": ""
+    },
+    {
+     "teks": "Di bawah yang tertua, kita pernah berjanji."
+    },
+    {
+     "jeda": 0.8
+    },
+    {
+     "tokoh": "raka",
+     "ucap": "Kata 'kita' di surat ini maksudnya siapa, Mbak?",
+     "emosi": "penasaran, heran",
+     "ekspresi": "bingung"
+    }
+   ]
+  },
+  {
+   "latar": "dalam",
+   "waktu": "siang",
+   "kamera": "diam",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "laras",
+     "ekspresi": "sedih",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "raka",
+     "ekspresi": "bingung",
+     "posisi": "tengah",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "amplop_tua",
+    "tulisan": ""
+   },
+   "efek": [
+    "deg"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Mbak Ana mengenali tulisan tangan itu.",
+     "emosi": "pelan, tegang",
+     "ekspresi": ""
+    },
+    {
+     "tokoh": "narator",
+     "ucap": "Tapi ia memilih untuk diam.",
+     "emosi": "berbisik, ragu",
+     "ekspresi": ""
+    },
+    {
+     "jeda": 1.0
+    }
+   ]
+  },
+  {
+   "latar": "dalam",
+   "waktu": "siang",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "dinda",
+     "ekspresi": "bingung",
+     "posisi": "kanan",
+     "masuk": ""
+    },
+    {
+     "id": "laras",
+     "ekspresi": "sedih",
+     "posisi": "kiri",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [],
+   "urutan": [
+    {
+     "tokoh": "dinda",
+     "ucap": "Mbak Ana kenapa mukanya sedih gitu?",
+     "emosi": "khawatir, pelan",
+     "ekspresi": "bingung"
+    },
+    {
+     "jeda": 0.7
+    },
+    {
+     "tokoh": "laras",
+     "ucap": "Nggak apa-apa, Dinda. Mbak cuma… capek.",
+     "emosi": "pelan, menahan sedih",
+     "ekspresi": "sedih"
+    }
+   ]
+  },
+  {
+   "latar": "depan_malam",
+   "waktu": "malam",
+   "kamera": "geser",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "raka_bebas",
+     "ekspresi": "serius",
+     "posisi": "kiri",
+     "masuk": "kiri"
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "langkah",
+    "angin"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Malam itu, Raka lewat di depan toko yang sudah tutup rapat.",
+     "emosi": "misterius, tenang",
+     "ekspresi": ""
+    }
+   ]
+  },
+  {
+   "latar": "depan_malam",
+   "waktu": "malam",
+   "kamera": "goyang",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "raka_bebas",
+     "ekspresi": "kaget",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "siluet",
+     "ekspresi": "serius",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "jantung"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Sesosok orang berjaket hitam tampak berdiri mencurigahkan di sudut gelap.",
+     "emosi": "panik, tegang",
+     "ekspresi": ""
+    },
+    {
+     "tokoh": "raka_bebas",
+     "ucap": "Hei! Siapa itu?!",
+     "emosi": "berteriak, panik",
+     "ekspresi": "kaget"
+    },
+    {
+     "jeda": 0.6
+    }
+   ]
+  },
+  {
+   "latar": "pintu_bawah",
+   "waktu": "malam",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "raka_bebas",
+     "ekspresi": "takut",
+     "posisi": "tengah",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "amplop",
+    "tulisan": ""
+   },
+   "efek": [
+    "lari",
+    "deg"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Sosok itu langsung melarikan diri, menyisakan amplop ketiga di lantai!",
+     "emosi": "terburu-buru, panik",
+     "ekspresi": ""
+    },
+    {
+     "teks": "Siapa orang berjaket hitam itu?"
+    },
+    {
+     "jeda": 1.2
+    }
+   ]
+  }
+ ],
+ "_dibuat": {
+  "model": "gemini-3.5-flash",
+  "arahan": "",
+  "waktu": "2026-11-22 08:04"
+ }
+}
