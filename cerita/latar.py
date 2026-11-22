@@ -2,7 +2,7 @@
 
 Ciri yang WAJIB konsisten di semua episode:
 - Depan: dinding biru muda + roster berpola, kanopi atap seng dengan rangka baja kisi-kisi & tiang besi di atas parkiran,
-  jendela/pintu kaca berbingkai putih, spanduk 'ANNAFI print' di kanan, teras keramik krem, motor parkir.
+  jendela/pintu kaca berbingkai putih, spanduk 'ANNAFI print' di kanan, teras keramik krem (tanpa motor parkir).
 - Dalam: plafon atap seng terbuka + balok, lampu neon gantung, dinding krem, tiang putih, rak gondola rangka MERAH
   berjaring kawat penuh barang, lantai keramik krem mengkilap, spanduk biru ANNAFI print, bendera merah-putih;
   KANAN = satu area layanan: meja + mesin fotokopi + printer + komputer + etalase kaca + kursi plastik + TV CCTV.
@@ -190,7 +190,7 @@ def latar_depan() -> str:
 <div class="tk-besi" style="left:14px;top:440px;height:1300px"></div>
 <div class="tk-besi" style="left:752px;top:420px;height:1320px"></div>
 <div class="tk-teras"></div><div class="tk-parkir"></div>
-{_motor(-40, 1640, "#c0392b")}{_motor(830, 1650, "#2b2b2b", True)}"""
+"""
 
 
 # ---------------------------------------------------------------- close-up bawah pintu

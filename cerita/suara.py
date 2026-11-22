@@ -45,7 +45,8 @@ GEMINI = {
 }
 GEMINI.update({
     "raka": {"voice": "Puck", "gaya": "Ucapkan dalam bahasa Indonesia standar tanpa logat daerah sebagai remaja laki-laki SMA "
-                                      "17 tahun yang spontan dan bersemangat"},
+                                      "17 tahun yang spontan dan bersemangat. Suaranya jelas laki-laki dengan nada sedang-rendah; "
+                                      "walau kaget, panik, atau berteriak tetap tidak melengking dan tidak terdengar seperti perempuan"},
     "dinda": {"voice": "Laomedeia", "gaya": "Ucapkan dalam bahasa Indonesia sebagai anak perempuan 8 tahun yang polos, "
                                             "suara kecil dan riang"},
     "bima": {"voice": "Iapetus", "gaya": "Ucapkan dalam bahasa Indonesia sebagai remaja laki-laki 17 tahun yang pendiam dan pelan"},
@@ -53,6 +54,35 @@ GEMINI.update({
     "rani": {"voice": "Kore", "gaya": "Ucapkan dalam bahasa Indonesia sebagai perempuan 32 tahun yang lembut dan menahan haru"},
 })
 PEREMPUAN = {"laras", "dinda", "rani"}
+LAKI = {"narator", "raka", "bima", "hadi"}
+BATAS_NADA_LAKI = 265  # Hz; di atas ini suara laki-laki terdengar seperti perempuan
+
+
+def _nada(path: str) -> float:
+    """Perkiraan nada dasar (median F0, Hz) klip suara, dengan autokorelasi sederhana."""
+    try:
+        import numpy as np
+    except ImportError:
+        return 0.0
+    raw = subprocess.run(["ffmpeg", "-loglevel", "error", "-i", path, "-f", "s16le", "-ac", "1", "-ar", "16000", "-"],
+                         capture_output=True, check=True).stdout
+    x = np.frombuffer(raw, dtype=np.int16).astype(float)
+    sr, n, fs = 16000, 800, []
+    lo, hi = sr // 500, sr // 70
+    for i in range(0, len(x) - n - hi, n // 2):  # YIN sederhana
+        s = x[i:i + n + hi]
+        if np.abs(s[:n]).mean() < 300:
+            continue
+        d = np.array([np.sum((s[:n] - s[t:t + n]) ** 2) for t in range(hi)])
+        d[1:] = d[1:] * np.arange(1, hi) / np.maximum(np.cumsum(d[1:]), 1e-9)
+        cand = np.where(d[lo:] < 0.15)[0]
+        if len(cand):
+            t = lo + cand[0]
+            while t + 1 < hi and d[t + 1] < d[t]:
+                t += 1
+            fs.append(sr / t)
+    return float(np.median(fs)) if fs else 0.0
+
 MESIN = (os.environ.get("TTS_MESIN") or "").strip().lower() or (
     "eleven" if ELEVEN_KEY else "gemini" if GEMINI_KEY else "edge")
 
@@ -168,6 +198,20 @@ def _tts(teks: str, tokoh: str, out: str, emosi: str = "") -> None:
         print("    kuota Gemini TTS habis -> suara cadangan edge-tts untuk sisa episode")
         MESIN = "edge"
         return _tts(teks, tokoh, out, emosi)
+    if MESIN == "gemini" and tokoh in LAKI and out.endswith(".wav"):
+        # Gemini kadang melengking (terdengar perempuan) saat emosi berteriak/panik -> buat ulang maks 2x, ambil yang paling rendah
+        terbaik, f0 = out + ".ok.wav", _nada(out)
+        shutil.copy(out, terbaik)
+        for _ in range(2):
+            if f0 <= BATAS_NADA_LAKI:
+                break
+            print(f"    nada {tokoh} {f0:.0f} Hz terlalu tinggi, buat ulang")
+            _tts_mentah(teks, tokoh, out, "kaget tapi tetap tenang, nada suara laki-laki rendah dan berat, tidak berteriak melengking")
+            f1 = _nada(out)
+            if f1 < f0:
+                f0 = f1
+                shutil.copy(out, terbaik)
+        Path(terbaik).replace(out)
     if out.endswith(".wav") and MESIN != "diam":
         _rapikan(out)
         CACHE.mkdir(exist_ok=True)
