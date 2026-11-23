@@ -36,53 +36,6 @@
    ]
   },
   {
-   "latar": "dalam",
-   "waktu": "pagi",
-   "kamera": "diam",
-   "kilas_balik": false,
-   "tokoh": [
-    {
-     "id": "raka",
-     "ekspresi": "serius",
-     "posisi": "kiri",
-     "masuk": ""
-    },
-    {
-     "id": "laras",
-     "ekspresi": "bingung",
-     "posisi": "kanan",
-     "masuk": ""
-    }
-   ],
-   "objek": null,
-   "efek": [
-    "bel"
-   ],
-   "urutan": [
-    {
-     "tokoh": "raka",
-     "ucap": "Mbak Ana! Aku ingat! Orang semalam itu pakai jaket hitam longgar!",
-     "emosi": "panik, terburu-buru",
-     "ekspresi": "serius"
-    },
-    {
-     "tokoh": "laras",
-     "ucap": "Jaket hitam? Tapi banyak anak sekolah yang pakai jaket hitam, Raka.",
-     "emosi": "ragu, heran",
-     "ekspresi": "bingung"
-    },
-    {
-     "tokoh": "raka",
-     "ucap": "Beda, Mbak. Kupluknya selalu ditutup rapat dan gaya jalannya mencurigakan.",
-     "emosi": "yakin",
-     "ekspresi": "serius"
-    },
-    {
-     "jeda": 0.8
-    }
-   ]
-  },
-  {
    "latar": "depan",
    "waktu": "siang",
    "kamera": "geser",
@@ -290,12 +243,6 @@
      "ucap": "Jadi Bima juga dapat surat ini? Berarti dia bukan pengirimnya...",
      "emosi": "cemas, ragu",
      "ekspresi": "kaget"
-    },
-    {
-     "tokoh": "raka",
-     "ucap": "Kalau bukan Bima... lalu siapa sosok berjaket hitam semalam?",
-     "emosi": "penasaran, tegang",
-     "ekspresi": "bingung"
     }
    ]
   },
@@ -314,10 +261,7 @@
      "teks": "Kalau bukan Bima, lalu siapa? 👇"
     },
     {
-     "tokoh": "narator",
-     "ucap": "Siapa sebenarnya sosok misterius di balik surat-surat ini?",
-     "emosi": "menggantung, penasaran",
-     "ekspresi": ""
+     "jeda": 2.5
     }
    ]
   }
