@@ -332,13 +332,15 @@
   },
   "7accc4945e": {
    "nama": "Krayon Joyko 12 Color",
-   "status": "pratinjau",
+   "status": "terposting",
    "gagal": 0,
    "waktu_tayang": "Senin 23/11 07:00",
    "dari_sheet": false,
    "poster": "7accc4945e-ad0988d1c3.jpg",
    "sumber_gambar": "https://down-id.img.susercontent.com/file/id-11134207-7qukx-ljnvi8dk2y5j63",
-   "hash": "ad0988d1c3"
+   "hash": "ad0988d1c3",
+   "cara": "manual",
+   "waktu_posting": "2026-11-23T07:01:15.084678+07:00"
   },
   "33a12135dc": {
    "nama": "Krayon Titi 12C",
