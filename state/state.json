@@ -564,12 +564,14 @@
   },
   "4c79e7040d": {
    "nama": "Misteri Surat Tanpa Nama Part 3",
-   "status": "menunggu_upload",
+   "status": "terposting",
    "gagal": 0,
    "waktu_tayang": "Senin 23/11 17:00",
    "hash": "8770e841be",
    "ingat_render": "2026-11-21T17:01:36.542989+07:00",
-   "ingat_render2": "2026-11-22T20:01:25.035315+07:00"
+   "ingat_render2": "2026-11-22T20:01:25.035315+07:00",
+   "cara": "manual",
+   "waktu_posting": "2026-11-23T16:01:14.933935+07:00"
   },
   "a312e51bd8": {
    "nama": "Misteri Surat Tanpa Nama Part 4",
