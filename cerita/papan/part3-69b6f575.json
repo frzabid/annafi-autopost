@@ -1,0 +1,330 @@
+{
+ "part": 3,
+ "judul": "Tersangka Pertama",
+ "adegan": [
+  {
+   "latar": "depan_malam",
+   "waktu": "malam",
+   "kamera": "zoom_in",
+   "kilas_balik": true,
+   "tokoh": [
+    {
+     "id": "siluet",
+     "ekspresi": "serius",
+     "posisi": "tengah",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "langkah",
+    "deg"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Malam itu, sosok berjaket hitam kabur meninggalkan misteri di toko Annafi.",
+     "emosi": "tegang, tebal",
+     "ekspresi": ""
+    },
+    {
+     "tokoh": "narator",
+     "ucap": "Tapi Raka berhasil mengingat satu-satunya petunjuk penting.",
+     "emosi": "serius",
+     "ekspresi": ""
+    }
+   ]
+  },
+  {
+   "latar": "dalam",
+   "waktu": "pagi",
+   "kamera": "diam",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "raka",
+     "ekspresi": "serius",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "laras",
+     "ekspresi": "bingung",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "bel"
+   ],
+   "urutan": [
+    {
+     "tokoh": "raka",
+     "ucap": "Mbak Ana! Aku ingat! Orang semalam itu pakai jaket hitam longgar!",
+     "emosi": "panik, terburu-buru",
+     "ekspresi": "serius"
+    },
+    {
+     "tokoh": "laras",
+     "ucap": "Jaket hitam? Tapi banyak anak sekolah yang pakai jaket hitam, Raka.",
+     "emosi": "ragu, heran",
+     "ekspresi": "bingung"
+    },
+    {
+     "tokoh": "raka",
+     "ucap": "Beda, Mbak. Kupluknya selalu ditutup rapat dan gaya jalannya mencurigakan.",
+     "emosi": "yakin",
+     "ekspresi": "serius"
+    },
+    {
+     "jeda": 0.8
+    }
+   ]
+  },
+  {
+   "latar": "depan",
+   "waktu": "siang",
+   "kamera": "geser",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "bima_jaket",
+     "ekspresi": "serius",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "raka",
+     "ekspresi": "bingung",
+     "posisi": "kanan",
+     "masuk": "kanan"
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "detik"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Raka cuma punya satu petunjuk: jaket gelap.",
+     "emosi": "pelan, misterius",
+     "ekspresi": ""
+    },
+    {
+     "tokoh": "raka",
+     "ucap": "Anak baru. Pendiam. Jaket gelap. Pasti dia.",
+     "emosi": "berbisik",
+     "ekspresi": "serius"
+    },
+    {
+     "tokoh": "narator",
+     "ucap": "Bima, murid baru yang jarang sekali bicara dengan siapa pun.",
+     "emosi": "menjelaskan",
+     "ekspresi": ""
+    }
+   ]
+  },
+  {
+   "latar": "depan",
+   "waktu": "sore",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "bima_jaket",
+     "ekspresi": "serius",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "raka",
+     "ekspresi": "serius",
+     "posisi": "kanan",
+     "masuk": "kanan"
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "langkah"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Raka membuntutinya sepulang sekolah.",
+     "emosi": "tegang",
+     "ekspresi": ""
+    },
+    {
+     "tokoh": "raka",
+     "ucap": "Dia berjalan ke arah toko lagi... Mau menaruh surat misterius lagi, ya?",
+     "emosi": "curiga, berbisik",
+     "ekspresi": "serius"
+    },
+    {
+     "jeda": 0.6
+    }
+   ]
+  },
+  {
+   "latar": "depan",
+   "waktu": "sore",
+   "kamera": "goyang",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "raka",
+     "ekspresi": "serius",
+     "posisi": "kiri",
+     "masuk": "kiri"
+    },
+    {
+     "id": "bima_jaket",
+     "ekspresi": "kaget",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "deg"
+   ],
+   "urutan": [
+    {
+     "tokoh": "raka",
+     "ucap": "Ketahuan! Kamu yang naruh surat di toko Annafi, kan?!",
+     "emosi": "berteriak, tegas",
+     "ekspresi": "serius"
+    },
+    {
+     "tokoh": "bima_jaket",
+     "ucap": "Surat? Toko Annafi? Aku sama sekali nggak mengerti maksudmu!",
+     "emosi": "kaget, bingung",
+     "ekspresi": "kaget"
+    }
+   ]
+  },
+  {
+   "latar": "meja",
+   "waktu": "sore",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "bima_jaket",
+     "ekspresi": "bingung",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "raka",
+     "ekspresi": "kaget",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "amplop",
+    "tulisan": ""
+   },
+   "efek": [
+    "kertas"
+   ],
+   "urutan": [
+    {
+     "tokoh": "bima_jaket",
+     "ucap": "Aku... malah dapat ini di loker sekolah tadi pagi. Nggak tahu dari siapa.",
+     "emosi": "heran, jujur",
+     "ekspresi": "bingung"
+    },
+    {
+     "tokoh": "raka",
+     "ucap": "Lho?! Ini... amplop krem gambar bintang biru yang sama!",
+     "emosi": "terkejut",
+     "ekspresi": "kaget"
+    },
+    {
+     "jeda": 1.0
+    }
+   ]
+  },
+  {
+   "latar": "dalam",
+   "waktu": "sore",
+   "kamera": "diam",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "laras",
+     "ekspresi": "kaget",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "raka",
+     "ekspresi": "bingung",
+     "posisi": "tengah",
+     "masuk": ""
+    },
+    {
+     "id": "bima_jaket",
+     "ekspresi": "serius",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "deg"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Ternyata… Bima juga menerima surat yang sama.",
+     "emosi": "serius, dramatis",
+     "ekspresi": ""
+    },
+    {
+     "tokoh": "laras",
+     "ucap": "Jadi Bima juga dapat surat ini? Berarti dia bukan pengirimnya...",
+     "emosi": "cemas, ragu",
+     "ekspresi": "kaget"
+    },
+    {
+     "tokoh": "raka",
+     "ucap": "Kalau bukan Bima... lalu siapa sosok berjaket hitam semalam?",
+     "emosi": "penasaran, tegang",
+     "ekspresi": "bingung"
+    }
+   ]
+  },
+  {
+   "latar": "polos",
+   "waktu": "sore",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [],
+   "objek": null,
+   "efek": [
+    "jantung"
+   ],
+   "urutan": [
+    {
+     "teks": "Kalau bukan Bima, lalu siapa? 👇"
+    },
+    {
+     "tokoh": "narator",
+     "ucap": "Siapa sebenarnya sosok misterius di balik surat-surat ini?",
+     "emosi": "menggantung, penasaran",
+     "ekspresi": ""
+    }
+   ]
+  }
+ ],
+ "_dibuat": {
+  "model": "gemini-3.5-flash",
+  "arahan": "",
+  "waktu": "2026-11-23 08:20"
+ }
+}
