@@ -394,9 +394,13 @@
   },
   "8fe8683d16": {
    "nama": "Krayon New Vanart 12 Color",
-   "status": "baru",
+   "status": "pratinjau",
    "gagal": 0,
-   "waktu_tayang": "Selasa 24/11 07:00"
+   "waktu_tayang": "Selasa 24/11 07:00",
+   "dari_sheet": true,
+   "poster": "8fe8683d16-c052a3d935.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1L5LHdpx0p0N2J8YHAQcZ2eOuY_2qVzLa/view",
+   "hash": "c052a3d935"
   },
   "c8c2a33636": {
    "nama": "Krayon Oil Pastel 18c",
