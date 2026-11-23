@@ -6,7 +6,7 @@
    "latar": "depan_malam",
    "waktu": "malam",
    "kamera": "zoom_in",
-   "kilas_balik": true,
+   "kilas_balik": false,
    "tokoh": [
     {
      "id": "siluet",
