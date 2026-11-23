@@ -406,9 +406,20 @@
   },
   "9f861444a9": {
    "nama": "Ide Kado Sederhana untuk Guru",
-   "status": "baru",
+   "status": "menunggu",
    "gagal": 0,
-   "waktu_tayang": "Selasa 24/11 19:00"
+   "waktu_tayang": "Selasa 24/11 19:00",
+   "poster": "9f861444a9-bdd52d70d3-1.jpg",
+   "slides": [
+    "9f861444a9-bdd52d70d3-1.jpg",
+    "9f861444a9-bdd52d70d3-2.jpg",
+    "9f861444a9-bdd52d70d3-3.jpg",
+    "9f861444a9-bdd52d70d3-4.jpg",
+    "9f861444a9-bdd52d70d3-5.jpg",
+    "9f861444a9-bdd52d70d3-6.jpg"
+   ],
+   "sumber_gambar": "",
+   "hash": "bdd52d70d3"
   },
   "687146e3b2": {
    "nama": "Sticky Note BIG SN 6020",
@@ -583,7 +594,8 @@
    "gagal": 0,
    "waktu_tayang": "Selasa 24/11 17:00",
    "hash": "8770e841be",
-   "ingat_render": "2026-11-22T17:01:17.911313+07:00"
+   "ingat_render": "2026-11-22T17:01:17.911313+07:00",
+   "ingat_render2": "2026-11-23T20:01:23.216122+07:00"
   },
   "1bb4581fc3": {
    "nama": "Misteri Surat Tanpa Nama Part 5",
