@@ -585,11 +585,12 @@
   },
   "1bb4581fc3": {
    "nama": "Misteri Surat Tanpa Nama Part 5",
-   "status": "menunggu_render",
+   "status": "dirender",
    "gagal": 0,
    "waktu_tayang": "Rabu 25/11 17:00",
    "hash": "8770e841be",
-   "ingat_render": "2026-11-23T17:15:39.445859+07:00"
+   "ingat_render": "2026-11-23T17:15:39.445859+07:00",
+   "dirender": true
   },
   "646b37fa05": {
    "nama": "Misteri Surat Tanpa Nama Part 6",
@@ -646,5 +647,7 @@
   "cb6d832e"
  ],
  "cek_foto": "23/11/2026",
- "reel_dirender": {}
+ "reel_dirender": {
+  "5": true
+ }
 }
