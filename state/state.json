@@ -344,13 +344,15 @@
   },
   "33a12135dc": {
    "nama": "Krayon Titi 12C",
-   "status": "pratinjau",
+   "status": "terposting",
    "gagal": 0,
    "waktu_tayang": "Senin 23/11 12:00",
    "dari_sheet": true,
    "poster": "33a12135dc-c961fbbeb6.jpg",
    "sumber_gambar": "https://drive.google.com/file/d/1xPSuI5sv_IbOyjrKuSSfa32IFIubD5jP/view",
-   "hash": "c961fbbeb6"
+   "hash": "c961fbbeb6",
+   "cara": "manual",
+   "waktu_posting": "2026-11-23T12:01:49.492350+07:00"
   },
   "c5b522725a": {
    "nama": "Tips Memilih Krayon untuk Anak",
