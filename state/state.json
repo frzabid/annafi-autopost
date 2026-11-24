@@ -424,7 +424,7 @@
   },
   "9f861444a9": {
    "nama": "Ide Kado Sederhana untuk Guru",
-   "status": "disetujui",
+   "status": "terposting",
    "gagal": 0,
    "waktu_tayang": "Selasa 24/11 19:00",
    "poster": "9f861444a9-bdd52d70d3-1.jpg",
@@ -438,7 +438,9 @@
    ],
    "sumber_gambar": "",
    "hash": "bdd52d70d3",
-   "setuju_hash": "bdd52d70d3"
+   "setuju_hash": "bdd52d70d3",
+   "cara": "make",
+   "waktu_posting": "2026-11-24T19:01:29.479175+07:00"
   },
   "687146e3b2": {
    "nama": "Sticky Note BIG SN 6020",
