@@ -1,0 +1,199 @@
+{
+ "part": 4,
+ "judul": "Pohon Tua di Belakang Sekolah",
+ "adegan": [
+  {
+   "latar": "meja",
+   "waktu": "sore",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "dinda_bebas",
+     "ekspresi": "serius",
+     "posisi": "tengah",
+     "masuk": "kiri"
+    }
+   ],
+   "objek": {
+    "jenis": "surat",
+    "tulisan": "Yang tertua berdiri di belakang tempat kalian belajar."
+   },
+   "efek": [
+    "kertas"
+   ],
+   "urutan": [
+    {
+     "teks": "Yang tertua berdiri di belakang tempat kalian belajar."
+    },
+    {
+     "tokoh": "dinda_bebas",
+     "ucap": "Yang paling tua di sekolah… Pak Satpam?",
+     "emosi": "heran, penasaran",
+     "ekspresi": "bingung"
+    },
+    {
+     "jeda": 0.8
+    }
+   ]
+  },
+  {
+   "latar": "meja",
+   "waktu": "sore",
+   "kamera": "diam",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "raka_bebas",
+     "ekspresi": "serius",
+     "posisi": "kiri",
+     "masuk": "kanan"
+    },
+    {
+     "id": "dinda_bebas",
+     "ekspresi": "bingung",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [],
+   "urutan": [
+    {
+     "tokoh": "raka_bebas",
+     "ucap": "Bukan, Din. Pohon beringin di belakang sekolah!",
+     "emosi": "meyakinkan, cepat",
+     "ekspresi": "serius"
+    }
+   ]
+  },
+  {
+   "latar": "beringin",
+   "waktu": "sore",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "raka_bebas",
+     "ekspresi": "serius",
+     "posisi": "kiri",
+     "masuk": "kiri"
+    },
+    {
+     "id": "dinda_bebas",
+     "ekspresi": "takut",
+     "posisi": "tengah",
+     "masuk": ""
+    },
+    {
+     "id": "bima_bebas",
+     "ekspresi": "serius",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "angin"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Pohon itu sudah berdiri sebelum sekolah dibangun.",
+     "emosi": "misterius, pelan",
+     "ekspresi": ""
+    },
+    {
+     "jeda": 1.0
+    }
+   ]
+  },
+  {
+   "latar": "ukiran",
+   "waktu": "sore",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "bima_bebas",
+     "ekspresi": "serius",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "dinda_bebas",
+     "ekspresi": "sedih",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "langkah"
+   ],
+   "urutan": [
+    {
+     "tokoh": "bima_bebas",
+     "ucap": "A, H, R… dan R-nya dicoret.",
+     "emosi": "berbisik, teliti",
+     "ekspresi": "serius"
+    },
+    {
+     "tokoh": "dinda_bebas",
+     "ucap": "Mbak… A itu kayak nama Mbak Ana.",
+     "emosi": "ragu-ragu, pelan",
+     "ekspresi": "sedih"
+    },
+    {
+     "jeda": 1.2
+    }
+   ]
+  },
+  {
+   "latar": "beringin",
+   "waktu": "sore",
+   "kamera": "geser",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "hadi",
+     "ekspresi": "kaget",
+     "posisi": "tengah",
+     "masuk": "kanan"
+    },
+    {
+     "id": "raka_bebas",
+     "ekspresi": "kaget",
+     "posisi": "kiri",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "deg"
+   ],
+   "urutan": [
+    {
+     "tokoh": "hadi",
+     "ucap": "Kalian ngapain di sini jam segini?",
+     "emosi": "tegas, terkejut",
+     "ekspresi": "kaget"
+    },
+    {
+     "jeda": 1.5
+    },
+    {
+     "tokoh": "narator",
+     "ucap": "Dan untuk pertama kalinya… Pak Hadi kehilangan kata-kata.",
+     "emosi": "tegang, misterius",
+     "ekspresi": ""
+    }
+   ]
+  }
+ ],
+ "_dibuat": {
+  "model": "gemini-flash-lite-latest",
+  "arahan": "Adegan pohon beringin dan ukiran A·H·R pakai latar beringin dan ukiran. Raka, Dinda, Bima pakai baju bebas (sore sepulang sekolah). Pak Hadi masa kini pakai hadi.",
+  "waktu": "2026-11-24 08:48"
+ }
+}
