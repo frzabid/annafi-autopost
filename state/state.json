@@ -92,9 +92,20 @@
   },
   "5cb5342723": {
    "nama": "Selamat Hari Guru Nasional",
-   "status": "baru",
+   "status": "menunggu",
    "gagal": 0,
-   "waktu_tayang": "Rabu 25/11 19:00"
+   "waktu_tayang": "Rabu 25/11 19:00",
+   "poster": "5cb5342723-f93f9b3b07-1.jpg",
+   "slides": [
+    "5cb5342723-f93f9b3b07-1.jpg",
+    "5cb5342723-f93f9b3b07-2.jpg",
+    "5cb5342723-f93f9b3b07-3.jpg",
+    "5cb5342723-f93f9b3b07-4.jpg",
+    "5cb5342723-f93f9b3b07-5.jpg",
+    "5cb5342723-f93f9b3b07-6.jpg"
+   ],
+   "sumber_gambar": "",
+   "hash": "f93f9b3b07"
   },
   "8091082d8d": {
    "nama": "Tilawati Softcover 1-6",
