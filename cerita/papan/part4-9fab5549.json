@@ -99,9 +99,24 @@
    "urutan": [
     {
      "tokoh": "narator",
+     "ucap": "Sore itu, halaman belakang sekolah sudah sepi.",
+     "emosi": "pelan, misterius",
+     "ekspresi": ""
+    },
+    {
+     "jeda": 0.8
+    },
+    {
+     "tokoh": "narator",
      "ucap": "Pohon itu sudah berdiri sebelum sekolah dibangun.",
      "emosi": "misterius, pelan",
      "ekspresi": ""
+    },
+    {
+     "tokoh": "raka_bebas",
+     "ucap": "Ayo, kita lihat dari dekat.",
+     "emosi": "berbisik, penasaran",
+     "ekspresi": "serius"
     },
     {
      "jeda": 1.0
@@ -133,6 +148,12 @@
    ],
    "urutan": [
     {
+     "tokoh": "narator",
+     "ucap": "Di batangnya, ada ukiran tua yang hampir tertutup lumut.",
+     "emosi": "pelan, misterius",
+     "ekspresi": ""
+    },
+    {
      "tokoh": "bima_bebas",
      "ucap": "A, H, R… dan R-nya dicoret.",
      "emosi": "berbisik, teliti",
@@ -146,6 +167,9 @@
     },
     {
      "jeda": 1.2
+    },
+    {
+     "jeda": 1.0
     }
    ]
   },
@@ -170,9 +194,13 @@
    ],
    "objek": null,
    "efek": [
+    "langkah",
     "deg"
    ],
    "urutan": [
+    {
+     "jeda": 1.0
+    },
     {
      "tokoh": "hadi",
      "ucap": "Kalian ngapain di sini jam segini?",
@@ -180,13 +208,64 @@
      "ekspresi": "kaget"
     },
     {
-     "jeda": 1.5
+     "tokoh": "raka_bebas",
+     "ucap": "P-Pak Hadi?!",
+     "emosi": "kaget, gugup",
+     "ekspresi": "kaget"
+    },
+    {
+     "jeda": 1.0
+    }
+   ]
+  },
+  {
+   "latar": "ukiran",
+   "waktu": "sore",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "hadi",
+     "ekspresi": "kaget",
+     "posisi": "tengah",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "jantung"
+   ],
+   "urutan": [
+    {
+     "jeda": 1.2
     },
     {
      "tokoh": "narator",
      "ucap": "Dan untuk pertama kalinya… Pak Hadi kehilangan kata-kata.",
      "emosi": "tegang, misterius",
      "ekspresi": ""
+    },
+    {
+     "jeda": 1.5
+    }
+   ]
+  },
+  {
+   "latar": "polos",
+   "waktu": "sore",
+   "kamera": "diam",
+   "kilas_balik": false,
+   "tokoh": [],
+   "objek": null,
+   "efek": [
+    "deg"
+   ],
+   "urutan": [
+    {
+     "teks": "Kenapa Pak Hadi terdiam melihat ukiran itu? 👇"
+    },
+    {
+     "jeda": 2.5
     }
    ]
   }

@@ -293,8 +293,8 @@ def latar_ukiran() -> str:
 .tk-ukir{position:absolute;left:0;right:0;top:470px;text-align:center;font-family:Caveat,cursive;font-size:230px;font-weight:700;
   letter-spacing:12px;color:#2b1a0e;text-shadow:3px 4px 0 rgba(255,220,170,.35),-2px -2px 0 rgba(0,0,0,.5)}
 .tk-ukir i{font-style:normal;position:relative;display:inline-block}
-.tk-coret{position:absolute;left:-30px;right:-40px;top:52%;height:16px;background:#2b1a0e;transform:rotate(-24deg);border-radius:8px;
-  box-shadow:2px 3px 0 rgba(255,220,170,.3)}
+.tk-coret{position:absolute;left:-45px;right:-55px;top:50%;height:22px;background:#e2b57e;transform:rotate(-28deg);border-radius:10px;
+  box-shadow:0 0 0 4px #2b1a0e,3px 4px 6px rgba(0,0,0,.4)}
 .tk-sinar{position:absolute;inset:0;background:radial-gradient(circle at 50% 36%,rgba(255,214,150,.28),transparent 55%)}
 </style>
 <div class="tk-kulit"></div><div class="tk-sinar"></div>
