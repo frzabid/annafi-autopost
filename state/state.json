@@ -406,9 +406,13 @@
   },
   "c8c2a33636": {
    "nama": "Krayon Oil Pastel 18c",
-   "status": "baru",
+   "status": "pratinjau",
    "gagal": 0,
-   "waktu_tayang": "Selasa 24/11 12:00"
+   "waktu_tayang": "Selasa 24/11 12:00",
+   "dari_sheet": false,
+   "poster": "c8c2a33636-bcd39b0623.jpg",
+   "sumber_gambar": "https://img.lazcdn.com/g/ff/kf/S63fc89cfa14848309b6677d1d65a8cdas.jpg_720x720q80.jpg",
+   "hash": "bcd39b0623"
   },
   "9f861444a9": {
    "nama": "Ide Kado Sederhana untuk Guru",
