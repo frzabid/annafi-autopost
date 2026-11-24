@@ -41,9 +41,11 @@ LATAR = {
     "meja": "close-up di meja layanan (untuk membaca surat/amplop, wajah tokoh dari dekat)",
     "pintu_bawah": "close-up lantai depan pintu kaca + keset daun (amplop diselipkan dari bawah pintu)",
     "bawah_mesin": "close-up sejajar lantai di bawah mesin fotokopi (ada celah gelap)",
+    "beringin": "halaman belakang sekolah: pohon beringin tua besar (tokoh tampil seluruh badan)",
+    "ukiran": "close-up batang beringin dengan ukiran lama A·H·R (R dicoret)",
     "polos": "latar gelap polos (untuk teks/kejutan)",
 }
-LEBAR = {"depan_buka", "depan", "depan_malam", "dalam"}  # tokoh tampil seluruh badan
+LEBAR = {"depan_buka", "depan", "depan_malam", "dalam", "beringin"}  # tokoh tampil seluruh badan
 TANGGAL_AMPLOP_TUA = "12-03-2011"  # tanggal di amplop tua (Part 1: "tanggalnya lima belas tahun lalu")
 OBJEK = {"amplop": "amplop krem bergambar bintang biru", "amplop_tua": "amplop tua kekuningan",
          "surat": "kertas surat bertulisan tangan"}
@@ -53,7 +55,7 @@ EFEK = {"bel": 1.6, "klik": 0.2, "kertas": 0.6, "deg": 1.4, "langkah": 1.6, "lar
 WAKTU = ["pagi", "siang", "sore", "malam"]
 POSISI_LEBAR = {"kiri": 230, "tengah": 540, "kanan": 850}
 POSISI_DEKAT = {"kiri": 290, "tengah": 540, "kanan": 790}
-BASIS = {"depan_buka": 1790, "depan": 1790, "depan_malam": 1790, "dalam": 1800}
+BASIS = {"depan_buka": 1790, "depan": 1790, "depan_malam": 1790, "dalam": 1800, "beringin": 1800}
 
 CSS_DASAR = """
 @font-face{font-family:Poppins;src:url('__FONT__/Poppins-Bold.ttf');font-weight:700}
@@ -119,6 +121,10 @@ def _latar(nama):
         return L.latar_pintu_bawah()
     if nama == "bawah_mesin":
         return L.latar_bawah_mesin()
+    if nama == "beringin":
+        return L.latar_beringin()
+    if nama == "ukiran":
+        return L.latar_ukiran()
     return L.latar_polos()
 
 

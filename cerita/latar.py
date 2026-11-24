@@ -254,3 +254,48 @@ def latar_bawah_mesin() -> str:
 
 def latar_polos(warna: str = "#14141c") -> str:
     return f'<div style="position:absolute;inset:0;background:radial-gradient(circle at 50% 40%,#2c2c3a,{warna})"></div>'
+
+
+def latar_beringin() -> str:
+    """Halaman belakang sekolah: pohon beringin tua besar (akar gantung), tembok & jendela kelas di belakang, tanah berumput."""
+    akar = "".join(f'<div class="tk-akar" style="left:{x}px;top:{t}px;height:{h}px"></div>'
+                   for x, t, h in [(250, 560, 640), (300, 600, 520), (345, 540, 700), (720, 560, 640), (770, 600, 560),
+                                   (820, 540, 680), (410, 640, 380), (660, 640, 420)])
+    jendela = "".join(f'<div class="tk-jendela" style="left:{x}px"></div>' for x in (40, 230, 830, 1000))
+    return f"""<style>
+.tk-langit{{position:absolute;inset:0;background:linear-gradient(#f6b27a,#fbd9a8 55%,#fde9c8)}}
+.tk-sekolah{{position:absolute;left:-60px;right:-60px;top:880px;height:640px;background:linear-gradient(#f2e6cf,#e5d4b4);
+  border-top:70px solid #b4523a;box-shadow:inset 0 -40px rgba(0,0,0,.08)}}
+.tk-jendela{{position:absolute;top:1020px;width:130px;height:200px;background:linear-gradient(#7d97a8,#a9bccb);border:12px solid #fff7ea;border-radius:6px}}
+.tk-tajuk{{position:absolute;border-radius:50%;background:radial-gradient(circle at 40% 35%,#4f7a3a,#2f5426 70%)}}
+.tk-batang{{position:absolute;left:390px;top:620px;width:300px;height:1180px;border-radius:120px 120px 40px 40px;
+  background:repeating-linear-gradient(90deg,rgba(0,0,0,.12) 0 6px,transparent 6px 34px),linear-gradient(90deg,#5a3d26,#7b5536 45%,#4c321f)}}
+.tk-batang:before,.tk-batang:after{{content:'';position:absolute;bottom:-20px;width:220px;height:200px;background:linear-gradient(#6b4a30,#4c321f)}}
+.tk-batang:before{{left:-150px;border-radius:100% 0 0 0}}.tk-batang:after{{right:-150px;border-radius:0 100% 0 0}}
+.tk-akar{{position:absolute;width:7px;border-radius:4px;background:linear-gradient(#5b4029,#7b5a3c);opacity:.85}}
+.tk-tanah{{position:absolute;left:0;right:0;top:1760px;bottom:0;background:linear-gradient(#8aa159,#6f8a45)}}
+.tk-daun{{position:absolute;left:0;right:0;top:1740px;height:60px;background:radial-gradient(circle,#c89a4a 0 6px,transparent 7px) 0 0/90px 40px}}
+</style>
+<div class="tk-langit"></div><div class="tk-sekolah"></div>{jendela}
+<div class="tk-tajuk" style="left:-160px;top:180px;width:760px;height:560px"></div>
+<div class="tk-tajuk" style="left:420px;top:120px;width:820px;height:600px"></div>
+<div class="tk-tajuk" style="left:160px;top:20px;width:760px;height:520px;background:radial-gradient(circle at 45% 35%,#5d8a44,#335c2a 70%)"></div>
+<div class="tk-batang"></div>{akar}<div class="tk-tanah"></div><div class="tk-daun"></div>"""
+
+
+def latar_ukiran() -> str:
+    """Close-up kulit batang beringin dengan ukiran lama "A · H · R" (huruf R dicoret)."""
+    return """<style>
+.tk-kulit{position:absolute;inset:0;background:
+  repeating-linear-gradient(92deg,rgba(0,0,0,.18) 0 10px,transparent 10px 46px),
+  repeating-linear-gradient(88deg,rgba(255,255,255,.05) 0 4px,transparent 4px 71px),
+  radial-gradient(ellipse at 50% 35%,#8a6443,#5c3f28 70%,#3e2919)}
+.tk-ukir{position:absolute;left:0;right:0;top:470px;text-align:center;font-family:Caveat,cursive;font-size:230px;font-weight:700;
+  letter-spacing:12px;color:#2b1a0e;text-shadow:3px 4px 0 rgba(255,220,170,.35),-2px -2px 0 rgba(0,0,0,.5)}
+.tk-ukir i{font-style:normal;position:relative;display:inline-block}
+.tk-coret{position:absolute;left:-30px;right:-40px;top:52%;height:16px;background:#2b1a0e;transform:rotate(-24deg);border-radius:8px;
+  box-shadow:2px 3px 0 rgba(255,220,170,.3)}
+.tk-sinar{position:absolute;inset:0;background:radial-gradient(circle at 50% 36%,rgba(255,214,150,.28),transparent 55%)}
+</style>
+<div class="tk-kulit"></div><div class="tk-sinar"></div>
+<div class="tk-ukir">A · H · <i>R<span class="tk-coret"></span></i></div>"""
