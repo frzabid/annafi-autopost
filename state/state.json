@@ -277,9 +277,13 @@
   },
   "b03ebd8a48": {
    "nama": "Krayon New Vanart 24",
-   "status": "baru",
+   "status": "pratinjau",
    "gagal": 0,
-   "waktu_tayang": "Rabu 25/11 16:00"
+   "waktu_tayang": "Rabu 25/11 16:00",
+   "dari_sheet": true,
+   "poster": "b03ebd8a48-66e9a14244.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1EBD7XsfcSyIek-KwUxPWuYvaG7ZI6LnU/view",
+   "hash": "66e9a14244"
   },
   "a6dee472d0": {
    "nama": "Krayon Joyko 48 Color",
