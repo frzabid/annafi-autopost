@@ -467,13 +467,15 @@
   },
   "536c4f7ae0": {
    "nama": "Krayon Titi 18C",
-   "status": "pratinjau",
+   "status": "terposting",
    "gagal": 0,
    "waktu_tayang": "Rabu 25/11 07:00",
    "dari_sheet": true,
    "poster": "536c4f7ae0-f7d2d60061.jpg",
    "sumber_gambar": "https://drive.google.com/file/d/1d9m2dEktEa3heOX-J7ooowqlHz0_W17y/view",
-   "hash": "f7d2d60061"
+   "hash": "f7d2d60061",
+   "cara": "manual",
+   "waktu_posting": "2026-11-25T07:01:41.997731+07:00"
   },
   "30549103e4": {
    "nama": "Krayon Apik 18 Color",
