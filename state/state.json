@@ -688,6 +688,36 @@
    "hash": "8770e841be",
    "cara": "manual",
    "waktu_posting": "2026-11-21T17:30:00+07:00"
+  },
+  "1c5a80224c": {
+   "nama": "Misteri Surat Tanpa Nama Part 5",
+   "status": "dirender",
+   "gagal": 0,
+   "waktu_tayang": "Kamis 26/11 17:00",
+   "hash": "8770e841be",
+   "dirender": true
+  },
+  "fad54937fb": {
+   "nama": "Misteri Surat Tanpa Nama Part 6",
+   "status": "menunggu_render",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 17:00",
+   "hash": "8770e841be",
+   "ingat_render": "2026-11-25T20:16:24.961024+07:00"
+  },
+  "948c6cbef4": {
+   "nama": "Misteri Surat Tanpa Nama Part 7",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 17:00",
+   "hash": "8770e841be"
+  },
+  "f2c7a27968": {
+   "nama": "Misteri Surat Tanpa Nama Part 8",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Minggu 29/11 17:00",
+   "hash": "8770e841be"
   }
  },
  "error_terkirim": [
