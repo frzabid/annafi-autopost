@@ -479,9 +479,13 @@
   },
   "30549103e4": {
    "nama": "Krayon Apik 18 Color",
-   "status": "baru",
+   "status": "pratinjau",
    "gagal": 0,
-   "waktu_tayang": "Rabu 25/11 12:00"
+   "waktu_tayang": "Rabu 25/11 12:00",
+   "dari_sheet": true,
+   "poster": "30549103e4-29bdf7bde1.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1ZAv6zV2cp_kB0t1AaNl6LriysgOauTJH/view",
+   "hash": "29bdf7bde1"
   },
   "9c6a859467": {
    "nama": "Agenda A5 -NB 3666",
