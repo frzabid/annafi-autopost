@@ -92,7 +92,7 @@
   },
   "5cb5342723": {
    "nama": "Selamat Hari Guru Nasional",
-   "status": "menunggu",
+   "status": "terlewat",
    "gagal": 0,
    "waktu_tayang": "Rabu 25/11 19:00",
    "poster": "5cb5342723-f93f9b3b07-1.jpg",
@@ -712,7 +712,7 @@
   "c1cabff3",
   "cb6d832e"
  ],
- "cek_foto": "25/11/2026",
+ "cek_foto": "26/11/2026",
  "reel_dirender": {
   "5": true
  }
