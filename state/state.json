@@ -509,9 +509,13 @@
   },
   "0bcb034bf0": {
    "nama": "Krayon Joyko 48 Color",
-   "status": "baru",
+   "status": "pratinjau",
    "gagal": 0,
-   "waktu_tayang": "Kamis 26/11 07:00"
+   "waktu_tayang": "Kamis 26/11 07:00",
+   "dari_sheet": true,
+   "poster": "0bcb034bf0-b50e8c2b36.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1QGOQGqJ5mL-w7fFn_AygaHx4jEFy7sYB/view",
+   "hash": "b50e8c2b36"
   },
   "3bbf09e9d5": {
    "nama": "Krayon Titi 24C",
