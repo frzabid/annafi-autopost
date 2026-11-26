@@ -301,9 +301,13 @@
   },
   "55bc5173f4": {
    "nama": "Krayon Apik Isi 12",
-   "status": "baru",
+   "status": "pratinjau",
    "gagal": 0,
-   "waktu_tayang": "Kamis 26/11 16:00"
+   "waktu_tayang": "Kamis 26/11 16:00",
+   "dari_sheet": true,
+   "poster": "55bc5173f4-46ad58cfc2.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1dHeVJwN7rVgz7O402NzSTHyrt6Nb5onG/view",
+   "hash": "46ad58cfc2"
   },
   "f2e908a3e4": {
    "nama": "Krayon Joyko 55 Color",
