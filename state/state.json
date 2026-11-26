@@ -157,7 +157,7 @@
   },
   "f230fa6e7b": {
    "nama": "Persiapan Ujian Semester Ganjil",
-   "status": "menunggu",
+   "status": "disetujui",
    "gagal": 0,
    "waktu_tayang": "Jumat 27/11 19:00",
    "poster": "f230fa6e7b-9f4cc49c71-1.jpg",
@@ -170,7 +170,8 @@
     "f230fa6e7b-9f4cc49c71-6.jpg"
    ],
    "sumber_gambar": "",
-   "hash": "9f4cc49c71"
+   "hash": "9f4cc49c71",
+   "setuju_hash": "9f4cc49c71"
   },
   "37bb77d355": {
    "nama": "Map Coklat Executive A5",
