@@ -138,3 +138,23 @@ def post_make_reel(video_url: str, caption: str) -> str:
     if r.status_code >= 400:
         raise RuntimeError(f"Make menolak ({r.status_code}): {r.text[:200]}")
     return r.text.strip()[:300] or "diterima Make"
+
+
+def post_instagram_reel(video_url: str, caption: str, cover_url: str = "") -> str:
+    """Reel lewat Graph API (container REELS -> tunggu video selesai diproses -> publish)."""
+    data = {"media_type": "REELS", "video_url": video_url, "caption": caption, "share_to_feed": "true",
+            "access_token": META_PAGE_TOKEN}
+    if cover_url:
+        data["cover_url"] = cover_url
+    cid = _cek(requests.post(f"{G}/{META_IG_USER_ID}/media", timeout=60, data=data))["id"]
+    for _ in range(60):  # video bisa butuh beberapa menit
+        s = _cek(requests.get(f"{G}/{cid}", timeout=30, params={"fields": "status_code", "access_token": META_PAGE_TOKEN}))
+        if s.get("status_code") == "FINISHED":
+            break
+        if s.get("status_code") == "ERROR":
+            raise RuntimeError("Instagram gagal memproses video reel")
+        time.sleep(10)
+    pub = _cek(requests.post(f"{G}/{META_IG_USER_ID}/media_publish", timeout=60, data={
+        "creation_id": cid, "access_token": META_PAGE_TOKEN}))
+    link = _cek(requests.get(f"{G}/{pub['id']}", timeout=30, params={"fields": "permalink", "access_token": META_PAGE_TOKEN}))
+    return link.get("permalink", "")

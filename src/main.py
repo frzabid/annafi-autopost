@@ -547,7 +547,14 @@ def publish():
         nama = html.escape(item["nama"])
         sorotan = item.get("kategori", "").title() or "Katalog"
         try:
-            if item["format"] == "reel" and make_siap and config.MAKE_REEL:
+            if item["format"] == "reel" and meta_siap and config.META_REEL:
+                video = url_publik(item, st)
+                sampul = video.rsplit(".", 1)[0] + "-sampul.jpg"
+                ig = meta.post_instagram_reel(video, item["caption"], sampul)
+                st.update(status="terposting", link_ig=ig, cara="api", waktu_posting=datetime.now(TZ).isoformat())
+                notify.pesan(f"✅ Reel <b>{nama}</b> sudah tayang di Instagram.\n{ig}\n\n"
+                             f"📲 Bagikan juga ke Story/Status WA supaya pengikut tahu part baru sudah keluar.")
+            elif item["format"] == "reel" and make_siap and config.MAKE_REEL:
                 meta.post_make_reel(url_publik(item, st), item["caption"])
                 st.update(status="terposting", cara="make", waktu_posting=datetime.now(TZ).isoformat())
                 notify.pesan(f"✅ Reel <b>{nama}</b> dikirim ke Instagram (video diproses IG, tayang beberapa menit lagi).\n\n"

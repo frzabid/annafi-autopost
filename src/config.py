@@ -121,6 +121,7 @@ SERPER_API_KEY = _env("SERPER_API_KEY", "")
 # Make.com (posting feed IG+FB tanpa akun developer Meta)
 MAKE_WEBHOOK_URL = _env("MAKE_WEBHOOK_URL", "")
 GEMINI_API_KEY = _env("GEMINI_API_KEY", "")  # sutradara AI & suara cerita
+META_REEL = _env("META_REEL", "0") == "1"  # 1 = reel cerita diposting otomatis lewat Meta API
 MAKE_REEL = _env("MAKE_REEL", "0") == "1"  # 1 = skenario Make sudah punya rute Reel; 0 = reel dikirim ke Telegram untuk diunggah manual
 MAKE_KUNCI = _env("MAKE_KUNCI", "")  # kode rahasia, dicek oleh filter di skenario Make  # opsional, cadangan pencarian gambar
 
