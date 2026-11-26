@@ -3,16 +3,28 @@
  "judul": "Rahasia Pak Hadi",
  "adegan": [
   {
-   "latar": "ukiran",
+   "latar": "beringin",
    "waktu": "sore",
    "kamera": "zoom_in",
    "kilas_balik": false,
    "tokoh": [
     {
+     "id": "raka_bebas",
+     "ekspresi": "kaget",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
      "id": "hadi",
      "ekspresi": "serius",
      "posisi": "tengah",
-     "masuk": "kiri"
+     "masuk": ""
+    },
+    {
+     "id": "bima_bebas",
+     "ekspresi": "takut",
+     "posisi": "kanan",
+     "masuk": ""
     }
    ],
    "objek": null,
@@ -45,13 +57,13 @@
    "kilas_balik": false,
    "tokoh": [
     {
-     "id": "raka",
+     "id": "raka_bebas",
      "ekspresi": "kaget",
      "posisi": "kiri",
      "masuk": ""
     },
     {
-     "id": "bima",
+     "id": "bima_bebas",
      "ekspresi": "bingung",
      "posisi": "kanan",
      "masuk": ""
@@ -63,19 +75,22 @@
    ],
    "urutan": [
     {
-     "tokoh": "raka",
+     "tokoh": "raka_bebas",
      "ucap": "Lihat kan? Dia panik. Pak Hadi pengirimnya!",
      "emosi": "menuduh, yakin",
      "ekspresi": "kaget"
     },
     {
-     "tokoh": "bima",
+     "tokoh": "bima_bebas",
      "ucap": "Atau… dia cuma takut sama sesuatu.",
      "emosi": "ragu-ragu",
      "ekspresi": "bingung"
     },
     {
      "jeda": 0.8
+    },
+    {
+     "jeda": 1.0
     }
    ]
   },
@@ -121,15 +136,18 @@
      "masuk": ""
     }
    ],
-   "objek": {
-    "jenis": "amplop_tua",
-    "tulisan": "12-03-2011"
-   },
+   "objek": null,
    "efek": [
     "kertas",
     "deg"
    ],
    "urutan": [
+    {
+     "tokoh": "dinda_bebas",
+     "ucap": "Laci ini… ada foto lama.",
+     "emosi": "pelan, penasaran",
+     "ekspresi": "bingung"
+    },
     {
      "tokoh": "dinda_bebas",
      "ucap": "Ini… Mbak Ana waktu SMA? Dan ini… Pak Hadi?!",
@@ -142,28 +160,31 @@
    ]
   },
   {
-   "latar": "meja",
+   "latar": "polos",
    "waktu": "sore",
-   "kamera": "diam",
+   "kamera": "zoom_in",
    "kilas_balik": true,
    "tokoh": [
     {
      "id": "laras_sma",
-     "ekspresi": "serius",
+     "ekspresi": "senang",
      "posisi": "kiri",
      "masuk": ""
     },
     {
+     "id": "rani_sma",
+     "ekspresi": "senang",
+     "posisi": "tengah",
+     "masuk": ""
+    },
+    {
      "id": "hadi_sma",
-     "ekspresi": "serius",
+     "ekspresi": "senang",
      "posisi": "kanan",
      "masuk": ""
     }
    ],
-   "objek": {
-    "jenis": "amplop_tua",
-    "tulisan": "12-03-2011"
-   },
+   "objek": null,
    "efek": [
     "detik"
    ],
@@ -176,6 +197,28 @@
     },
     {
      "jeda": 1.2
+    },
+    {
+     "jeda": 1.0
+    }
+   ]
+  },
+  {
+   "latar": "polos",
+   "waktu": "sore",
+   "kamera": "diam",
+   "kilas_balik": false,
+   "tokoh": [],
+   "objek": null,
+   "efek": [
+    "deg"
+   ],
+   "urutan": [
+    {
+     "teks": "Siapa orang ketiga di foto itu? 👇"
+    },
+    {
+     "jeda": 2.5
     }
    ]
   }
