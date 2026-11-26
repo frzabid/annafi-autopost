@@ -521,9 +521,13 @@
   },
   "3bbf09e9d5": {
    "nama": "Krayon Titi 24C",
-   "status": "baru",
+   "status": "pratinjau",
    "gagal": 0,
-   "waktu_tayang": "Kamis 26/11 12:00"
+   "waktu_tayang": "Kamis 26/11 12:00",
+   "dari_sheet": true,
+   "poster": "3bbf09e9d5-ec17cd7782.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1ibpHU9kgkFlZ_ZGxH8RwKnimz-R4HRLB/view",
+   "hash": "ec17cd7782"
   },
   "afdd1e8522": {
    "nama": "Pensil 2B Joyko P-8142",
