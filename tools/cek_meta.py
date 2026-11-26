@@ -7,6 +7,14 @@ t = config.META_USER_TOKEN
 if not t:
     sys.exit("META_USER_TOKEN kosong")
 dbg = requests.get(f"{g}/me", params={"fields": "id,name", "access_token": t}, timeout=30).json()
+import datetime as _d
+inf = requests.get(f"{g}/debug_token", params={"input_token": t, "access_token": t}, timeout=30).json().get("data", {})
+exp = inf.get("expires_at") or 0
+print("Token kedaluwarsa:", "tidak pernah" if exp == 0 else _d.datetime.fromtimestamp(exp, _d.timezone(_d.timedelta(hours=7))).strftime("%d/%m/%Y %H:%M WIB"),
+      "| akses data sampai:", _d.datetime.fromtimestamp(inf.get("data_access_expires_at", 0), _d.timezone(_d.timedelta(hours=7))).strftime("%d/%m/%Y") if inf.get("data_access_expires_at") else "-")
+if config.META_PAGE_TOKEN:
+    pinf = requests.get(f"{g}/debug_token", params={"input_token": config.META_PAGE_TOKEN, "access_token": t}, timeout=30).json().get("data", {})
+    print("Token Halaman kedaluwarsa:", "tidak pernah" if not pinf.get("expires_at") else _d.datetime.fromtimestamp(pinf["expires_at"]).strftime("%d/%m/%Y"))
 print("Pengguna:", dbg.get("name"), dbg.get("error", ""))
 perm = requests.get(f"{g}/me/permissions", params={"access_token": t}, timeout=30).json().get("data", [])
 print("Izin:", ", ".join(p["permission"] for p in perm if p.get("status") == "granted"))
