@@ -563,9 +563,13 @@
   },
   "d0abec579e": {
    "nama": "Krayon Joyko 55 Color",
-   "status": "baru",
+   "status": "pratinjau",
    "gagal": 0,
-   "waktu_tayang": "Jumat 27/11 07:00"
+   "waktu_tayang": "Jumat 27/11 07:00",
+   "dari_sheet": true,
+   "poster": "d0abec579e-fe65ae5a54.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1FDyJPDc1YS4RCHU37RoTOdVLh3GkcUxP/view",
+   "hash": "fe65ae5a54"
   },
   "9fc22b7274": {
    "nama": "Krayon Twist Ulir Joyko",
