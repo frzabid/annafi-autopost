@@ -1,0 +1,18 @@
+name: Cek sambungan Meta API
+
+on:
+  workflow_dispatch:
+
+jobs:
+  cek:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q requests
+      - env:
+          META_USER_TOKEN: ${{ secrets.META_USER_TOKEN }}
+        run: python tools/cek_meta.py

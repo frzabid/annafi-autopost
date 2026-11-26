@@ -91,6 +91,32 @@ META_PAGE_ID = _env("META_PAGE_ID", "")
 META_PAGE_TOKEN = _env("META_PAGE_TOKEN", "")
 META_IG_USER_ID = _env("META_IG_USER_ID", "")
 GRAPH_VERSION = _env("GRAPH_VERSION", "v25.0")
+META_USER_TOKEN = _env("META_USER_TOKEN", "")  # token pengguna jangka panjang (60 hari) dari Meta Developer
+
+
+def _turunkan_meta():
+    """Kalau hanya META_USER_TOKEN yang diisi: ambil ID Halaman, token Halaman & ID Instagram bisnis otomatis."""
+    global META_PAGE_ID, META_PAGE_TOKEN, META_IG_USER_ID
+    if META_PAGE_TOKEN or not META_USER_TOKEN:
+        return
+    try:
+        import requests
+        g = f"https://graph.facebook.com/{GRAPH_VERSION}"
+        hal = requests.get(f"{g}/me/accounts", timeout=30, params={
+            "fields": "id,name,access_token,instagram_business_account{id,username}",
+            "access_token": META_USER_TOKEN}).json().get("data", [])
+        pilih = next((h for h in hal if h.get("instagram_business_account")), hal[0] if hal else None)
+        if not pilih:
+            print("Meta: token tidak punya akses ke Halaman mana pun")
+            return
+        META_PAGE_ID = META_PAGE_ID or pilih["id"]
+        META_PAGE_TOKEN = pilih.get("access_token", "")
+        META_IG_USER_ID = META_IG_USER_ID or (pilih.get("instagram_business_account") or {}).get("id", "")
+    except Exception as e:  # jangan hentikan bot hanya karena Meta tidak bisa dihubungi
+        print("Meta: gagal mengambil akun:", e)
+
+
+_turunkan_meta()
 SERPER_API_KEY = _env("SERPER_API_KEY", "")
 # Make.com (posting feed IG+FB tanpa akun developer Meta)
 MAKE_WEBHOOK_URL = _env("MAKE_WEBHOOK_URL", "")

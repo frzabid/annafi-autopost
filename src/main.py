@@ -578,7 +578,11 @@ def publish():
                 ig = st.get("link_ig") or meta.post_instagram_carousel(urls, item["caption"])
                 st["link_ig"] = ig  # simpan dulu supaya tidak dobel kalau FB gagal
                 save_state(s)
-                fb = meta.post_facebook_album(urls, item["caption"])
+                try:
+                    fb = meta.post_facebook_album(urls, item["caption"])
+                except Exception as e:  # IG sudah tayang; FB opsional (izin Halaman bisa belum ada)
+                    print("FB gagal:", e)
+                    fb = "(FB belum tersambung, bagikan manual dari IG)"
                 st.update(status="terposting", link_fb=fb, waktu_posting=datetime.now(TZ).isoformat())
                 notify.pesan(f"✅ <b>{nama}</b> sudah tayang.\nIG: {ig}\nFB: {fb}")
             elif make_siap:
