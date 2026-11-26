@@ -71,7 +71,7 @@ body{width:1080px;height:1920px;overflow:hidden;background:#000;font-family:Popp
 @keyframes mangap{0%,49%{opacity:1}50%,100%{opacity:0}}
 @keyframes napas{from{transform:scaleY(1)}to{transform:scaleY(1.012)}}
 .tkh{position:absolute;transform-origin:50% 100%}
-.bintang{position:absolute;left:14%;top:0;width:72%;height:44%;background:#111;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.bintang{position:absolute;left:12%;top:27%;width:76%;height:46%;background:#111;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
 .samar{position:absolute;left:17%;top:3%;width:66%;height:40%;border-radius:50%;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
 .tkh .badan{position:absolute;inset:0;animation:napas 2.2s ease-in-out infinite alternate;transform-origin:50% 100%}
 .ek{position:absolute;inset:0;opacity:0}.ek svg{width:100%;height:100%;display:block}
