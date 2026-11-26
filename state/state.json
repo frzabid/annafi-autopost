@@ -157,9 +157,20 @@
   },
   "f230fa6e7b": {
    "nama": "Persiapan Ujian Semester Ganjil",
-   "status": "baru",
+   "status": "menunggu",
    "gagal": 0,
-   "waktu_tayang": "Jumat 27/11 19:00"
+   "waktu_tayang": "Jumat 27/11 19:00",
+   "poster": "f230fa6e7b-9f4cc49c71-1.jpg",
+   "slides": [
+    "f230fa6e7b-9f4cc49c71-1.jpg",
+    "f230fa6e7b-9f4cc49c71-2.jpg",
+    "f230fa6e7b-9f4cc49c71-3.jpg",
+    "f230fa6e7b-9f4cc49c71-4.jpg",
+    "f230fa6e7b-9f4cc49c71-5.jpg",
+    "f230fa6e7b-9f4cc49c71-6.jpg"
+   ],
+   "sumber_gambar": "",
+   "hash": "9f4cc49c71"
   },
   "37bb77d355": {
    "nama": "Map Coklat Executive A5",
@@ -724,7 +735,8 @@
    "gagal": 0,
    "waktu_tayang": "Jumat 27/11 17:00",
    "hash": "8770e841be",
-   "ingat_render": "2026-11-25T20:16:24.961024+07:00"
+   "ingat_render": "2026-11-25T20:16:24.961024+07:00",
+   "ingat_render2": "2026-11-26T20:01:34.253295+07:00"
   },
   "948c6cbef4": {
    "nama": "Misteri Surat Tanpa Nama Part 7",
