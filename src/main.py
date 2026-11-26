@@ -315,6 +315,11 @@ def langkah_reel(p, st, now):
         st = {"status": "baru"}
     status = st.get("status", "baru")
     mulai = p["waktu"] - timedelta(days=config.REEL_INGAT_HARI)
+    if config.META_REEL:  # posting otomatis lewat Meta API tepat di jam tayang
+        if status in ("baru", "menunggu_render", "dirender", "menunggu_tayang") and now >= p["waktu"]:
+            return "tayang"
+        if status in ("baru", "menunggu_render", "dirender") and now >= p["waktu"] - timedelta(hours=config.REEL_INGAT_UPLOAD_JAM):
+            return "info"
     # upload manual: pengingat (+ caption & sampul) dikirim 2 jam sebelum jadwal
     if status in ("baru", "menunggu_render", "dirender") and now >= p["waktu"] - timedelta(hours=config.REEL_INGAT_UPLOAD_JAM):
         return "upload1"
@@ -352,7 +357,31 @@ def urus_reel(p, st, now):
                      tombol=[("✅ Sudah dirender", f"ok:R{pid}:{h}"), ("❌ Batalkan", f"no:R{pid}:{h}")])
         st["status"] = "menunggu_render"
         st["ingat_render2" if langkah == "render2" else "ingat_render"] = now.isoformat()
-    elif langkah in ("upload1", "upload2"):
+    elif langkah == "info":
+        siap = st.get("dirender") or s_global.get("reel_dirender", {}).get(str(p["part"]))
+        belum = ("\n⚠️ <b>Video belum ditandai sudah dirender</b> — minta Claude <i>render part "
+                 f"{p['part']}</i> lalu tekan <i>Sudah dirender</i>. Kalau belum siap saat jamnya, kamu diminta upload manual.") if not siap else ""
+        notify.pesan(f"⏰ <b>{nama}</b> akan <b>diposting otomatis</b> ke Reels Instagram {jam}, lengkap dengan caption & sampul.{belum}")
+        st["status"] = "menunggu_tayang"
+    if langkah == "tayang":
+        caption = p["caption"] or config.caption_otomatis(p)
+        siap = st.get("dirender") or s_global.get("reel_dirender", {}).get(str(p["part"]))
+        video = ROOT / "cerita" / "contoh" / f"misteri_part{p['part']}.mp4"
+        sampul = video.with_name(video.stem + "-sampul.jpg")
+        repo, sha = os.getenv("GITHUB_REPOSITORY"), os.getenv("GITHUB_SHA")
+        if siap and video.exists() and repo and sha:
+            dasar = f"https://cdn.jsdelivr.net/gh/{repo}@{sha}/cerita/contoh/"  # jsDelivr: mp4 tersaji sebagai video/mp4
+            try:
+                ig = meta.post_instagram_reel(dasar + video.name, caption, dasar + sampul.name if sampul.exists() else "")
+                st.update(status="terposting", cara="api", link_ig=ig, waktu_posting=now.isoformat())
+                notify.pesan(f"✅ Reel <b>{nama}</b> sudah tayang di Instagram.\n{ig}\n\n"
+                             "📲 Bagikan juga ke Story/Status WA supaya pengikut tahu part baru sudah keluar.")
+                return
+            except Exception as e:
+                traceback.print_exc()
+                notify.pesan(f"⚠️ Posting otomatis <b>{nama}</b> gagal: {html.escape(str(e))[:200]}\nUpload manual ya 👇")
+        langkah = "upload1"  # belum dirender / gagal -> kembali ke upload manual
+    if langkah in ("upload1", "upload2"):
         caption = p["caption"] or config.caption_otomatis(p)
         siap = st.get("dirender") or s_global.get("reel_dirender", {}).get(str(p["part"]))
         video = ROOT / "cerita" / "contoh" / f"misteri_part{p['part']}.mp4"
