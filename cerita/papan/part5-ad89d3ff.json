@@ -1,0 +1,188 @@
+{
+ "part": 5,
+ "judul": "Rahasia Pak Hadi",
+ "adegan": [
+  {
+   "latar": "ukiran",
+   "waktu": "sore",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "hadi",
+     "ekspresi": "serius",
+     "posisi": "tengah",
+     "masuk": "kiri"
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "angin",
+    "deg"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Suasana mendadak tegang di bawah pohon beringin tua.",
+     "emosi": "tegas, serius",
+     "ekspresi": ""
+    },
+    {
+     "tokoh": "hadi",
+     "ucap": "Pulang. Semua. Ini urusan lama, bukan urusan kalian.",
+     "emosi": "tegas, marah",
+     "ekspresi": "serius"
+    },
+    {
+     "jeda": 1.0
+    }
+   ]
+  },
+  {
+   "latar": "beringin",
+   "waktu": "sore",
+   "kamera": "zoom_out",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "raka",
+     "ekspresi": "kaget",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "bima",
+     "ekspresi": "bingung",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "kertas"
+   ],
+   "urutan": [
+    {
+     "tokoh": "raka",
+     "ucap": "Lihat kan? Dia panik. Pak Hadi pengirimnya!",
+     "emosi": "menuduh, yakin",
+     "ekspresi": "kaget"
+    },
+    {
+     "tokoh": "bima",
+     "ucap": "Atau… dia cuma takut sama sesuatu.",
+     "emosi": "ragu-ragu",
+     "ekspresi": "bingung"
+    },
+    {
+     "jeda": 0.8
+    }
+   ]
+  },
+  {
+   "latar": "dalam",
+   "waktu": "sore",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "dinda_bebas",
+     "ekspresi": "serius",
+     "posisi": "tengah",
+     "masuk": "kiri"
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "langkah"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Sementara itu, jauh dari sekolah, Dinda menemukan sesuatu di toko.",
+     "emosi": "misterius",
+     "ekspresi": ""
+    },
+    {
+     "jeda": 0.6
+    }
+   ]
+  },
+  {
+   "latar": "meja",
+   "waktu": "sore",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "dinda_bebas",
+     "ekspresi": "kaget",
+     "posisi": "tengah",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "amplop_tua",
+    "tulisan": "12-03-2011"
+   },
+   "efek": [
+    "kertas",
+    "deg"
+   ],
+   "urutan": [
+    {
+     "tokoh": "dinda_bebas",
+     "ucap": "Ini… Mbak Ana waktu SMA? Dan ini… Pak Hadi?!",
+     "emosi": "terkejut, penasaran",
+     "ekspresi": "kaget"
+    },
+    {
+     "jeda": 1.0
+    }
+   ]
+  },
+  {
+   "latar": "meja",
+   "waktu": "sore",
+   "kamera": "diam",
+   "kilas_balik": true,
+   "tokoh": [
+    {
+     "id": "laras_sma",
+     "ekspresi": "serius",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "hadi_sma",
+     "ekspresi": "serius",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "amplop_tua",
+    "tulisan": "12-03-2011"
+   },
+   "efek": [
+    "detik"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Di foto itu ada tiga sahabat. Tapi wajah orang ketiga… sengaja ditutup.",
+     "emosi": "misterius, pelan",
+     "ekspresi": ""
+    },
+    {
+     "jeda": 1.2
+    }
+   ]
+  }
+ ],
+ "_dibuat": {
+  "model": "gemini-flash-lite-latest",
+  "arahan": "",
+  "waktu": "2026-11-26 08:09"
+ }
+}
