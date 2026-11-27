@@ -606,9 +606,13 @@
   },
   "499ad4d1e1": {
    "nama": "Krayon Joyko Isi 18",
-   "status": "baru",
+   "status": "pratinjau",
    "gagal": 0,
-   "waktu_tayang": "Sabtu 28/11 07:00"
+   "waktu_tayang": "Sabtu 28/11 07:00",
+   "dari_sheet": true,
+   "poster": "499ad4d1e1-be2995dafa.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1Ol4iH2aXcpWb0FBlqXkf4EintKdA5eih/view",
+   "hash": "be2995dafa"
   },
   "bdb1c76e7f": {
    "nama": "Krayon Joyko Isi 24",
