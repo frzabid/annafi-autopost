@@ -337,9 +337,13 @@
   },
   "73501d1c29": {
    "nama": "Krayon Ulir Kuromi 12color",
-   "status": "baru",
+   "status": "pratinjau",
    "gagal": 0,
-   "waktu_tayang": "Jumat 27/11 16:00"
+   "waktu_tayang": "Jumat 27/11 16:00",
+   "dari_sheet": false,
+   "poster": "73501d1c29-096a925129.jpg",
+   "sumber_gambar": "",
+   "hash": "096a925129"
   },
   "09143b7be5": {
    "nama": "Krayon Joyko Isi 18",
