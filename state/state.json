@@ -748,7 +748,7 @@
   },
   "fad54937fb": {
    "nama": "Misteri Surat Tanpa Nama Part 6",
-   "status": "menunggu_tayang",
+   "status": "menunggu_upload",
    "gagal": 0,
    "waktu_tayang": "Jumat 27/11 17:00",
    "hash": "8770e841be",
@@ -765,10 +765,17 @@
   },
   "f2c7a27968": {
    "nama": "Misteri Surat Tanpa Nama Part 8",
-   "status": "baru",
+   "status": "menunggu_render",
    "gagal": 0,
    "waktu_tayang": "Minggu 29/11 17:00",
-   "hash": "8770e841be"
+   "hash": "8770e841be",
+   "ingat_render": "2026-11-27T17:01:25.079172+07:00"
+  },
+  "aa8668f6a8": {
+   "nama": "Krayon Ulir Kuromi 12color",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 23:59"
   }
  },
  "error_terkirim": [
