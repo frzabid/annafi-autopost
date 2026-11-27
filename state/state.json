@@ -618,9 +618,20 @@
   },
   "3df0d048e1": {
    "nama": "Ide Mewarnai Seru di Akhir Pekan",
-   "status": "baru",
+   "status": "menunggu",
    "gagal": 0,
-   "waktu_tayang": "Sabtu 28/11 19:00"
+   "waktu_tayang": "Sabtu 28/11 19:00",
+   "poster": "3df0d048e1-8884d599c2-1.jpg",
+   "slides": [
+    "3df0d048e1-8884d599c2-1.jpg",
+    "3df0d048e1-8884d599c2-2.jpg",
+    "3df0d048e1-8884d599c2-3.jpg",
+    "3df0d048e1-8884d599c2-4.jpg",
+    "3df0d048e1-8884d599c2-5.jpg",
+    "3df0d048e1-8884d599c2-6.jpg"
+   ],
+   "sumber_gambar": "",
+   "hash": "8884d599c2"
   },
   "409eee33c3": {
    "nama": "Tepak Pensil B-8144",
@@ -769,7 +780,8 @@
    "gagal": 0,
    "waktu_tayang": "Sabtu 28/11 17:00",
    "hash": "8770e841be",
-   "ingat_render": "2026-11-26T17:01:23.807558+07:00"
+   "ingat_render": "2026-11-26T17:01:23.807558+07:00",
+   "ingat_render2": "2026-11-27T20:01:22.824973+07:00"
   },
   "f2c7a27968": {
    "nama": "Misteri Surat Tanpa Nama Part 8",
