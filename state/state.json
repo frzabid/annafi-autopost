@@ -1,811 +1,814 @@
 {
-  "produk": {
-    "49ecfbb87a": {
-      "nama": "Pensil Joyko 6151 HB",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 20/11 10:00",
-      "dari_sheet": true,
-      "poster": "49ecfbb87a-a741c7f3a8.jpg",
-      "sumber_gambar": "https://drive.google.com/file/d/1NIiwW5_WktS0tdUS_78jsFkzuJRBjA4y/view",
-      "hash": "a741c7f3a8",
-      "cara": "manual",
-      "waktu_posting": "2026-11-20T10:02:21.539437+07:00"
-    },
-    "e34ed5e46b": {
-      "nama": "Pensil Joyko 2B P-8137",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 20/11 15:00",
-      "dari_sheet": false,
-      "poster": "e34ed5e46b-49bbcf61f0.jpg",
-      "sumber_gambar": "",
-      "hash": "49bbcf61f0",
-      "cara": "manual",
-      "waktu_posting": "2026-11-20T15:01:38.599828+07:00"
-    },
-    "632c4be81f": {
-      "nama": "Buku Spiral A5 Fancy",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Senin 23/11 07:00"
-    },
-    "bf9f1503f2": {
-      "nama": "Bolpen Pororo Safari",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Senin 23/11 12:00"
-    },
-    "170a982d1c": {
-      "nama": "Buku Agenda 8725 Kancing Van Art",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Senin 23/11 16:00"
-    },
-    "b024d708f9": {
-      "nama": "Bolpen Standar Ae 0,5 Merah",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Senin 23/11 19:00"
-    },
-    "3fa4f37bda": {
-      "nama": "Sticky Note BIG SN 6020",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Selasa 24/11 07:00"
-    },
-    "c3646f521f": {
-      "nama": "Spidol Bantex WB Biru",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Selasa 24/11 12:00"
-    },
-    "4efba5c120": {
-      "nama": "Sticky Notes BIG 7651",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Selasa 24/11 16:00"
-    },
-    "fa3507ceca": {
-      "nama": "Spidol Snowman 12 Warna",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Selasa 24/11 19:00"
-    },
-    "9f4f617ee0": {
-      "nama": "Agenda A5 -NB 3666",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Rabu 25/11 07:00"
-    },
-    "458d5535b7": {
-      "nama": "Bolpen Safari SF-559BC 0,4",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Rabu 25/11 12:00"
-    },
-    "4501deb1c1": {
-      "nama": "Al-Quran Khot Besar",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Rabu 25/11 16:00"
-    },
-    "5cb5342723": {
-      "nama": "Selamat Hari Guru Nasional",
-      "status": "terlewat",
-      "gagal": 0,
-      "waktu_tayang": "Rabu 25/11 19:00",
-      "poster": "5cb5342723-f93f9b3b07-1.jpg",
-      "slides": [
-        "5cb5342723-f93f9b3b07-1.jpg",
-        "5cb5342723-f93f9b3b07-2.jpg",
-        "5cb5342723-f93f9b3b07-3.jpg",
-        "5cb5342723-f93f9b3b07-4.jpg",
-        "5cb5342723-f93f9b3b07-5.jpg",
-        "5cb5342723-f93f9b3b07-6.jpg"
-      ],
-      "sumber_gambar": "",
-      "hash": "f93f9b3b07"
-    },
-    "8091082d8d": {
-      "nama": "Tilawati Softcover 1-6",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Rabu 25/11 19:00"
-    },
-    "169aa94339": {
-      "nama": "Pensil 2B Joyko P-8142",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Kamis 26/11 07:00"
-    },
-    "c27c5f74a9": {
-      "nama": "Penghapus Joyko ER-106",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Kamis 26/11 12:00"
-    },
-    "8dccd64ae6": {
-      "nama": "Pensil Joyko P-125",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Kamis 26/11 16:00"
-    },
-    "9c3495b31b": {
-      "nama": "Penghapus Fabercastel B40",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Kamis 26/11 19:00"
-    },
-    "2150d80c39": {
-      "nama": "Kertas Dobel Folio Bergaris 100",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 07:00"
-    },
-    "086feff440": {
-      "nama": "Map L",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 12:00"
-    },
-    "03e3b96981": {
-      "nama": "HVS Starline A4",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 16:00"
-    },
-    "f230fa6e7b": {
-      "nama": "Persiapan Ujian Semester Ganjil",
-      "status": "disetujui",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 19:00",
-      "poster": "f230fa6e7b-9f4cc49c71-1.jpg",
-      "slides": [
-        "f230fa6e7b-9f4cc49c71-1.jpg",
-        "f230fa6e7b-9f4cc49c71-2.jpg",
-        "f230fa6e7b-9f4cc49c71-3.jpg",
-        "f230fa6e7b-9f4cc49c71-4.jpg",
-        "f230fa6e7b-9f4cc49c71-5.jpg",
-        "f230fa6e7b-9f4cc49c71-6.jpg"
-      ],
-      "sumber_gambar": "",
-      "hash": "9f4cc49c71",
-      "setuju_hash": "9f4cc49c71"
-    },
-    "37bb77d355": {
-      "nama": "Map Coklat Executive A5",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 19:00"
-    },
-    "2fa678246d": {
-      "nama": "Tepak Pensil B-8144",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 28/11 07:00"
-    },
-    "997ec10837": {
-      "nama": "Penggaris Besi 30cm Kenko",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 28/11 12:00"
-    },
-    "54685c4163": {
-      "nama": "Tepak Magnet Kiky Besar",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 28/11 16:00"
-    },
-    "3cc8cbf5c5": {
-      "nama": "Penggaris Besi Joyko 60cm",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 28/11 19:00"
-    },
-    "6bfe8e89ed": {
-      "nama": "Gunting Joyko Sc- 838",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Minggu 29/11 07:00"
-    },
-    "ed3d0d9afc": {
-      "nama": "Lem UHU Cair 35ml",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Minggu 29/11 12:00"
-    },
-    "91d41b5637": {
-      "nama": "Gunting Joyko SC-828 (kecil)",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Minggu 29/11 16:00"
-    },
-    "90eb5cde05": {
-      "nama": "Lem Cair Joyko GL-30",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Minggu 29/11 19:00"
-    },
-    "f5dfc8f2eb": {
-      "nama": "Krayon Joyko 12 Color",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Senin 23/11 16:00"
-    },
-    "37bc12e3e3": {
-      "nama": "Krayon Titi 12C",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Senin 23/11 16:00"
-    },
-    "a2ff382889": {
-      "nama": "Krayon Apik 12 Oil Pastel",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Senin 23/11 16:00",
-      "dari_sheet": true,
-      "poster": "a2ff382889-16ac73f4a4.jpg",
-      "sumber_gambar": "https://drive.google.com/file/d/1P2LNOwnus6SZrVgJDx-cL6-2Vi124snP/view",
-      "hash": "16ac73f4a4",
-      "cara": "manual",
-      "waktu_posting": "2026-11-23T16:01:23.399735+07:00"
-    },
-    "dbe77cafeb": {
-      "nama": "Krayon New Vanart 12 Color",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Selasa 24/11 16:00"
-    },
-    "dab1face25": {
-      "nama": "Krayon Oil Pastel 18c",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Selasa 24/11 16:00"
-    },
-    "71a7cd32a8": {
-      "nama": "Krayon Joyko 36 Color",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Selasa 24/11 16:00",
-      "dari_sheet": true,
-      "poster": "71a7cd32a8-bdad065aee.jpg",
-      "sumber_gambar": "https://drive.google.com/file/d/1jEwKvDaJGYGqXrDREgejyZ8WAFDlb8-9/view",
-      "hash": "bdad065aee",
-      "cara": "manual",
-      "waktu_posting": "2026-11-24T16:01:34.773061+07:00"
-    },
-    "6979602c9f": {
-      "nama": "Krayon Titi 18C",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Rabu 25/11 16:00"
-    },
-    "79ae58c11e": {
-      "nama": "Krayon Apik 18 Color",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Rabu 25/11 16:00"
-    },
-    "b03ebd8a48": {
-      "nama": "Krayon New Vanart 24",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Rabu 25/11 16:00",
-      "dari_sheet": true,
-      "poster": "b03ebd8a48-66e9a14244.jpg",
-      "sumber_gambar": "https://drive.google.com/file/d/1EBD7XsfcSyIek-KwUxPWuYvaG7ZI6LnU/view",
-      "hash": "66e9a14244",
-      "cara": "manual",
-      "waktu_posting": "2026-11-25T16:01:36.501745+07:00"
-    },
-    "a6dee472d0": {
-      "nama": "Krayon Joyko 48 Color",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Kamis 26/11 16:00"
-    },
-    "d71b1a71b9": {
-      "nama": "Krayon Titi 24C",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Kamis 26/11 16:00"
-    },
-    "55bc5173f4": {
-      "nama": "Krayon Apik Isi 12",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Kamis 26/11 16:00",
-      "dari_sheet": true,
-      "poster": "55bc5173f4-46ad58cfc2.jpg",
-      "sumber_gambar": "https://drive.google.com/file/d/1dHeVJwN7rVgz7O402NzSTHyrt6Nb5onG/view",
-      "hash": "46ad58cfc2",
-      "link_ig": "https://www.instagram.com/stories/annafi_atk_menganti/4038811097016225524",
-      "waktu_posting": "2026-11-26T16:03:51.577645+07:00"
-    },
-    "f2e908a3e4": {
-      "nama": "Krayon Joyko 55 Color",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 16:00"
-    },
-    "93f5c63b85": {
-      "nama": "Krayon Twist Ulir Joyko",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 16:00"
-    },
-    "73501d1c29": {
-      "nama": "Krayon Ulir Kuromi 12color",
-      "status": "pratinjau",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 16:00",
-      "dari_sheet": false,
-      "poster": "73501d1c29-096a925129.jpg",
-      "sumber_gambar": "",
-      "hash": "096a925129"
-    },
-    "09143b7be5": {
-      "nama": "Krayon Joyko Isi 18",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 28/11 16:00"
-    },
-    "997fb3b7a5": {
-      "nama": "Krayon Joyko Isi 24",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 28/11 16:00"
-    },
-    "77824057c8": {
-      "nama": "Krayon Baby 18c",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 28/11 16:00"
-    },
-    "fac2b11553": {
-      "nama": "Krayon Carinex 12 Wrn",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Minggu 29/11 16:00"
-    },
-    "a4fc4fc7d2": {
-      "nama": "Krayon Cinnamorrol Isi 12",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Minggu 29/11 16:00"
-    },
-    "78eba786ca": {
-      "nama": "Krayon Heppi POP 1 12 Warna",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Minggu 29/11 16:00"
-    },
-    "7accc4945e": {
-      "nama": "Krayon Joyko 12 Color",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Senin 23/11 07:00",
-      "dari_sheet": false,
-      "poster": "7accc4945e-ad0988d1c3.jpg",
-      "sumber_gambar": "https://down-id.img.susercontent.com/file/id-11134207-7qukx-ljnvi8dk2y5j63",
-      "hash": "ad0988d1c3",
-      "cara": "manual",
-      "waktu_posting": "2026-11-23T07:01:15.084678+07:00"
-    },
-    "33a12135dc": {
-      "nama": "Krayon Titi 12C",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Senin 23/11 12:00",
-      "dari_sheet": true,
-      "poster": "33a12135dc-c961fbbeb6.jpg",
-      "sumber_gambar": "https://drive.google.com/file/d/1xPSuI5sv_IbOyjrKuSSfa32IFIubD5jP/view",
-      "hash": "c961fbbeb6",
-      "cara": "manual",
-      "waktu_posting": "2026-11-23T12:01:49.492350+07:00"
-    },
-    "c5b522725a": {
-      "nama": "Tips Memilih Krayon untuk Anak",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Senin 23/11 19:00",
-      "poster": "c5b522725a-e08c6b12a8-1.jpg",
-      "slides": [
-        "c5b522725a-e08c6b12a8-1.jpg",
-        "c5b522725a-e08c6b12a8-2.jpg",
-        "c5b522725a-e08c6b12a8-3.jpg",
-        "c5b522725a-e08c6b12a8-4.jpg",
-        "c5b522725a-e08c6b12a8-5.jpg",
-        "c5b522725a-e08c6b12a8-6.jpg"
-      ],
-      "sumber_gambar": "",
-      "hash": "e08c6b12a8",
-      "setuju_hash": "e08c6b12a8",
-      "cara": "make",
-      "waktu_posting": "2026-11-23T19:01:35.749625+07:00"
-    },
-    "20fc0b87a8": {
-      "nama": "Buku Spiral A5 Fancy",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Senin 23/11 23:59"
-    },
-    "4aab8fcc98": {
-      "nama": "Bolpen Pororo Safari",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Senin 23/11 23:59"
-    },
-    "8fe8683d16": {
-      "nama": "Krayon New Vanart 12 Color",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Selasa 24/11 07:00",
-      "dari_sheet": true,
-      "poster": "8fe8683d16-c052a3d935.jpg",
-      "sumber_gambar": "https://drive.google.com/file/d/1L5LHdpx0p0N2J8YHAQcZ2eOuY_2qVzLa/view",
-      "hash": "c052a3d935",
-      "cara": "manual",
-      "waktu_posting": "2026-11-24T07:03:21.660430+07:00"
-    },
-    "c8c2a33636": {
-      "nama": "Krayon Oil Pastel 18c",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Selasa 24/11 12:00",
-      "dari_sheet": false,
-      "poster": "c8c2a33636-bcd39b0623.jpg",
-      "sumber_gambar": "https://img.lazcdn.com/g/ff/kf/S63fc89cfa14848309b6677d1d65a8cdas.jpg_720x720q80.jpg",
-      "hash": "bcd39b0623",
-      "cara": "manual",
-      "waktu_posting": "2026-11-24T12:23:32.490563+07:00"
-    },
-    "9f861444a9": {
-      "nama": "Ide Kado Sederhana untuk Guru",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Selasa 24/11 19:00",
-      "poster": "9f861444a9-bdd52d70d3-1.jpg",
-      "slides": [
-        "9f861444a9-bdd52d70d3-1.jpg",
-        "9f861444a9-bdd52d70d3-2.jpg",
-        "9f861444a9-bdd52d70d3-3.jpg",
-        "9f861444a9-bdd52d70d3-4.jpg",
-        "9f861444a9-bdd52d70d3-5.jpg",
-        "9f861444a9-bdd52d70d3-6.jpg"
-      ],
-      "sumber_gambar": "",
-      "hash": "bdd52d70d3",
-      "setuju_hash": "bdd52d70d3",
-      "cara": "make",
-      "waktu_posting": "2026-11-24T19:01:29.479175+07:00"
-    },
-    "687146e3b2": {
-      "nama": "Sticky Note BIG SN 6020",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Selasa 24/11 23:59"
-    },
-    "544fd8eadf": {
-      "nama": "Spidol Bantex WB Biru",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Selasa 24/11 23:59"
-    },
-    "536c4f7ae0": {
-      "nama": "Krayon Titi 18C",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Rabu 25/11 07:00",
-      "dari_sheet": true,
-      "poster": "536c4f7ae0-f7d2d60061.jpg",
-      "sumber_gambar": "https://drive.google.com/file/d/1d9m2dEktEa3heOX-J7ooowqlHz0_W17y/view",
-      "hash": "f7d2d60061",
-      "cara": "manual",
-      "waktu_posting": "2026-11-25T07:01:41.997731+07:00"
-    },
-    "30549103e4": {
-      "nama": "Krayon Apik 18 Color",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Rabu 25/11 12:00",
-      "dari_sheet": true,
-      "poster": "30549103e4-29bdf7bde1.jpg",
-      "sumber_gambar": "https://drive.google.com/file/d/1ZAv6zV2cp_kB0t1AaNl6LriysgOauTJH/view",
-      "hash": "29bdf7bde1",
-      "cara": "manual",
-      "waktu_posting": "2026-11-25T12:01:48.487826+07:00"
-    },
-    "9c6a859467": {
-      "nama": "Agenda A5 -NB 3666",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Rabu 25/11 23:59"
-    },
-    "61c111847f": {
-      "nama": "Bolpen Safari SF-559BC 0,4",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Rabu 25/11 23:59"
-    },
-    "0bcb034bf0": {
-      "nama": "Krayon Joyko 48 Color",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Kamis 26/11 07:00",
-      "dari_sheet": true,
-      "poster": "0bcb034bf0-b50e8c2b36.jpg",
-      "sumber_gambar": "https://drive.google.com/file/d/1QGOQGqJ5mL-w7fFn_AygaHx4jEFy7sYB/view",
-      "hash": "b50e8c2b36",
-      "cara": "manual",
-      "waktu_posting": "2026-11-26T07:01:52.178768+07:00"
-    },
-    "3bbf09e9d5": {
-      "nama": "Krayon Titi 24C",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Kamis 26/11 12:00",
-      "dari_sheet": true,
-      "poster": "3bbf09e9d5-ec17cd7782.jpg",
-      "sumber_gambar": "https://drive.google.com/file/d/1ibpHU9kgkFlZ_ZGxH8RwKnimz-R4HRLB/view",
-      "hash": "ec17cd7782",
-      "cara": "manual",
-      "waktu_posting": "2026-11-26T12:10:49.253381+07:00"
-    },
-    "afdd1e8522": {
-      "nama": "Pensil 2B Joyko P-8142",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Kamis 26/11 23:59"
-    },
-    "ea1a3d665c": {
-      "nama": "Penghapus Joyko ER-106",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Kamis 26/11 23:59"
-    },
-    "d0abec579e": {
-      "nama": "Krayon Joyko 55 Color",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 07:00",
-      "dari_sheet": true,
-      "poster": "d0abec579e-fe65ae5a54.jpg",
-      "sumber_gambar": "https://drive.google.com/file/d/1FDyJPDc1YS4RCHU37RoTOdVLh3GkcUxP/view",
-      "hash": "fe65ae5a54",
-      "link_ig": "https://www.instagram.com/stories/annafi_atk_menganti/4039262732994789174",
-      "waktu_posting": "2026-11-27T07:01:12.994352+07:00"
-    },
-    "9fc22b7274": {
-      "nama": "Krayon Twist Ulir Joyko",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 12:00",
-      "dari_sheet": true,
-      "poster": "9fc22b7274-42f33190b0.jpg",
-      "sumber_gambar": "https://drive.google.com/file/d/1-_xN5J31h9TcYbaXpIia8171PkXFWPSR/view",
-      "hash": "42f33190b0",
-      "link_ig": "https://www.instagram.com/stories/annafi_atk_menganti/4039414082633067710",
-      "waktu_posting": "2026-11-27T12:01:54.741736+07:00"
-    },
-    "059a4ba6de": {
-      "nama": "Kertas Dobel Folio Bergaris 100",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 23:59"
-    },
-    "1531991499": {
-      "nama": "Map L",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 23:59"
-    },
-    "499ad4d1e1": {
-      "nama": "Krayon Joyko Isi 18",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 28/11 07:00"
-    },
-    "bdb1c76e7f": {
-      "nama": "Krayon Joyko Isi 24",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 28/11 12:00"
-    },
-    "3df0d048e1": {
-      "nama": "Ide Mewarnai Seru di Akhir Pekan",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 28/11 19:00"
-    },
-    "409eee33c3": {
-      "nama": "Tepak Pensil B-8144",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 28/11 23:59"
-    },
-    "384f42035d": {
-      "nama": "Penggaris Besi 30cm Kenko",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 28/11 23:59"
-    },
-    "9fca72fc8d": {
-      "nama": "Krayon Carinex 12 Wrn",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Minggu 29/11 07:00"
-    },
-    "5454f9e888": {
-      "nama": "Krayon Cinnamorrol Isi 12",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Minggu 29/11 12:00"
-    },
-    "d9a39d842d": {
-      "nama": "Gunting Joyko Sc- 838",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Minggu 29/11 23:59"
-    },
-    "efa738fe34": {
-      "nama": "Lem UHU Cair 35ml",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Minggu 29/11 23:59"
-    },
-    "f9d3598948": {
-      "nama": "Misteri Surat Tanpa Nama Part 1",
-      "status": "dirender",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 21/11 17:00",
-      "hash": "8770e841be",
-      "ingat_render": "2026-11-21T15:31:10.832973+07:00",
-      "dirender": true
-    },
-    "ef8d4c2df8": {
-      "nama": "Misteri Surat Tanpa Nama Part 2",
-      "status": "terlewat",
-      "gagal": 0,
-      "waktu_tayang": "Minggu 22/11 17:00",
-      "hash": "8770e841be",
-      "ingat_render": "2026-11-21T15:31:10.832973+07:00",
-      "ingat_render2": "2026-11-21T20:01:20.370728+07:00"
-    },
-    "4c79e7040d": {
-      "nama": "Misteri Surat Tanpa Nama Part 3",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Senin 23/11 17:00",
-      "hash": "8770e841be",
-      "ingat_render": "2026-11-21T17:01:36.542989+07:00",
-      "ingat_render2": "2026-11-22T20:01:25.035315+07:00",
-      "cara": "manual",
-      "waktu_posting": "2026-11-23T16:01:14.933935+07:00"
-    },
-    "a312e51bd8": {
-      "nama": "Misteri Surat Tanpa Nama Part 4",
-      "status": "terlewat",
-      "gagal": 0,
-      "waktu_tayang": "Selasa 24/11 17:00",
-      "hash": "8770e841be",
-      "ingat_render": "2026-11-22T17:01:17.911313+07:00",
-      "ingat_render2": "2026-11-23T20:01:23.216122+07:00"
-    },
-    "1bb4581fc3": {
-      "nama": "Misteri Surat Tanpa Nama Part 5",
-      "status": "menunggu_upload",
-      "gagal": 0,
-      "waktu_tayang": "Rabu 25/11 17:00",
-      "hash": "8770e841be",
-      "ingat_render": "2026-11-23T17:15:39.445859+07:00",
-      "dirender": true
-    },
-    "646b37fa05": {
-      "nama": "Misteri Surat Tanpa Nama Part 6",
-      "status": "dirender",
-      "gagal": 0,
-      "waktu_tayang": "Kamis 26/11 17:00",
-      "hash": "8770e841be",
-      "ingat_render": "2026-11-24T17:01:16.417770+07:00",
-      "ingat_render2": "2026-11-25T20:01:28.683632+07:00",
-      "dirender": true
-    },
-    "c0766da69a": {
-      "nama": "Misteri Surat Tanpa Nama Part 7",
-      "status": "menunggu_render",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 17:00",
-      "hash": "8770e841be",
-      "ingat_render": "2026-11-25T17:01:23.266057+07:00"
-    },
-    "3cf23633ef": {
-      "nama": "Misteri Surat Tanpa Nama Part 8",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 28/11 17:00",
-      "hash": "8770e841be"
-    },
-    "cbc8e806dd": {
-      "nama": "Misteri Surat Tanpa Nama Part 1",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 21/11 17:15",
-      "hash": "8770e841be",
-      "cara": "manual",
-      "waktu_posting": "2026-11-21T17:30:00+07:00"
-    },
-    "1c5a80224c": {
-      "nama": "Misteri Surat Tanpa Nama Part 5",
-      "status": "terposting",
-      "gagal": 0,
-      "waktu_tayang": "Kamis 26/11 17:00",
-      "hash": "8770e841be",
-      "dirender": true,
-      "cara": "api",
-      "link_ig": "https://www.instagram.com/reel/DgM18MBJ8hh/",
-      "waktu_posting": "2026-11-26T17:01:23.807558+07:00"
-    },
-    "fad54937fb": {
-      "nama": "Misteri Surat Tanpa Nama Part 6",
-      "status": "dirender",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 17:00",
-      "hash": "8770e841be",
-      "ingat_render": "2026-11-25T20:16:24.961024+07:00",
-      "ingat_render2": "2026-11-26T20:01:34.253295+07:00",
-      "dirender": true
-    },
-    "948c6cbef4": {
-      "nama": "Misteri Surat Tanpa Nama Part 7",
-      "status": "menunggu_render",
-      "gagal": 0,
-      "waktu_tayang": "Sabtu 28/11 17:00",
-      "hash": "8770e841be",
-      "ingat_render": "2026-11-26T17:01:23.807558+07:00"
-    },
-    "f2c7a27968": {
-      "nama": "Misteri Surat Tanpa Nama Part 8",
-      "status": "menunggu_render",
-      "gagal": 0,
-      "waktu_tayang": "Minggu 29/11 17:00",
-      "hash": "8770e841be",
-      "ingat_render": "2026-11-27T17:01:25.079172+07:00"
-    },
-    "aa8668f6a8": {
-      "nama": "Krayon Ulir Kuromi 12color",
-      "status": "baru",
-      "gagal": 0,
-      "waktu_tayang": "Jumat 27/11 23:59"
-    }
+ "produk": {
+  "49ecfbb87a": {
+   "nama": "Pensil Joyko 6151 HB",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 20/11 10:00",
+   "dari_sheet": true,
+   "poster": "49ecfbb87a-a741c7f3a8.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1NIiwW5_WktS0tdUS_78jsFkzuJRBjA4y/view",
+   "hash": "a741c7f3a8",
+   "cara": "manual",
+   "waktu_posting": "2026-11-20T10:02:21.539437+07:00"
   },
-  "error_terkirim": [
-    "Baris 18 (Spesial Kado Hari Guru): konten promo sedang dimatikan, baris ini dilewati (ubah jenisnya ke edukasi/info/momen kalau tetap mau diposting)",
-    "Baris 35 (Spesial Kado Hari Guru): konten promo sedang dimatikan, baris ini dilewati (ubah jenisnya ke edukasi/info/momen kalau tetap mau diposting)",
-    "Baris 4 (Spesial Kado Hari Guru): konten promo sedang dimatikan, baris ini dilewati (ubah jenisnya ke edukasi/info/momen kalau tetap mau diposting)"
-  ],
-  "tg_offset": 0,
-  "permintaan": [
-    "7.65E+66",
-    "bea482f3",
-    "41a1b379",
-    "cae957f2",
-    "cdcbcff3",
-    "cc47f58a",
-    "c32078a8",
-    "c449666f",
-    "c73134d4",
-    "ccfb53f9",
-    "c75df7d3",
-    "c84d23fc",
-    "ce0e0af5",
-    "c1cabff3",
-    "cb6d832e"
-  ],
-  "cek_foto": "27/11/2026",
-  "reel_dirender": {
-    "5": true,
-    "6": true
+  "e34ed5e46b": {
+   "nama": "Pensil Joyko 2B P-8137",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 20/11 15:00",
+   "dari_sheet": false,
+   "poster": "e34ed5e46b-49bbcf61f0.jpg",
+   "sumber_gambar": "",
+   "hash": "49bbcf61f0",
+   "cara": "manual",
+   "waktu_posting": "2026-11-20T15:01:38.599828+07:00"
+  },
+  "632c4be81f": {
+   "nama": "Buku Spiral A5 Fancy",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Senin 23/11 07:00"
+  },
+  "bf9f1503f2": {
+   "nama": "Bolpen Pororo Safari",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Senin 23/11 12:00"
+  },
+  "170a982d1c": {
+   "nama": "Buku Agenda 8725 Kancing Van Art",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Senin 23/11 16:00"
+  },
+  "b024d708f9": {
+   "nama": "Bolpen Standar Ae 0,5 Merah",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Senin 23/11 19:00"
+  },
+  "3fa4f37bda": {
+   "nama": "Sticky Note BIG SN 6020",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Selasa 24/11 07:00"
+  },
+  "c3646f521f": {
+   "nama": "Spidol Bantex WB Biru",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Selasa 24/11 12:00"
+  },
+  "4efba5c120": {
+   "nama": "Sticky Notes BIG 7651",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Selasa 24/11 16:00"
+  },
+  "fa3507ceca": {
+   "nama": "Spidol Snowman 12 Warna",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Selasa 24/11 19:00"
+  },
+  "9f4f617ee0": {
+   "nama": "Agenda A5 -NB 3666",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Rabu 25/11 07:00"
+  },
+  "458d5535b7": {
+   "nama": "Bolpen Safari SF-559BC 0,4",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Rabu 25/11 12:00"
+  },
+  "4501deb1c1": {
+   "nama": "Al-Quran Khot Besar",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Rabu 25/11 16:00"
+  },
+  "5cb5342723": {
+   "nama": "Selamat Hari Guru Nasional",
+   "status": "terlewat",
+   "gagal": 0,
+   "waktu_tayang": "Rabu 25/11 19:00",
+   "poster": "5cb5342723-f93f9b3b07-1.jpg",
+   "slides": [
+    "5cb5342723-f93f9b3b07-1.jpg",
+    "5cb5342723-f93f9b3b07-2.jpg",
+    "5cb5342723-f93f9b3b07-3.jpg",
+    "5cb5342723-f93f9b3b07-4.jpg",
+    "5cb5342723-f93f9b3b07-5.jpg",
+    "5cb5342723-f93f9b3b07-6.jpg"
+   ],
+   "sumber_gambar": "",
+   "hash": "f93f9b3b07"
+  },
+  "8091082d8d": {
+   "nama": "Tilawati Softcover 1-6",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Rabu 25/11 19:00"
+  },
+  "169aa94339": {
+   "nama": "Pensil 2B Joyko P-8142",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Kamis 26/11 07:00"
+  },
+  "c27c5f74a9": {
+   "nama": "Penghapus Joyko ER-106",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Kamis 26/11 12:00"
+  },
+  "8dccd64ae6": {
+   "nama": "Pensil Joyko P-125",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Kamis 26/11 16:00"
+  },
+  "9c3495b31b": {
+   "nama": "Penghapus Fabercastel B40",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Kamis 26/11 19:00"
+  },
+  "2150d80c39": {
+   "nama": "Kertas Dobel Folio Bergaris 100",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 07:00"
+  },
+  "086feff440": {
+   "nama": "Map L",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 12:00"
+  },
+  "03e3b96981": {
+   "nama": "HVS Starline A4",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 16:00"
+  },
+  "f230fa6e7b": {
+   "nama": "Persiapan Ujian Semester Ganjil",
+   "status": "disetujui",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 19:00",
+   "poster": "f230fa6e7b-9f4cc49c71-1.jpg",
+   "slides": [
+    "f230fa6e7b-9f4cc49c71-1.jpg",
+    "f230fa6e7b-9f4cc49c71-2.jpg",
+    "f230fa6e7b-9f4cc49c71-3.jpg",
+    "f230fa6e7b-9f4cc49c71-4.jpg",
+    "f230fa6e7b-9f4cc49c71-5.jpg",
+    "f230fa6e7b-9f4cc49c71-6.jpg"
+   ],
+   "sumber_gambar": "",
+   "hash": "9f4cc49c71",
+   "setuju_hash": "9f4cc49c71"
+  },
+  "37bb77d355": {
+   "nama": "Map Coklat Executive A5",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 19:00"
+  },
+  "2fa678246d": {
+   "nama": "Tepak Pensil B-8144",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 07:00"
+  },
+  "997ec10837": {
+   "nama": "Penggaris Besi 30cm Kenko",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 12:00"
+  },
+  "54685c4163": {
+   "nama": "Tepak Magnet Kiky Besar",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 16:00"
+  },
+  "3cc8cbf5c5": {
+   "nama": "Penggaris Besi Joyko 60cm",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 19:00"
+  },
+  "6bfe8e89ed": {
+   "nama": "Gunting Joyko Sc- 838",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Minggu 29/11 07:00"
+  },
+  "ed3d0d9afc": {
+   "nama": "Lem UHU Cair 35ml",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Minggu 29/11 12:00"
+  },
+  "91d41b5637": {
+   "nama": "Gunting Joyko SC-828 (kecil)",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Minggu 29/11 16:00"
+  },
+  "90eb5cde05": {
+   "nama": "Lem Cair Joyko GL-30",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Minggu 29/11 19:00"
+  },
+  "f5dfc8f2eb": {
+   "nama": "Krayon Joyko 12 Color",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Senin 23/11 16:00"
+  },
+  "37bc12e3e3": {
+   "nama": "Krayon Titi 12C",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Senin 23/11 16:00"
+  },
+  "a2ff382889": {
+   "nama": "Krayon Apik 12 Oil Pastel",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Senin 23/11 16:00",
+   "dari_sheet": true,
+   "poster": "a2ff382889-16ac73f4a4.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1P2LNOwnus6SZrVgJDx-cL6-2Vi124snP/view",
+   "hash": "16ac73f4a4",
+   "cara": "manual",
+   "waktu_posting": "2026-11-23T16:01:23.399735+07:00"
+  },
+  "dbe77cafeb": {
+   "nama": "Krayon New Vanart 12 Color",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Selasa 24/11 16:00"
+  },
+  "dab1face25": {
+   "nama": "Krayon Oil Pastel 18c",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Selasa 24/11 16:00"
+  },
+  "71a7cd32a8": {
+   "nama": "Krayon Joyko 36 Color",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Selasa 24/11 16:00",
+   "dari_sheet": true,
+   "poster": "71a7cd32a8-bdad065aee.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1jEwKvDaJGYGqXrDREgejyZ8WAFDlb8-9/view",
+   "hash": "bdad065aee",
+   "cara": "manual",
+   "waktu_posting": "2026-11-24T16:01:34.773061+07:00"
+  },
+  "6979602c9f": {
+   "nama": "Krayon Titi 18C",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Rabu 25/11 16:00"
+  },
+  "79ae58c11e": {
+   "nama": "Krayon Apik 18 Color",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Rabu 25/11 16:00"
+  },
+  "b03ebd8a48": {
+   "nama": "Krayon New Vanart 24",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Rabu 25/11 16:00",
+   "dari_sheet": true,
+   "poster": "b03ebd8a48-66e9a14244.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1EBD7XsfcSyIek-KwUxPWuYvaG7ZI6LnU/view",
+   "hash": "66e9a14244",
+   "cara": "manual",
+   "waktu_posting": "2026-11-25T16:01:36.501745+07:00"
+  },
+  "a6dee472d0": {
+   "nama": "Krayon Joyko 48 Color",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Kamis 26/11 16:00"
+  },
+  "d71b1a71b9": {
+   "nama": "Krayon Titi 24C",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Kamis 26/11 16:00"
+  },
+  "55bc5173f4": {
+   "nama": "Krayon Apik Isi 12",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Kamis 26/11 16:00",
+   "dari_sheet": true,
+   "poster": "55bc5173f4-46ad58cfc2.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1dHeVJwN7rVgz7O402NzSTHyrt6Nb5onG/view",
+   "hash": "46ad58cfc2",
+   "link_ig": "https://www.instagram.com/stories/annafi_atk_menganti/4038811097016225524",
+   "waktu_posting": "2026-11-26T16:03:51.577645+07:00"
+  },
+  "f2e908a3e4": {
+   "nama": "Krayon Joyko 55 Color",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 16:00"
+  },
+  "93f5c63b85": {
+   "nama": "Krayon Twist Ulir Joyko",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 16:00"
+  },
+  "73501d1c29": {
+   "nama": "Krayon Ulir Kuromi 12color",
+   "status": "pratinjau",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 16:00",
+   "dari_sheet": false,
+   "poster": "73501d1c29-096a925129.jpg",
+   "sumber_gambar": "",
+   "hash": "096a925129"
+  },
+  "09143b7be5": {
+   "nama": "Krayon Joyko Isi 18",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 16:00"
+  },
+  "997fb3b7a5": {
+   "nama": "Krayon Joyko Isi 24",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 16:00"
+  },
+  "77824057c8": {
+   "nama": "Krayon Baby 18c",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 16:00"
+  },
+  "fac2b11553": {
+   "nama": "Krayon Carinex 12 Wrn",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Minggu 29/11 16:00"
+  },
+  "a4fc4fc7d2": {
+   "nama": "Krayon Cinnamorrol Isi 12",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Minggu 29/11 16:00"
+  },
+  "78eba786ca": {
+   "nama": "Krayon Heppi POP 1 12 Warna",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Minggu 29/11 16:00"
+  },
+  "7accc4945e": {
+   "nama": "Krayon Joyko 12 Color",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Senin 23/11 07:00",
+   "dari_sheet": false,
+   "poster": "7accc4945e-ad0988d1c3.jpg",
+   "sumber_gambar": "https://down-id.img.susercontent.com/file/id-11134207-7qukx-ljnvi8dk2y5j63",
+   "hash": "ad0988d1c3",
+   "cara": "manual",
+   "waktu_posting": "2026-11-23T07:01:15.084678+07:00"
+  },
+  "33a12135dc": {
+   "nama": "Krayon Titi 12C",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Senin 23/11 12:00",
+   "dari_sheet": true,
+   "poster": "33a12135dc-c961fbbeb6.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1xPSuI5sv_IbOyjrKuSSfa32IFIubD5jP/view",
+   "hash": "c961fbbeb6",
+   "cara": "manual",
+   "waktu_posting": "2026-11-23T12:01:49.492350+07:00"
+  },
+  "c5b522725a": {
+   "nama": "Tips Memilih Krayon untuk Anak",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Senin 23/11 19:00",
+   "poster": "c5b522725a-e08c6b12a8-1.jpg",
+   "slides": [
+    "c5b522725a-e08c6b12a8-1.jpg",
+    "c5b522725a-e08c6b12a8-2.jpg",
+    "c5b522725a-e08c6b12a8-3.jpg",
+    "c5b522725a-e08c6b12a8-4.jpg",
+    "c5b522725a-e08c6b12a8-5.jpg",
+    "c5b522725a-e08c6b12a8-6.jpg"
+   ],
+   "sumber_gambar": "",
+   "hash": "e08c6b12a8",
+   "setuju_hash": "e08c6b12a8",
+   "cara": "make",
+   "waktu_posting": "2026-11-23T19:01:35.749625+07:00"
+  },
+  "20fc0b87a8": {
+   "nama": "Buku Spiral A5 Fancy",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Senin 23/11 23:59"
+  },
+  "4aab8fcc98": {
+   "nama": "Bolpen Pororo Safari",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Senin 23/11 23:59"
+  },
+  "8fe8683d16": {
+   "nama": "Krayon New Vanart 12 Color",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Selasa 24/11 07:00",
+   "dari_sheet": true,
+   "poster": "8fe8683d16-c052a3d935.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1L5LHdpx0p0N2J8YHAQcZ2eOuY_2qVzLa/view",
+   "hash": "c052a3d935",
+   "cara": "manual",
+   "waktu_posting": "2026-11-24T07:03:21.660430+07:00"
+  },
+  "c8c2a33636": {
+   "nama": "Krayon Oil Pastel 18c",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Selasa 24/11 12:00",
+   "dari_sheet": false,
+   "poster": "c8c2a33636-bcd39b0623.jpg",
+   "sumber_gambar": "https://img.lazcdn.com/g/ff/kf/S63fc89cfa14848309b6677d1d65a8cdas.jpg_720x720q80.jpg",
+   "hash": "bcd39b0623",
+   "cara": "manual",
+   "waktu_posting": "2026-11-24T12:23:32.490563+07:00"
+  },
+  "9f861444a9": {
+   "nama": "Ide Kado Sederhana untuk Guru",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Selasa 24/11 19:00",
+   "poster": "9f861444a9-bdd52d70d3-1.jpg",
+   "slides": [
+    "9f861444a9-bdd52d70d3-1.jpg",
+    "9f861444a9-bdd52d70d3-2.jpg",
+    "9f861444a9-bdd52d70d3-3.jpg",
+    "9f861444a9-bdd52d70d3-4.jpg",
+    "9f861444a9-bdd52d70d3-5.jpg",
+    "9f861444a9-bdd52d70d3-6.jpg"
+   ],
+   "sumber_gambar": "",
+   "hash": "bdd52d70d3",
+   "setuju_hash": "bdd52d70d3",
+   "cara": "make",
+   "waktu_posting": "2026-11-24T19:01:29.479175+07:00"
+  },
+  "687146e3b2": {
+   "nama": "Sticky Note BIG SN 6020",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Selasa 24/11 23:59"
+  },
+  "544fd8eadf": {
+   "nama": "Spidol Bantex WB Biru",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Selasa 24/11 23:59"
+  },
+  "536c4f7ae0": {
+   "nama": "Krayon Titi 18C",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Rabu 25/11 07:00",
+   "dari_sheet": true,
+   "poster": "536c4f7ae0-f7d2d60061.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1d9m2dEktEa3heOX-J7ooowqlHz0_W17y/view",
+   "hash": "f7d2d60061",
+   "cara": "manual",
+   "waktu_posting": "2026-11-25T07:01:41.997731+07:00"
+  },
+  "30549103e4": {
+   "nama": "Krayon Apik 18 Color",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Rabu 25/11 12:00",
+   "dari_sheet": true,
+   "poster": "30549103e4-29bdf7bde1.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1ZAv6zV2cp_kB0t1AaNl6LriysgOauTJH/view",
+   "hash": "29bdf7bde1",
+   "cara": "manual",
+   "waktu_posting": "2026-11-25T12:01:48.487826+07:00"
+  },
+  "9c6a859467": {
+   "nama": "Agenda A5 -NB 3666",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Rabu 25/11 23:59"
+  },
+  "61c111847f": {
+   "nama": "Bolpen Safari SF-559BC 0,4",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Rabu 25/11 23:59"
+  },
+  "0bcb034bf0": {
+   "nama": "Krayon Joyko 48 Color",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Kamis 26/11 07:00",
+   "dari_sheet": true,
+   "poster": "0bcb034bf0-b50e8c2b36.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1QGOQGqJ5mL-w7fFn_AygaHx4jEFy7sYB/view",
+   "hash": "b50e8c2b36",
+   "cara": "manual",
+   "waktu_posting": "2026-11-26T07:01:52.178768+07:00"
+  },
+  "3bbf09e9d5": {
+   "nama": "Krayon Titi 24C",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Kamis 26/11 12:00",
+   "dari_sheet": true,
+   "poster": "3bbf09e9d5-ec17cd7782.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1ibpHU9kgkFlZ_ZGxH8RwKnimz-R4HRLB/view",
+   "hash": "ec17cd7782",
+   "cara": "manual",
+   "waktu_posting": "2026-11-26T12:10:49.253381+07:00"
+  },
+  "afdd1e8522": {
+   "nama": "Pensil 2B Joyko P-8142",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Kamis 26/11 23:59"
+  },
+  "ea1a3d665c": {
+   "nama": "Penghapus Joyko ER-106",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Kamis 26/11 23:59"
+  },
+  "d0abec579e": {
+   "nama": "Krayon Joyko 55 Color",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 07:00",
+   "dari_sheet": true,
+   "poster": "d0abec579e-fe65ae5a54.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1FDyJPDc1YS4RCHU37RoTOdVLh3GkcUxP/view",
+   "hash": "fe65ae5a54",
+   "link_ig": "https://www.instagram.com/stories/annafi_atk_menganti/4039262732994789174",
+   "waktu_posting": "2026-11-27T07:01:12.994352+07:00"
+  },
+  "9fc22b7274": {
+   "nama": "Krayon Twist Ulir Joyko",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 12:00",
+   "dari_sheet": true,
+   "poster": "9fc22b7274-42f33190b0.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1-_xN5J31h9TcYbaXpIia8171PkXFWPSR/view",
+   "hash": "42f33190b0",
+   "link_ig": "https://www.instagram.com/stories/annafi_atk_menganti/4039414082633067710",
+   "waktu_posting": "2026-11-27T12:01:54.741736+07:00"
+  },
+  "059a4ba6de": {
+   "nama": "Kertas Dobel Folio Bergaris 100",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 23:59"
+  },
+  "1531991499": {
+   "nama": "Map L",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 23:59"
+  },
+  "499ad4d1e1": {
+   "nama": "Krayon Joyko Isi 18",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 07:00"
+  },
+  "bdb1c76e7f": {
+   "nama": "Krayon Joyko Isi 24",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 12:00"
+  },
+  "3df0d048e1": {
+   "nama": "Ide Mewarnai Seru di Akhir Pekan",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 19:00"
+  },
+  "409eee33c3": {
+   "nama": "Tepak Pensil B-8144",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 23:59"
+  },
+  "384f42035d": {
+   "nama": "Penggaris Besi 30cm Kenko",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 23:59"
+  },
+  "9fca72fc8d": {
+   "nama": "Krayon Carinex 12 Wrn",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Minggu 29/11 07:00"
+  },
+  "5454f9e888": {
+   "nama": "Krayon Cinnamorrol Isi 12",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Minggu 29/11 12:00"
+  },
+  "d9a39d842d": {
+   "nama": "Gunting Joyko Sc- 838",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Minggu 29/11 23:59"
+  },
+  "efa738fe34": {
+   "nama": "Lem UHU Cair 35ml",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Minggu 29/11 23:59"
+  },
+  "f9d3598948": {
+   "nama": "Misteri Surat Tanpa Nama Part 1",
+   "status": "dirender",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 21/11 17:00",
+   "hash": "8770e841be",
+   "ingat_render": "2026-11-21T15:31:10.832973+07:00",
+   "dirender": true
+  },
+  "ef8d4c2df8": {
+   "nama": "Misteri Surat Tanpa Nama Part 2",
+   "status": "terlewat",
+   "gagal": 0,
+   "waktu_tayang": "Minggu 22/11 17:00",
+   "hash": "8770e841be",
+   "ingat_render": "2026-11-21T15:31:10.832973+07:00",
+   "ingat_render2": "2026-11-21T20:01:20.370728+07:00"
+  },
+  "4c79e7040d": {
+   "nama": "Misteri Surat Tanpa Nama Part 3",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Senin 23/11 17:00",
+   "hash": "8770e841be",
+   "ingat_render": "2026-11-21T17:01:36.542989+07:00",
+   "ingat_render2": "2026-11-22T20:01:25.035315+07:00",
+   "cara": "manual",
+   "waktu_posting": "2026-11-23T16:01:14.933935+07:00"
+  },
+  "a312e51bd8": {
+   "nama": "Misteri Surat Tanpa Nama Part 4",
+   "status": "terlewat",
+   "gagal": 0,
+   "waktu_tayang": "Selasa 24/11 17:00",
+   "hash": "8770e841be",
+   "ingat_render": "2026-11-22T17:01:17.911313+07:00",
+   "ingat_render2": "2026-11-23T20:01:23.216122+07:00"
+  },
+  "1bb4581fc3": {
+   "nama": "Misteri Surat Tanpa Nama Part 5",
+   "status": "menunggu_upload",
+   "gagal": 0,
+   "waktu_tayang": "Rabu 25/11 17:00",
+   "hash": "8770e841be",
+   "ingat_render": "2026-11-23T17:15:39.445859+07:00",
+   "dirender": true
+  },
+  "646b37fa05": {
+   "nama": "Misteri Surat Tanpa Nama Part 6",
+   "status": "dirender",
+   "gagal": 0,
+   "waktu_tayang": "Kamis 26/11 17:00",
+   "hash": "8770e841be",
+   "ingat_render": "2026-11-24T17:01:16.417770+07:00",
+   "ingat_render2": "2026-11-25T20:01:28.683632+07:00",
+   "dirender": true
+  },
+  "c0766da69a": {
+   "nama": "Misteri Surat Tanpa Nama Part 7",
+   "status": "menunggu_render",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 17:00",
+   "hash": "8770e841be",
+   "ingat_render": "2026-11-25T17:01:23.266057+07:00"
+  },
+  "3cf23633ef": {
+   "nama": "Misteri Surat Tanpa Nama Part 8",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 17:00",
+   "hash": "8770e841be"
+  },
+  "cbc8e806dd": {
+   "nama": "Misteri Surat Tanpa Nama Part 1",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 21/11 17:15",
+   "hash": "8770e841be",
+   "cara": "manual",
+   "waktu_posting": "2026-11-21T17:30:00+07:00"
+  },
+  "1c5a80224c": {
+   "nama": "Misteri Surat Tanpa Nama Part 5",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Kamis 26/11 17:00",
+   "hash": "8770e841be",
+   "dirender": true,
+   "cara": "api",
+   "link_ig": "https://www.instagram.com/reel/DgM18MBJ8hh/",
+   "waktu_posting": "2026-11-26T17:01:23.807558+07:00"
+  },
+  "fad54937fb": {
+   "nama": "Misteri Surat Tanpa Nama Part 6",
+   "status": "terposting",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 17:00",
+   "hash": "8770e841be",
+   "ingat_render": "2026-11-25T20:16:24.961024+07:00",
+   "ingat_render2": "2026-11-26T20:01:34.253295+07:00",
+   "dirender": true,
+   "cara": "api",
+   "link_ig": "https://www.instagram.com/reel/DgPlg2UzzG4/",
+   "waktu_posting": "2026-11-27T18:35:20.875023+07:00"
+  },
+  "948c6cbef4": {
+   "nama": "Misteri Surat Tanpa Nama Part 7",
+   "status": "menunggu_render",
+   "gagal": 0,
+   "waktu_tayang": "Sabtu 28/11 17:00",
+   "hash": "8770e841be",
+   "ingat_render": "2026-11-26T17:01:23.807558+07:00"
+  },
+  "f2c7a27968": {
+   "nama": "Misteri Surat Tanpa Nama Part 8",
+   "status": "menunggu_render",
+   "gagal": 0,
+   "waktu_tayang": "Minggu 29/11 17:00",
+   "hash": "8770e841be",
+   "ingat_render": "2026-11-27T17:01:25.079172+07:00"
+  },
+  "aa8668f6a8": {
+   "nama": "Krayon Ulir Kuromi 12color",
+   "status": "baru",
+   "gagal": 0,
+   "waktu_tayang": "Jumat 27/11 23:59"
   }
+ },
+ "error_terkirim": [
+  "Baris 18 (Spesial Kado Hari Guru): konten promo sedang dimatikan, baris ini dilewati (ubah jenisnya ke edukasi/info/momen kalau tetap mau diposting)",
+  "Baris 35 (Spesial Kado Hari Guru): konten promo sedang dimatikan, baris ini dilewati (ubah jenisnya ke edukasi/info/momen kalau tetap mau diposting)",
+  "Baris 4 (Spesial Kado Hari Guru): konten promo sedang dimatikan, baris ini dilewati (ubah jenisnya ke edukasi/info/momen kalau tetap mau diposting)"
+ ],
+ "tg_offset": 0,
+ "permintaan": [
+  "7.65E+66",
+  "bea482f3",
+  "41a1b379",
+  "cae957f2",
+  "cdcbcff3",
+  "cc47f58a",
+  "c32078a8",
+  "c449666f",
+  "c73134d4",
+  "ccfb53f9",
+  "c75df7d3",
+  "c84d23fc",
+  "ce0e0af5",
+  "c1cabff3",
+  "cb6d832e"
+ ],
+ "cek_foto": "27/11/2026",
+ "reel_dirender": {
+  "5": true,
+  "6": true
+ }
 }
