@@ -1,0 +1,297 @@
+{
+ "part": 6,
+ "judul": "Sahabat yang Pergi",
+ "adegan": [
+  {
+   "latar": "beringin",
+   "waktu": "pagi",
+   "kamera": "zoom_in",
+   "kilas_balik": true,
+   "tokoh": [
+    {
+     "id": "laras_sma",
+     "ekspresi": "senang",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "rani_sma",
+     "ekspresi": "senang",
+     "posisi": "tengah",
+     "masuk": ""
+    },
+    {
+     "id": "hadi_sma",
+     "ekspresi": "senang",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "angin"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Tahun 2011, di bawah beringin tua sekolah...",
+     "emosi": "pelan, mengenang",
+     "ekspresi": ""
+    },
+    {
+     "tokoh": "laras_sma",
+     "ucap": "Namanya Rani. Dulu kami bertiga nggak pernah pisah.",
+     "emosi": "rindu, hangat",
+     "ekspresi": "senang"
+    }
+   ]
+  },
+  {
+   "latar": "dalam",
+   "waktu": "sore",
+   "kamera": "diam",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "laras",
+     "ekspresi": "sedih",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "dinda_bebas",
+     "ekspresi": "bingung",
+     "posisi": "tengah",
+     "masuk": ""
+    },
+    {
+     "id": "raka_bebas",
+     "ekspresi": "serius",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "detik"
+   ],
+   "urutan": [
+    {
+     "tokoh": "dinda_bebas",
+     "ucap": "Jadi... Mbak Rani itu orang ketiga yang wajahnya ditutupi di foto?",
+     "emosi": "berbisik, penasaran",
+     "ekspresi": "bingung"
+    },
+    {
+     "tokoh": "laras",
+     "ucap": "Iya, Dinda. Rani itu sahabat terbaik Mbak dan Pak Hadi.",
+     "emosi": "pelan, sedih",
+     "ekspresi": "sedih"
+    }
+   ]
+  },
+  {
+   "latar": "meja",
+   "waktu": "siang",
+   "kamera": "zoom_in",
+   "kilas_balik": true,
+   "tokoh": [
+    {
+     "id": "rani_sma",
+     "ekspresi": "senang",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "laras_sma",
+     "ekspresi": "senang",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "amplop",
+    "tulisan": ""
+   },
+   "efek": [
+    "kertas"
+   ],
+   "urutan": [
+    {
+     "tokoh": "laras_sma",
+     "ucap": "Kami punya permainan. Saling kirim teka-teki, ditandai bintang kecil.",
+     "emosi": "ceria, mengenang",
+     "ekspresi": "senang"
+    },
+    {
+     "tokoh": "rani_sma",
+     "ucap": "Coba tebak pesan rahasia ini kalau kamu bisa!",
+     "emosi": "bersemangat, antusias",
+     "ekspresi": "senang"
+    }
+   ]
+  },
+  {
+   "latar": "beringin",
+   "waktu": "sore",
+   "kamera": "goyang",
+   "kilas_balik": true,
+   "tokoh": [
+    {
+     "id": "hadi_sma",
+     "ekspresi": "serius",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "rani_sma",
+     "ekspresi": "sedih",
+     "posisi": "tengah",
+     "masuk": ""
+    },
+    {
+     "id": "laras_sma",
+     "ekspresi": "sedih",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "petir"
+   ],
+   "urutan": [
+    {
+     "tokoh": "laras_sma",
+     "ucap": "Tapi sebelum lulus, Rani harus pindah. Mendadak.",
+     "emosi": "berat, sedih",
+     "ekspresi": "sedih"
+    },
+    {
+     "tokoh": "hadi_sma",
+     "ucap": "Kalau kamu pergi sekarang, jangan pernah sapa kita lagi!",
+     "emosi": "marah, emosional",
+     "ekspresi": "serius"
+    },
+    {
+     "tokoh": "laras_sma",
+     "ucap": "Kami bertengkar hebat… dan Hadi bilang hal yang nggak seharusnya.",
+     "emosi": "menyesal, berbisik",
+     "ekspresi": "sedih"
+    }
+   ]
+  },
+  {
+   "latar": "dalam",
+   "waktu": "sore",
+   "kamera": "diam",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "laras",
+     "ekspresi": "sedih",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "raka_bebas",
+     "ekspresi": "kaget",
+     "posisi": "tengah",
+     "masuk": ""
+    },
+    {
+     "id": "bima_bebas",
+     "ekspresi": "bingung",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "klik"
+   ],
+   "urutan": [
+    {
+     "tokoh": "laras",
+     "ucap": "Setelah itu, Rani nggak pernah ada kabar lagi. Lima belas tahun.",
+     "emosi": "liris, sedih",
+     "ekspresi": "sedih"
+    },
+    {
+     "jeda": 0.8
+    },
+    {
+     "tokoh": "raka_bebas",
+     "ucap": "Berarti… surat-surat teka-teki ini dari Mbak Rani?",
+     "emosi": "terkejut, menyadari",
+     "ekspresi": "kaget"
+    },
+    {
+     "tokoh": "bima_bebas",
+     "ucap": "Tapi kenapa dia ngirim suratnya ke lokerku juga?",
+     "emosi": "heran, ragu",
+     "ekspresi": "bingung"
+    }
+   ]
+  },
+  {
+   "latar": "meja",
+   "waktu": "sore",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "laras",
+     "ekspresi": "kaget",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "raka_bebas",
+     "ekspresi": "serius",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "surat",
+    "tulisan": "Minggu, jam enam pagi. Bawa sekop."
+   },
+   "efek": [
+    "deg",
+    "kertas"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Tiba-tiba, di balik tumpukan kertas foto kopi...",
+     "emosi": "tegang",
+     "ekspresi": ""
+    },
+    {
+     "teks": "Minggu, jam enam pagi. Bawa sekop."
+    },
+    {
+     "tokoh": "laras",
+     "ucap": "Minggu, jam enam pagi... bawa sekop?",
+     "emosi": "terperanjat, heran",
+     "ekspresi": "kaget"
+    },
+    {
+     "tokoh": "raka_bebas",
+     "ucap": "Sekop?! Mau gali apa di beringin tua itu?!",
+     "emosi": "panik, penasaran",
+     "ekspresi": "serius"
+    },
+    {
+     "jeda": 1.2
+    }
+   ]
+  }
+ ],
+ "_dibuat": {
+  "model": "gemini-3.5-flash",
+  "arahan": "",
+  "waktu": "2026-11-27 08:07"
+ }
+}
