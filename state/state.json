@@ -636,7 +636,7 @@
   },
   "3df0d048e1": {
    "nama": "Ide Mewarnai Seru di Akhir Pekan",
-   "status": "menunggu",
+   "status": "terlewat",
    "gagal": 0,
    "waktu_tayang": "Sabtu 28/11 19:00",
    "poster": "3df0d048e1-8884d599c2-1.jpg",
@@ -840,7 +840,7 @@
   "c1cabff3",
   "cb6d832e"
  ],
- "cek_foto": "28/11/2026",
+ "cek_foto": "29/11/2026",
  "reel_dirender": {
   "5": true,
   "6": true,
