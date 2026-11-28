@@ -794,13 +794,16 @@
   },
   "948c6cbef4": {
    "nama": "Misteri Surat Tanpa Nama Part 7",
-   "status": "dirender",
+   "status": "terposting",
    "gagal": 0,
    "waktu_tayang": "Sabtu 28/11 17:00",
    "hash": "8770e841be",
    "ingat_render": "2026-11-26T17:01:23.807558+07:00",
    "ingat_render2": "2026-11-27T20:01:22.824973+07:00",
-   "dirender": true
+   "dirender": true,
+   "cara": "api",
+   "link_ig": "https://www.instagram.com/reel/DgSZTryOIcn/",
+   "waktu_posting": "2026-11-28T20:46:38.261894+07:00"
   },
   "f2c7a27968": {
    "nama": "Misteri Surat Tanpa Nama Part 8",
