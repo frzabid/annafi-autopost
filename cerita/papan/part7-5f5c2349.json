@@ -43,12 +43,6 @@
      "ucap": "Mereka semua berkumpul di balik pohon beringin tua.",
      "emosi": "misterius",
      "ekspresi": ""
-    },
-    {
-     "tokoh": "raka_bebas",
-     "ucap": "Dingin banget... Mbak Ana yakin kapsul waktunya masih terpendam di sini?",
-     "emosi": "berbisik, kedinginan",
-     "ekspresi": "bingung"
     }
    ]
   },
@@ -96,18 +90,12 @@
     },
     {
      "tokoh": "hadi_bebas",
-     "ucap": "Ana. Maafkan saya soal ucapan lima belas tahun lalu.",
-     "emosi": "tulus, haru",
+     "ucap": "Ana.",
+     "emosi": "pelan, haru",
      "ekspresi": "sedih"
     },
     {
      "jeda": 0.8
-    },
-    {
-     "tokoh": "bima_bebas",
-     "ucap": "Sekopnya sudah siap. Biar aku sama Pak Hadi yang gali.",
-     "emosi": "tegas",
-     "ekspresi": "serius"
     }
    ]
   },
@@ -148,12 +136,6 @@
      "ekspresi": ""
     },
     {
-     "tokoh": "dinda_bebas",
-     "ucap": "Awas, pelan-pelan! Jangan sampai kena kalengnya!",
-     "emosi": "panik, cemas",
-     "ekspresi": "kaget"
-    },
-    {
      "tokoh": "raka_bebas",
      "ucap": "Itu! Ujung kalengnya kelihatan!",
      "emosi": "antusias, berbisik",
@@ -168,7 +150,7 @@
    ]
   },
   {
-   "latar": "meja",
+   "latar": "galian",
    "waktu": "pagi",
    "kamera": "zoom_in",
    "kilas_balik": false,
@@ -187,7 +169,7 @@
     }
    ],
    "objek": {
-    "jenis": "amplop_tua",
+    "jenis": "surat",
     "tulisan": ""
    },
    "efek": [
@@ -206,17 +188,11 @@
      "ucap": "Di dalamnya, tersimpan tiga surat dari diri mereka sendiri, lima belas tahun lalu.",
      "emosi": "haru",
      "ekspresi": ""
-    },
-    {
-     "tokoh": "hadi_bebas",
-     "ucap": "Surat impian masa sekolah kita...",
-     "emosi": "nostalgia, pelan",
-     "ekspresi": "sedih"
     }
    ]
   },
   {
-   "latar": "meja",
+   "latar": "galian",
    "waktu": "pagi",
    "kamera": "zoom_in",
    "kilas_balik": false,
@@ -254,12 +230,6 @@
     },
     {
      "jeda": 1.0
-    },
-    {
-     "tokoh": "laras",
-     "ucap": "Rani minta maaf... Dia berniat mengembalikannya sejak dulu.",
-     "emosi": "haru, sedih",
-     "ekspresi": "sedih"
     }
    ]
   },
@@ -314,10 +284,16 @@
    ],
    "urutan": [
     {
-     "tokoh": "narator",
-     "ucap": "Rahasia lima belas tahun akan segera terungkap sepenuhnya.",
-     "emosi": "misterius, klimaks",
-     "ekspresi": ""
+     "teks": "Dia ada di sana · Part 8 FINAL"
+    },
+    {
+     "jeda": 0.6
+    },
+    {
+     "teks": "Siapa sosok berjaket hitam itu? 👇"
+    },
+    {
+     "jeda": 2.0
     }
    ]
   }

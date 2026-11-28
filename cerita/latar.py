@@ -283,6 +283,20 @@ def latar_beringin() -> str:
 <div class="tk-batang"></div>{akar}<div class="tk-tanah"></div><div class="tk-daun"></div>"""
 
 
+def latar_galian() -> str:
+    """Close-up di bawah beringin: beringin & sekolah kabur di belakang, tanah galian di bawah (membuka kapsul waktu/surat)."""
+    return f"""<style>
+.tk-galib{{position:absolute;inset:0;overflow:hidden}}
+.tk-galib .tk-intip{{position:absolute;left:-200px;top:-300px;width:1080px;height:1920px;transform:scale(1.5);filter:blur(14px) brightness(.92)}}
+.tk-tanah-gali{{position:absolute;left:-40px;right:-40px;top:1240px;bottom:-40px;background:
+  radial-gradient(ellipse at 50% 30%,#3b2617 0 120px,transparent 122px),
+  radial-gradient(circle,rgba(0,0,0,.12) 0 5px,transparent 6px) 0 0/70px 50px,linear-gradient(#7a5638,#5b3d26);
+  border-top:26px solid #6f8a45;box-shadow:0 -10px 30px rgba(0,0,0,.25)}}
+.tk-cahaya-pagi{{position:absolute;inset:0;background:radial-gradient(circle at 50% 38%,rgba(255,226,180,.45),rgba(0,0,0,0) 60%)}}
+</style>
+<div class="tk-galib"><div class="tk-intip">{latar_beringin()}</div><div class="tk-cahaya-pagi"></div><div class="tk-tanah-gali"></div></div>"""
+
+
 def latar_ukiran() -> str:
     """Close-up kulit batang beringin dengan ukiran lama "A · H · R" (huruf R dicoret)."""
     return """<style>

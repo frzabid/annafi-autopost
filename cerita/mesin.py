@@ -42,6 +42,7 @@ LATAR = {
     "pintu_bawah": "close-up lantai depan pintu kaca + keset daun (amplop diselipkan dari bawah pintu)",
     "bawah_mesin": "close-up sejajar lantai di bawah mesin fotokopi (ada celah gelap)",
     "beringin": "halaman belakang sekolah: pohon beringin tua besar (tokoh tampil seluruh badan)",
+    "galian": "close-up di bawah beringin, tanah galian (membuka kapsul waktu / membaca surat di halaman sekolah)",
     "ukiran": "close-up batang beringin dengan ukiran lama A·H·R (R dicoret)",
     "polos": "latar gelap polos (untuk teks/kejutan)",
 }
@@ -126,6 +127,8 @@ def _latar(nama):
         return L.latar_beringin()
     if nama == "ukiran":
         return L.latar_ukiran()
+    if nama == "galian":
+        return L.latar_galian()
     return L.latar_polos()
 
 
