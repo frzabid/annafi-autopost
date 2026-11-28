@@ -1,0 +1,330 @@
+{
+ "part": 7,
+ "judul": "Kapsul Waktu",
+ "adegan": [
+  {
+   "latar": "beringin",
+   "waktu": "pagi",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "laras",
+     "ekspresi": "serius",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "raka_bebas",
+     "ekspresi": "bingung",
+     "posisi": "tengah",
+     "masuk": "kiri"
+    },
+    {
+     "id": "dinda_bebas",
+     "ekspresi": "serius",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "angin"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Minggu pagi, sebelum matahari benar-benar terbit.",
+     "emosi": "pelan, tegang",
+     "ekspresi": ""
+    },
+    {
+     "tokoh": "narator",
+     "ucap": "Mereka semua berkumpul di balik pohon beringin tua.",
+     "emosi": "misterius",
+     "ekspresi": ""
+    },
+    {
+     "tokoh": "raka_bebas",
+     "ucap": "Dingin banget... Mbak Ana yakin kapsul waktunya masih terpendam di sini?",
+     "emosi": "berbisik, kedinginan",
+     "ekspresi": "bingung"
+    }
+   ]
+  },
+  {
+   "latar": "beringin",
+   "waktu": "pagi",
+   "kamera": "geser",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "hadi_bebas",
+     "ekspresi": "sedih",
+     "posisi": "kiri",
+     "masuk": "kiri"
+    },
+    {
+     "id": "laras",
+     "ekspresi": "kaget",
+     "posisi": "tengah",
+     "masuk": ""
+    },
+    {
+     "id": "bima_bebas",
+     "ekspresi": "serius",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "langkah"
+   ],
+   "urutan": [
+    {
+     "tokoh": "hadi_bebas",
+     "ucap": "Saya... juga dapat suratnya semalam.",
+     "emosi": "pelan, menyesal",
+     "ekspresi": "sedih"
+    },
+    {
+     "tokoh": "laras",
+     "ucap": "Hadi...",
+     "emosi": "terkejut, berbisik",
+     "ekspresi": "kaget"
+    },
+    {
+     "tokoh": "hadi_bebas",
+     "ucap": "Ana. Maafkan saya soal ucapan lima belas tahun lalu.",
+     "emosi": "tulus, haru",
+     "ekspresi": "sedih"
+    },
+    {
+     "jeda": 0.8
+    },
+    {
+     "tokoh": "bima_bebas",
+     "ucap": "Sekopnya sudah siap. Biar aku sama Pak Hadi yang gali.",
+     "emosi": "tegas",
+     "ekspresi": "serius"
+    }
+   ]
+  },
+  {
+   "latar": "beringin",
+   "waktu": "pagi",
+   "kamera": "goyang",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "dinda_bebas",
+     "ekspresi": "kaget",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "raka_bebas",
+     "ekspresi": "senang",
+     "posisi": "tengah",
+     "masuk": ""
+    },
+    {
+     "id": "bima_bebas",
+     "ekspresi": "serius",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "deg"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Suasana hening, hanya terdengar gesekan sekop menembus tanah keras.",
+     "emosi": "tegang",
+     "ekspresi": ""
+    },
+    {
+     "tokoh": "dinda_bebas",
+     "ucap": "Awas, pelan-pelan! Jangan sampai kena kalengnya!",
+     "emosi": "panik, cemas",
+     "ekspresi": "kaget"
+    },
+    {
+     "tokoh": "raka_bebas",
+     "ucap": "Itu! Ujung kalengnya kelihatan!",
+     "emosi": "antusias, berbisik",
+     "ekspresi": "senang"
+    },
+    {
+     "tokoh": "dinda_bebas",
+     "ucap": "Ketemu! Ketemu kalengnya, Mbak!",
+     "emosi": "berteriak pelan",
+     "ekspresi": "senang"
+    }
+   ]
+  },
+  {
+   "latar": "meja",
+   "waktu": "pagi",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "laras",
+     "ekspresi": "sedih",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "hadi_bebas",
+     "ekspresi": "serius",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "amplop_tua",
+    "tulisan": ""
+   },
+   "efek": [
+    "klik",
+    "kertas"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Kaleng logam berkarat akhirnya terangkat ke permukaan.",
+     "emosi": "dalam, emosional",
+     "ekspresi": ""
+    },
+    {
+     "tokoh": "narator",
+     "ucap": "Di dalamnya, tersimpan tiga surat dari diri mereka sendiri, lima belas tahun lalu.",
+     "emosi": "haru",
+     "ekspresi": ""
+    },
+    {
+     "tokoh": "hadi_bebas",
+     "ucap": "Surat impian masa sekolah kita...",
+     "emosi": "nostalgia, pelan",
+     "ekspresi": "sedih"
+    }
+   ]
+  },
+  {
+   "latar": "meja",
+   "waktu": "pagi",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "laras",
+     "ekspresi": "kaget",
+     "posisi": "tengah",
+     "masuk": ""
+    }
+   ],
+   "objek": {
+    "jenis": "surat",
+    "tulisan": "Maaf. Untuk Ana & Hadi. —R"
+   },
+   "efek": [
+    "kertas",
+    "deg"
+   ],
+   "urutan": [
+    {
+     "teks": "Maaf. Untuk Ana & Hadi. —R"
+    },
+    {
+     "tokoh": "narator",
+     "ucap": "Dan satu surat tambahan... yang tidak pernah sempat dikirim.",
+     "emosi": "tegang, serius",
+     "ekspresi": ""
+    },
+    {
+     "tokoh": "laras",
+     "ucap": "Ini... tulisan tangan Rani.",
+     "emosi": "terkejut, bergetar",
+     "ekspresi": "kaget"
+    },
+    {
+     "jeda": 1.0
+    },
+    {
+     "tokoh": "laras",
+     "ucap": "Rani minta maaf... Dia berniat mengembalikannya sejak dulu.",
+     "emosi": "haru, sedih",
+     "ekspresi": "sedih"
+    }
+   ]
+  },
+  {
+   "latar": "beringin",
+   "waktu": "pagi",
+   "kamera": "geser",
+   "kilas_balik": false,
+   "tokoh": [
+    {
+     "id": "raka_bebas",
+     "ekspresi": "takut",
+     "posisi": "kiri",
+     "masuk": ""
+    },
+    {
+     "id": "siluet",
+     "ekspresi": "serius",
+     "posisi": "kanan",
+     "masuk": ""
+    }
+   ],
+   "objek": null,
+   "efek": [
+    "jantung",
+    "langkah"
+   ],
+   "urutan": [
+    {
+     "tokoh": "raka_bebas",
+     "ucap": "Tunggu... Siapa itu di balik pagar?!",
+     "emosi": "panik, kaget",
+     "ekspresi": "takut"
+    },
+    {
+     "tokoh": "narator",
+     "ucap": "Di balik kegelapan kabut pagi, sosok berjaket hitam berdiri memperhatikan mereka.",
+     "emosi": "mencekam",
+     "ekspresi": ""
+    }
+   ]
+  },
+  {
+   "latar": "polos",
+   "waktu": "pagi",
+   "kamera": "zoom_in",
+   "kilas_balik": false,
+   "tokoh": [],
+   "objek": null,
+   "efek": [
+    "deg"
+   ],
+   "urutan": [
+    {
+     "tokoh": "narator",
+     "ucap": "Rahasia lima belas tahun akan segera terungkap sepenuhnya.",
+     "emosi": "misterius, klimaks",
+     "ekspresi": ""
+    }
+   ]
+  }
+ ],
+ "_dibuat": {
+  "model": "gemini-3.5-flash",
+  "arahan": "",
+  "waktu": "2026-11-28 08:07"
+ }
+}
