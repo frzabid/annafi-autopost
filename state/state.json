@@ -618,9 +618,13 @@
   },
   "bdb1c76e7f": {
    "nama": "Krayon Joyko Isi 24",
-   "status": "baru",
+   "status": "pratinjau",
    "gagal": 0,
-   "waktu_tayang": "Sabtu 28/11 12:00"
+   "waktu_tayang": "Sabtu 28/11 12:00",
+   "dari_sheet": true,
+   "poster": "bdb1c76e7f-bd858dd77a.jpg",
+   "sumber_gambar": "https://drive.google.com/file/d/1fihL10auhmted7oCexW6MZpsERJOIY7k/view",
+   "hash": "bd858dd77a"
   },
   "3df0d048e1": {
    "nama": "Ide Mewarnai Seru di Akhir Pekan",
