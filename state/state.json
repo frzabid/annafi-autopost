@@ -362,9 +362,13 @@
   },
   "77824057c8": {
    "nama": "Krayon Baby 18c",
-   "status": "baru",
+   "status": "pratinjau",
    "gagal": 0,
-   "waktu_tayang": "Sabtu 28/11 16:00"
+   "waktu_tayang": "Sabtu 28/11 16:00",
+   "dari_sheet": false,
+   "poster": "77824057c8-8af448534d.jpg",
+   "sumber_gambar": "https://down-id.img.susercontent.com/file/id-11134207-7r98r-lvy1s3trblm22c",
+   "hash": "8af448534d"
   },
   "fac2b11553": {
    "nama": "Krayon Carinex 12 Wrn",
